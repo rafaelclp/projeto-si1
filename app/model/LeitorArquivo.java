@@ -111,7 +111,7 @@ public class LeitorArquivo {
     private static Document parserXML() throws ParserConfigurationException,
             SAXException, IOException {
         // Carrega XML
-        File arquivoXML = new File("cadeiras.xml");
+        File arquivoXML = new File("/cadeiras.xml");
         // Cria XML parser retorna DOM trees
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
