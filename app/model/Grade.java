@@ -1,4 +1,4 @@
-﻿package model;
+package model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class Grade {
 	// PURE FABRICATION: Tinha que haver um modo das disciplinas entrarem na grade,
 	//					resolvemos fazer por leitura de arquivo.
 	private void preencherDisciplinas() {
-disciplinas.add(new Disciplina("Programação I", 4, 4, 1, 1));
+		disciplinas.add(new Disciplina("Programação I", 4, 4, 1, 1));
 		disciplinas.add(new Disciplina("Leitura e Prod. de Textos", 4, 2, 1, 2));
 		disciplinas.add(new Disciplina("Cálculo I", 4, 7, 1, 3));
 		disciplinas.add(new Disciplina("Algebra Vetorial", 4, 3, 1, 4));
