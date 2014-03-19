@@ -244,18 +244,26 @@ public class Grade {
 	/**
 	 * Reseta a grade
 	 */
-	// INFORMATION EXPERT: Grade contem todos os periodos
+	// INFORMATION EXPERT: Grade contem tudo que precisa
 	public void resetar() {
 		limpar();
 		setar();
 	}
 	
+	/**
+	 * Reinicia todos os periodos sem cadeiras.
+	 */
+	// INFORMATION EXPERT: Grade contem todos os periodos
 	private void limpar() {
 		for (Periodo periodo : periodos) {
 			periodo.resetar();
 		}
 	}
 	
+	/**
+	 * Aloca todas as cadeiras nos seus periodos previstos.
+	 */
+	// INFORMATION EXPERT: Grade contem todas as disciplinas
 	private void setar() {
 		for (Disciplina disciplina : disciplinas) {
 			try {
