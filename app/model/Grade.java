@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Grade {
 
+	final int MAXIMO_DE_PERIODOS = 12;
+	
 	// CREATOR: Grade contem uma lista com as disciplinas
 	// Lista com todas as disciplinas da grade
 	private List<Disciplina> disciplinas;
@@ -262,5 +264,41 @@ public class Grade {
 				primeiroPeriodo.addDisciplina(disciplina);
 			}
 		}
+	}
+	
+	/**
+	 * Obtém uma lista das disciplinas irregulares na grade.
+	 * Uma disciplina está irregular se está alocada sem que todos os seus
+	 * pré-requisitos estejam alocadas em períodos inferiores ao dela.
+	 * 
+	 * @return Lista das disciplinas irregulares.
+	 */
+	private List<Disciplina> obterDisciplinasIrregulares() {
+		List<Disciplina> disciplinasIrregulares = new ArrayList<Disciplina>();
+		
+		for (int periodo = 1; periodo <= MAXIMO_DE_PERIODOS; periodo++) {
+			Periodo p = getPeriodo(periodo);
+			if (p == null) {
+				// a grade tem menos períodos do que o máximo
+				break;
+			}
+			List<Disciplina> disciplinas = p.getDisciplinas();
+			
+			for (Disciplina disciplina : disciplinas) {
+				List<Disciplina> preRequisitos = disciplina.getPreRequisitos();
+				
+				boolean disciplinaRegular = true;
+				for (Disciplina preRequisito : preRequisitos) {
+					if (!estaAlocado(preRequisito) || getPeriodoDaDisciplina(preRequisito) >= periodo) {
+						disciplinaRegular = false;
+						break;
+					}
+				}
+				if (!disciplinaRegular) {
+					disciplinasIrregulares.add(disciplina);
+				}
+			}
+		}
+		return disciplinasIrregulares;
 	}
 }
