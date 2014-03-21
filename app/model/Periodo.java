@@ -3,40 +3,79 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Id;
+
 public class Periodo {
 
-	// CREATOR: Periodo contem uma lista de disciplinas
-	// Lista com todas as disciplinas alocadas no periodo
-	private ArrayList<Disciplina> disciplinas;
+	@Id
+	private int id;
+	
+	private List<Disciplina> disciplinas;
 
-	// Quantidade maxima de creditos no periodo
 	final int CREDITOS_MAXIMO = 28;
 
+	/**
+	 * Cria um novo periodo
+	 */
 	public Periodo() {
 		disciplinas = new ArrayList<Disciplina>();
 	}
 
 	/**
+	 * Retorna id do periodo
+	 * 
+	 * @return int do id do periodo
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * Atribui um id ao periodo
+	 * 
+	 * @param id
+	 * 			do periodo
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	/**
 	 * Retorna todas as disciplinas do periodo
 	 * 
 	 * @return Lista com todas as disciplinas do periodo
 	 */
-	// INFORMATION EXPERT: Periodo contem uma lista com suas disciplinas
 	public List<Disciplina> getDisciplinas() {
 		return disciplinas;
 	}
 
 	/**
-	 * Adiciona elemento indicado ao conjunto de disciplinas do periodo
+	 * Aloca disciplina no periodo
 	 * 
 	 * @param disciplina
-	 *            a ser inserida
+	 * 			a ser inserida
+	 * 
+	 * @throws InvalidOperationException
 	 */
-	// INFORMATION EXPERT: Periodo contem uma lista com suas disciplinas
-	public void addDisciplina(Disciplina disciplina) {
+	public void alocarDisciplina(Disciplina disciplina, boolean ignorarCreditos) throws InvalidOperationException {
+		if(!podeAlocar(disciplina, ignorarCreditos))
+			throw new InvalidOperationException("Disciplina não pode ser alocada neste período.");
 		this.disciplinas.add(disciplina);
 	}
 
+	/**
+	 * Desaloca disciplina solicitada, se possivel
+	 * 
+	 * @param disciplina
+	 *            a ser removida
+	 *            
+	 * @throws InvalidOperationException
+	 */
+	public void desalocarDisciplina(Disciplina disciplina) throws InvalidOperationException {
+		if(!disciplinas.remove(disciplina))
+			throw new InvalidOperationException("Disciplina não existente neste período.");
+	}
+	
 	/**
 	 * Retorna true caso o periodo possua a disciplina especificada
 	 * 
@@ -44,33 +83,22 @@ public class Periodo {
 	 *            a qual presenca sera testada no periodo
 	 * @return true caso a lista possua disciplina especificada
 	 */
-	// INFORMATION EXPERT: Periodo contem uma lista com suas disciplinas
 	public boolean contains(Disciplina disciplina) {
 		return this.disciplinas.contains(disciplina);
 	}
-
-	/**
-	 * Remove disciplina especificada, se presente
-	 * 
-	 * @param disciplina
-	 *            a ser removida
-	 */
-	// INFORMATION EXPERT: Periodo contem uma lista com suas disciplinas
-	public void removeDisciplina(Disciplina disciplina) {
-		disciplinas.remove(disciplina);
-	}
 	
 	/**
-	 * Calcula quantos creditos o periodo tem
+	 * Calcula total de creditos do periodo
 	 * 
-	 * @return quantos creditos o periodo tem
+	 * @return total de creditos do periodo
 	 */
-	// INFORMATION EXPERT: Periodo contem uma lista com suas disciplinas
-	public int getCreditos() {
+	public int totalDeCreditos() {
 		int creditos = 0;
+		
 		for (Disciplina i : disciplinas) {
 			creditos += i.getCreditos();
 		}
+		
 		return creditos;
 	}
 	
@@ -80,9 +108,8 @@ public class Periodo {
 	 * 			a ser alocada
 	 * @return boolean informado se pode ou nao alocar a disciplina
 	 */
-	// INFORMATION EXPERT: Periodo consegue verificar seus creditos
-	public boolean podeAlocar(Disciplina disciplina) {
-		if (getCreditos() + disciplina.getCreditos() > CREDITOS_MAXIMO) {
+	public boolean podeAlocar(Disciplina disciplina, boolean ignorarCreditos) {
+		if (!ignorarCreditos && this.totalDeCreditos() + disciplina.getCreditos() > CREDITOS_MAXIMO) {
 			return false;
 		}
 		return true;
@@ -92,8 +119,9 @@ public class Periodo {
 	 * Reseta o periodo
 	 * 
 	 */
-	// INFORMATION EXPERT: Periodo contem uma lista com suas disciplinas
 	public void resetar() {
 		disciplinas.clear();
 	}
+
+
 }

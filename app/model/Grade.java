@@ -16,8 +16,9 @@ public class Grade {
 	/**
 	 * Constructor
 	 * Inicializa as variaveis e reseta o sistema (aloca primeiro periodo)
+	 * @throws InvalidOperationException 
 	 */
-	public Grade() {
+	public Grade() throws InvalidOperationException {
 		periodos = new ArrayList<Periodo>();
 		disciplinas = new ArrayList<Disciplina>();
 		this.preencherDisciplinas();
@@ -55,7 +56,7 @@ public class Grade {
 		Disciplina retorno = null;
 
 		for (Disciplina i : disciplinas) {
-			if (id == i.getID()) {
+			if (id == i.getId()) {
 				retorno = i;
 				break;
 			}
@@ -134,7 +135,7 @@ public class Grade {
 		}
 
 		Periodo p = getPeriodo(periodo);
-		if (!p.podeAlocar(disciplina)) {
+		if (!p.podeAlocar(disciplina, false)) {
             throw new InvalidOperationException("O período não pode ter mais de 28 créditos.");
 		}
 
@@ -142,7 +143,7 @@ public class Grade {
         if (!preRequisitosFaltando.isEmpty()) {
     	    resposta = false;
         } else {
-        	p.addDisciplina(disciplina);
+        	p.alocarDisciplina(disciplina, false);
         }
 
         return resposta;
@@ -177,7 +178,7 @@ public class Grade {
         	for (Disciplina i : posRequisitosAlocados) {
                 int periodoIndex = getPeriodoDaDisciplina(i);
                 Periodo p = getPeriodo(periodoIndex);
-                p.removeDisciplina(i);
+                p.desalocarDisciplina(i);
             }
         } else {
         	posRequisitosAlocados = new ArrayList<Disciplina>();
@@ -250,16 +251,17 @@ public class Grade {
 	
 	/**
 	 * Reseta a grade
+	 * @throws InvalidOperationException 
 	 */
 	// INFORMATION EXPERT: Grade contem todos os periodos
-	public void resetar() {
+	public void resetar() throws InvalidOperationException {
 		for (Periodo periodo : periodos) {
 			periodo.resetar();
 		}
 		for (Disciplina disciplina : disciplinas) {
 			if (disciplina.getPeriodoPrevisto() == 1) {
 				Periodo primeiroPeriodo = getPeriodo(1);
-				primeiroPeriodo.addDisciplina(disciplina);
+				primeiroPeriodo.alocarDisciplina(disciplina, false);
 			}
 		}
 	}

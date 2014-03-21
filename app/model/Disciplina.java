@@ -1,31 +1,22 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Id;
 
 public class Disciplina {
 
-	// Nome
-	private String nome;
-
-	// Quantidade de creditos
-	private int creditos;
-
-	// ID
+	@Id
 	private int id;
-
-	// Dificuldade
+	
+	private String nome;
+	private int creditos;
 	private int dificuldade;
-
-	// Periodo previsto para ser alocada
 	private int periodoPrevisto;
 	
-	// CREATOR: Disciplina contem uma lista dos seus pre-requisitos
-	// Lista com todos os pre-requisitos diretos
-	private ArrayList<Disciplina> preRequisitos;
-
-	// CREATOR: Disciplina contem uma lista dos seus pos-requisitos
-	// Lista com todos os pos-requisitos diretos
-	private ArrayList<Disciplina> posRequisitos;
+	private List<Disciplina> preRequisitos;
+	private List<Disciplina> posRequisitos;
 	
 	/**
 	 * Cria uma nova disciplina com o nome e creditos dados
@@ -36,13 +27,13 @@ public class Disciplina {
 	 * @param periodo previsto para disciplina ser cursada
 	 * @param id numero unico para cada disciplina
 	 */
-	public Disciplina(String nome, int creditos, int dificuldade, int periodo, int id) {
-		this.nome = nome;
-		this.creditos = creditos;
-		this.dificuldade = dificuldade;
-		this.periodoPrevisto = periodo;
-		this.id = id;
-
+	public Disciplina(String nome, int creditos, int dificuldade, int periodoPrevisto, int id) {
+		setNome(nome);
+		setCreditos(creditos);
+		setDificuldade(dificuldade);
+		setPeriodoPrevisto(periodoPrevisto);
+		setId(id);
+		
 		this.preRequisitos = new ArrayList<Disciplina>();
 		this.posRequisitos = new ArrayList<Disciplina>();
 	}
@@ -52,9 +43,18 @@ public class Disciplina {
 	 * 
 	 * @return String do nome da disciplina
 	 */
-	// INFORMATION EXPERT: Disciplina tem o seu proprio nome
 	public String getNome() {
 		return this.nome;
+	}
+	
+	/**
+	 * Atribui um nome a Disciplina
+	 * 
+	 * @param nome
+	 * 			Nome da disciplina
+	 */
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 	
 	/**
@@ -62,9 +62,18 @@ public class Disciplina {
 	 * 
 	 * @return int do codigo da disciplina
 	 */
-	// INFORMATION EXPERT: Disciplina tem o seu proprio ID
-	public int getID(){
+	public int getId(){
 		return this.id;
+	}
+	
+	/**
+	 * Atribui um id a Disciplina
+	 * 
+	 * @param id
+	 * 			Id da disciplina
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	/**
@@ -72,9 +81,18 @@ public class Disciplina {
 	 * 
 	 * @return int com dificuldade da disciplina
 	 */
-	// INFORMATION EXPERT: Disciplina tem a sua propria dificuldade
 	public int getDificuldade(){
 		return this.dificuldade;
+	}
+	
+	/**
+	 * Atribui uma dificuldade a Disciplina
+	 * 
+	 * @param dificuldade
+	 * 			Dificuldade da disciplina
+	 */
+	public void setDificuldade(int dificuldade) {
+		this.dificuldade = dificuldade;
 	}
 
 	/**
@@ -82,9 +100,47 @@ public class Disciplina {
 	 * 
 	 * @return int com valor de creditos da disciplina
 	 */
-	// INFORMATION EXPERT: Disciplina tem a sua propria quantidade de creditos
 	public int getCreditos() {
 		return this.creditos;
+	}
+	
+	/**
+	 * Atribui os creditos da Disciplina
+	 * 
+	 * @param creditos
+	 * 			Creditos da disciplina
+	 */
+	public void setCreditos(int creditos) {
+		this.creditos = creditos;
+	}
+	
+	/**
+	 * periodo previsto para disciplina ser cursada
+	 * 
+	 * @return o periodo previsto para disciplina ser cursada
+	 */
+	public int getPeriodoPrevisto() {
+		return periodoPrevisto;
+	}
+	
+	/**
+	 * Atribui o periodo previsto da Disciplina
+	 * 
+	 * @param periodoPrevisto
+	 * 			Periodo previsto da disciplina
+	 */
+	public void setPeriodoPrevisto(int periodoPrevisto) {
+		this.periodoPrevisto = periodoPrevisto;
+	}
+	
+	/**
+	 * Retorna Set com todas as disciplinas  que sao pre-requisitos
+	 * para a disciplina
+	 * 
+	 * @return Set com disciplinas
+	 */
+	public List<Disciplina> getPreRequisitos() {
+		return preRequisitos;
 	}
 
 	/**
@@ -94,34 +150,9 @@ public class Disciplina {
 	 * @param disciplina 
 	 * 			a ser adicionada a lista de requisitos
 	 */
-	// INFORMATION EXPERT: Disciplina contem uma lista com seus pre-requisitos
 	public void addPreRequisito(Disciplina disciplina) {
 		this.preRequisitos.add(disciplina);
 		disciplina.addPosRequisito(this);
-	}
-
-	/**
-	 * Adiciona disciplina passada como parametro a lista de pos-requisitos
-	 * da disciplina(this), disciplinas as quais essa é pre-requisito
-	 * 
-	 * @param disciplina 
-	 * 			a ser adicionada a lista de requisitos
-	 */
-	// INFORMATION EXPERT: Disciplina contem uma lista com seus pos-requisitos
-	public void addPosRequisito(Disciplina disciplina) {
-		this.posRequisitos.add(disciplina);
-	}
-
-	/**
-	 * Retorna Set com todas as disciplinas  que sao pre-requisitos
-	 * para a disciplina
-	 * 
-	 * @return Set com disciplinas
-	 */
-	// INFORMATION EXPERT: Disciplina contem uma lista com seus pre-requisitos
-	public ArrayList<Disciplina> getPreRequisitos() {
-		return preRequisitos;
-
 	}
 
 	/**
@@ -130,20 +161,19 @@ public class Disciplina {
 	 * 
 	 * @return Set com disciplinas
 	 */
-	// INFORMATION EXPERT: Disciplina contem uma lista com seus pos-requisitos
-	public ArrayList<Disciplina> getPosRequisitos() {
+	public List<Disciplina> getPosRequisitos() {
 		return posRequisitos;
-
 	}
 	
 	/**
-	 * periodo previsto para disciplina ser cursada
+	 * Adiciona disciplina passada como parametro a lista de pos-requisitos
+	 * da disciplina(this), disciplinas as quais essa é pre-requisito
 	 * 
-	 * @return o periodo previsto para disciplina ser cursada
+	 * @param disciplina 
+	 * 			a ser adicionada a lista de requisitos
 	 */
-	// INFORMATION EXPERT: Disciplina tem o seu proprio periodo previsto
-	public int getPeriodoPrevisto() {
-		return periodoPrevisto;
+	public void addPosRequisito(Disciplina disciplina) {
+		this.posRequisitos.add(disciplina);
 	}
 
 	@Override
@@ -185,4 +215,8 @@ public class Disciplina {
 		return true;
 	}
 	
+	public static List<Disciplina> all() {
+		// TODO Rafael
+		return null;
+	}
 }

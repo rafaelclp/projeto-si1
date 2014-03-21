@@ -87,7 +87,7 @@ public class LeitorArquivo {
         // a disciplina
         for (int i = 0; i < requisitos.getLength(); i++) {
             for (Disciplina dis : disciplinas) {
-                if (("" + dis.getID()).equals(requisitos.item(i)
+                if (("" + dis.getId()).equals(requisitos.item(i)
                         .getTextContent())) {
                     novaDisciplina.addPreRequisito(dis);
                 }
