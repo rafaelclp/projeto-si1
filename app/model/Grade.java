@@ -125,7 +125,10 @@ public class Grade {
 	// INFORMATION EXPERT: Grade contem todas as disciplinas e periodos
 	public boolean associarDisciplinaAoPeriodo(Disciplina disciplina, int periodo) throws InvalidOperationException {
 		boolean resposta = true;
-		
+		if (periodo == 1) {
+			throw new InvalidOperationException("Não podem ser alocadas disciplinas para o primeiro período.");
+		}
+
 		if (periodo < 1 || periodo > 12) {
 			throw new InvalidOperationException("Não podem ser alocadas disciplinas para períodos que não existem.");
 		}
@@ -161,6 +164,10 @@ public class Grade {
 		
         if (periodo == 0) {
             throw new InvalidOperationException("Esta disciplina já está desalocada.");
+        }
+        
+        if (periodo == 1) {
+            throw new InvalidOperationException("Disciplinas do primeiro período não podem ser desalocadas.");
         }
 
         List<Disciplina> posRequisitosAlocados = posRequisitosAlocados(disciplina);
@@ -244,33 +251,15 @@ public class Grade {
 	/**
 	 * Reseta a grade
 	 */
-	// INFORMATION EXPERT: Grade contem tudo que precisa
-	public void resetar() {
-		limpar();
-		setar();
-	}
-	
-	/**
-	 * Reinicia todos os periodos sem cadeiras.
-	 */
 	// INFORMATION EXPERT: Grade contem todos os periodos
-	private void limpar() {
+	public void resetar() {
 		for (Periodo periodo : periodos) {
 			periodo.resetar();
 		}
-	}
-	
-	/**
-	 * Aloca todas as cadeiras nos seus periodos previstos.
-	 */
-	// INFORMATION EXPERT: Grade contem todas as disciplinas
-	private void setar() {
 		for (Disciplina disciplina : disciplinas) {
-			try {
-				if (disciplina.getPeriodoPrevisto() != 0)
-					associarDisciplinaAoPeriodo(disciplina, disciplina.getPeriodoPrevisto());
-			} catch (InvalidOperationException e) {
-				System.out.println("You shall not come here!");
+			if (disciplina.getPeriodoPrevisto() == 1) {
+				Periodo primeiroPeriodo = getPeriodo(1);
+				primeiroPeriodo.addDisciplina(disciplina);
 			}
 		}
 	}

@@ -38,7 +38,7 @@ public class ControlTest {
     			"<span class=\"glyphicon glyphicon-asterisk\" style=\"font-size:10px\"></span> Teoria dos Grafos<br />", Control.alocarDisciplina(18, 3));
 	}
 	
-	/*@Test
+	@Test
 	public void desalocaDisciplina() {
 		Control.index();
 		// Desaloca sem problema
@@ -74,5 +74,5 @@ public class ControlTest {
 		Control.alocarDisciplina(13, 2);
 		Control.resetar();
     	assertEquals("erro:Esta disciplina já está desalocada.", Control.desalocarDisciplina(13, false));
-	}*/
+	}
 }
