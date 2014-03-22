@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 /**
  * Classe que representa um periodo de um aluno
@@ -14,6 +15,7 @@ public class Periodo {
 	@Id
 	private int id;
 	
+	@ManyToMany
 	private List<Disciplina> disciplinas;
 
 	final int CREDITOS_MAXIMO = 28;
