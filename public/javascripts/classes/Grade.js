@@ -11,6 +11,42 @@ var Grade = {
 	"periodoCursando": 0,
 
 	/**
+	 * Informa a quantidade de créditos já cursados.
+	 * @return Quantidade de créditos
+	**/
+	getCreditosCursados: function() {
+		var creditos = 0;
+		for (var i = 0; i < this.disciplinas.length; i++)
+			if (this.disciplinas[i].periodo != 0 && this.disciplinas[i].periodo < this.periodoCursando)
+				creditos += this.disciplinas[i].creditos;
+		return creditos;
+	},
+
+	/**
+	 * Informa a quantidade de créditos sendo cursados.
+	 * @return Quantidade de créditos
+	**/
+	getCreditosCursando: function() {
+		var creditos = 0;
+		for (var i = 0; i < this.disciplinas.length; i++)
+			if (this.disciplinas[i].periodo == this.periodoCursando)
+				creditos += this.disciplinas[i].creditos;
+		return creditos;
+	},
+
+	/**
+	 * Informa a quantidade de créditos a serem cursados.
+	 * @return Quantidade de créditos
+	**/
+	getCreditosACursar: function() {
+		var creditos = 0;
+		for (var i = 0; i < this.disciplinas.length; i++)
+			if (this.disciplinas[i].periodo > this.periodoCursando)
+				creditos += this.disciplinas[i].creditos;
+		return creditos;
+	},
+
+	/**
 	 * Altera a lista de disciplinas.
 	 * @param lista_de_disciplinas A nova lista
 	**/
