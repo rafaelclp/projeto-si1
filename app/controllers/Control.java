@@ -22,13 +22,6 @@ public class Control {
         return grade.toString();
     }
     
-    /**
-     * Retorna os ids dos pre-requisitos faltando e dele mesmo
-     * 
-     * @param id da disciplina
-     * @param periodo em que se quer alocar a disciplina
-     * @return string com a resposta da requisicao
-     */
     public static String obterPreRequisitosNaoAlocados(int id, int periodo) {
     	String resposta = "" + id;
     	Disciplina disciplina;
@@ -45,7 +38,8 @@ public class Control {
     }
 
     /**
-     * Aloca uma determinada disciplina em um determinado periodo
+     * Verifica se e possivel alocar uma determinada disciplina em determinado
+     * periodo e aloca caso seja
      * 
      * @param id
      *            da disciplina
@@ -75,12 +69,6 @@ public class Control {
         return resposta;
     }
     
-    /**
-     * Retorna os ids dos pos-requisitos alocados e dele mesmo
-     * 
-     * @param id da disciplina
-     * @return string com a resposta da requisicao
-     */
     public static String obterPosRequisitosAlocados(int id) {
     	String resposta = "" + id;
     	Disciplina disciplina;
@@ -97,10 +85,13 @@ public class Control {
     }
 
     /**
-     * Desaloca uma determinada disciplina
+     * Verifica se e possivel desalocar uma determinada disciplina e desaloca
+     * caso seja
      * 
      * @param id
      *            da disciplina
+     * @param force
+     *            confirmacao do usuario de forcar a desalocacao
      * @return string com a resposta da requisicao
      */
     // CONTROLLER: Funcionalidade pro usuario
@@ -131,13 +122,6 @@ public class Control {
         return resposta;
     }
     
-    /**
-     * Move a disciplina para um periodo
-     * 
-     * @param id da disciplina
-     * @param periodo para onde a disciplina sera movida
-     * @return string com a resposta da requisicao
-     */
     public static String moverDisciplina(int id, int periodo) {
     	Disciplina disciplina;
     	String resposta = "";
@@ -158,12 +142,6 @@ public class Control {
     	return montarResposta("irregulares", resposta);
     }
 
-    /**
-     * Altera o periodo que o aluno esta cursando
-     * 
-     * @param periodo que o aluno esta cursando
-     * @returnstring com a resposta da requisicao
-     */
 	public static String alterarPeriodoCursando(int periodo) {
 		grade.setPeriodoCursando(periodo);
 		return montarResposta("periodoCursando", "" + periodo);
@@ -192,33 +170,42 @@ public class Control {
     private static String montarResposta(String tipo, String parametros) {
     	return tipo + ":" + parametros;
     }
-    
-    /**
-     * Atribui um usuario a grade
-     * 
-     * @param usuario atribuido
-     */
+    private static String montarResposta(String tipo) {
+    	return tipo;
+    }
+   
     public static void setUsuario(Usuario usuario) {
     	Control.usuario = usuario;
-    	Control.grade = Control.usuario.getGrade();
+    	if (usuario != null) {
+    		Control.grade = Control.usuario.getGrade();
+    	}
     }
     
-    /**
-     * Retorna o usuario da grade
-     * 
-     * @return usuario da grade
-     */
     public static Usuario getUsuario() {
     	return usuario;
     }
     
-    /**
-     * Retorna o periodo que o aluno esta cursando
-     * 
-     * @return periodo sendo cursado
-     */
     public static int getPeriodoCursando() {
     	return grade.getPeriodoCursando();
     }
 
+    public static String logar(String usuario, String senha) {
+    	try {
+    		setUsuario(null);
+    		setUsuario(Usuario.logar(usuario, senha));
+    	} catch (InvalidOperationException e) {
+    		return montarResposta("erro", e.getMessage());
+    	}
+    	return montarResposta("sucesso");
+    }
+    
+    public static String registrar(String nome, String usuario, String senha) {
+    	try {
+    		setUsuario(null);
+    		setUsuario(Usuario.registrar(nome, usuario, senha));
+    	} catch (InvalidOperationException e) {
+    		return montarResposta("erro", e.getMessage());
+    	}
+    	return montarResposta("sucesso");
+    }
 }

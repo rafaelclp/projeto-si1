@@ -15,5 +15,11 @@ POST	/moverDisciplina/:id/:periodo					controllers.Application.moverDisciplina(i
 POST	/alterarPeriodoCursando/:periodo				controllers.Application.alterarPeriodoCursando(periodo: Long)
 GET		/resetar										controllers.Application.resetar()
 
+# Login
+
+GET		/deslogar										controllers.Application.deslogar()
+POST	/logar											controllers.Application.logar()
+POST	/registrar										controllers.Application.registrar()
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               					controllers.Assets.at(path="/public", file)

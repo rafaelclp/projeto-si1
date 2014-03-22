@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
@@ -14,6 +15,7 @@ import play.db.ebean.Model;
  * Classe que representa a grade do aluno
  *
  */
+@Entity
 public class Grade extends Model {
 	private static final long serialVersionUID = 1543790286461L;
 
