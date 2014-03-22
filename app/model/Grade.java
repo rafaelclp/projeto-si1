@@ -8,6 +8,12 @@ import javax.persistence.Transient;
 
 import play.db.ebean.Model;
 
+
+/**
+ * 
+ * Classe que representa a grade do aluno
+ *
+ */
 public class Grade extends Model {
 	private static final long serialVersionUID = 1543790286461L;
 
@@ -53,8 +59,8 @@ public class Grade extends Model {
 	 * 
 	 * @param id
 	 *            da disciplina a ser retornada
-	 * @return Disciplina cujo ID é o passado como argumento
-	 * @throws InvalidOperationException 
+	 * @return Disciplina cujo ID e o passado como argumento
+	 * @throws InvalidOperationException se a disciplina nao existe
 	 */
 	// INFORMATION EXPERT: Grade contem todas as disciplinas
 	public Disciplina getDisciplinaPorID(int id) throws InvalidOperationException {
@@ -99,7 +105,7 @@ public class Grade extends Model {
 	/**
 	 * Verifica se a disciplina esta alocada.
 	 * 
-	 * @param disciplina Disciplina
+	 * @param disciplina Disciplina que se quer saber se esta alocada
 	 * @return se a disciplina esta alocada ou nao
 	 */
 	// INFORMATION EXPERT: Grade contem todas as disciplinas e periodos
@@ -107,6 +113,11 @@ public class Grade extends Model {
 		return getPeriodoDaDisciplina(disciplina) != 0;
 	}
 
+	/**
+	 * Verifica qual e o ultimo periodo com alguma disciplina alocada
+	 * 
+	 * @return indice do ultimo periodo com alguma disciplina alocada
+	 */
 	private int obterUltimoPeriodo() {
 		int ultimoPeriodo = 1;
 		for (int i = 1; i <= MAXIMO_DE_PERIODOS; i++) {
@@ -178,6 +189,13 @@ public class Grade extends Model {
 		}
 	}
 	
+	/**
+	 * Move a disciplina para um outro periodo
+	 *
+	 * @param disciplina que se quer mover
+	 * @param indexPeriodoNovo periodo para onde se quer mover a disciplina
+	 * @throws InvalidOperationException caso nao possa mover a disciplina para o periodo especificado
+	 */
 	private void moverDisciplina(Disciplina disciplina, int indexPeriodoNovo) throws InvalidOperationException {
 		int indexPeriodoAntigo = getPeriodoDaDisciplina(disciplina);
 		Periodo periodoAntigo = getPeriodo(indexPeriodoAntigo);
@@ -200,9 +218,6 @@ public class Grade extends Model {
 	 * 
 	 * @param disciplina 
 	 * 			que se quer desalocar
-	 * @param force 
-	 * 			forcar a desalocacao, mesmo que tenha pos-requisitos (neste caso, desaloca tudo)
-	 * @return Lista com todas as disciplinas desalocadas
 	 * @throws InvalidOperationException caso nao faca sentido desalocar (ja desalocada, ou primeiro periodo)
 	 */
 	// INFORMATION EXPERT: Grade contem todos os periodos
@@ -228,7 +243,7 @@ public class Grade extends Model {
 	 * 
 	 * @param disciplina 
 	 * 			que se quer saber que pos-requisitos diretos e indiretos estao alocados
-	 * @return lista com todas os pos-requisitos diretos e indiretos da disciplina que estao alocados
+	 * @return list com todas os pos-requisitos diretos e indiretos da disciplina que estao alocados
 	 */
 	// INFORMATION EXPERT: Grade contem todas as disciplinas
 	public List<Disciplina> posRequisitosAlocados(Disciplina disciplina) {
@@ -254,7 +269,7 @@ public class Grade extends Model {
 	 * 
 	 * @param disciplina 
 	 * 			que se quer saber que pre-requisitos diretos nao estao sendo respeitados
-	 * @return lista com todos os pre-requisitos diretos que nao estao sendo respeitados
+	 * @return list com todos os pre-requisitos diretos que nao estao sendo respeitados
 	 */
 	// INFORMATION EXPERT: Grade contem todas as disciplinas e periodos
 	public List<Disciplina> preRequisitosFaltando(Disciplina disciplina, int periodo) {
@@ -268,8 +283,8 @@ public class Grade extends Model {
 	}
 
 	/**
-	 * Converte a lista de disciplinas da grade para uma string
-	 * @return String no formato JSON
+	 * Converte a informacao da grade em uma string
+	 * @return String com a descricao do que tem na grade
 	 */
 	// INFORMATION EXPERT: Grade contem todas as disciplinas e periodos
 	public String toString() {
@@ -290,7 +305,6 @@ public class Grade extends Model {
 	
 	/**
 	 * Reseta a grade
-	 * @throws InvalidOperationException 
 	 */
 	// INFORMATION EXPERT: Grade contem todos os periodos
 	public void resetar() {
@@ -298,12 +312,18 @@ public class Grade extends Model {
 		setar();
 	}
 	
+	/**
+	 * Limpa a grade
+	 */
 	private void limpar() {
 		for (Periodo periodo : getPeriodos()) {
 			periodo.resetar();
 		}
 	}
 	
+	/**
+	 * Aloca as disciplinas em seus periodos previstos, as optativas vao para o ultimo periodo com alguma disciplina
+	 */
 	private void setar() {
 		for (Disciplina disciplina : disciplinas) {
 			if (disciplina.getPeriodoPrevisto() == 0) {
@@ -359,26 +379,56 @@ public class Grade extends Model {
 		return disciplinasIrregulares;
 	}
 
+	/**
+	 * Retorna o id unico da grade
+	 * 
+	 * @return id da grade
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * Atribui um id ao periodo
+	 *
+	 * @param id atribuido
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * Retorna o periodo que esta sendo cursado
+	 * 
+	 * @return inteiro correspondente ao periodo que o usuario esta cursando
+	 */
 	public int getPeriodoCursando() {
 		return periodoCursando;
 	}
 
+	/**
+	 * Atribui um valor ao periodo cursando
+	 * 
+	 * @param periodoCursando valor a ser atribuido
+	 */
 	public void setPeriodoCursando(int periodoCursando) {
 		this.periodoCursando = periodoCursando;
 	}
 
+	/**
+	 * Retorna lista com os periodos
+	 * 
+	 * @return lista com os periodos
+	 */
 	public List<Periodo> getPeriodos() {
 		return periodos;
 	}
 
+	/**
+	 * Atribui uma lista de periodos a grade
+	 * 
+	 * @param periodos lista a ser atribuida a grade
+	 */
 	public void setPeriodos(List<Periodo> periodos) {
 		this.periodos = periodos;
 	}

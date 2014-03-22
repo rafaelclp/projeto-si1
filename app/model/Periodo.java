@@ -55,7 +55,7 @@ public class Periodo extends Model {
 	/**
 	 * Retorna todas as disciplinas do periodo
 	 * 
-	 * @return Lista com todas as disciplinas do periodo
+	 * @return List com todas as disciplinas do periodo
 	 */
 	public List<Disciplina> getDisciplinas() {
 		return disciplinas;
@@ -66,8 +66,10 @@ public class Periodo extends Model {
 	 * 
 	 * @param disciplina
 	 * 			a ser inserida
+	 * @param ignorarCreditos
+	 * 			se deve ser considerado o limite de credito para esta alocacao
 	 * 
-	 * @throws InvalidOperationException
+	 * @throws InvalidOperationException se não puder alocar
 	 */
 	public void alocarDisciplina(Disciplina disciplina, boolean ignorarCreditos) throws InvalidOperationException {
 		if (!podeAlocar(disciplina, ignorarCreditos)) {
@@ -81,8 +83,10 @@ public class Periodo extends Model {
 	 * 
 	 * @param disciplina
 	 *            a ser removida
-	 *            
-	 * @throws InvalidOperationException
+	 * @param ignorarCreditos
+	 * 			se deve ser considerado o limite de credito para esta desalocacao
+	 * 
+	 * @throws InvalidOperationException se não puder desalocar
 	 */
 	public void desalocarDisciplina(Disciplina disciplina, boolean ignorarCreditos) throws InvalidOperationException {
 		if (!podeDesalocar(disciplina, ignorarCreditos)) {
@@ -98,7 +102,7 @@ public class Periodo extends Model {
 	 * 
 	 * @param disciplina
 	 *            a qual presenca sera testada no periodo
-	 * @return true caso a lista possua disciplina especificada
+	 * @return se a lista possui a disciplina especificada
 	 */
 	public boolean contains(Disciplina disciplina) {
 		return this.disciplinas.contains(disciplina);
@@ -123,6 +127,9 @@ public class Periodo extends Model {
 	 * Verifica se a disciplina pode ser alocada neste periodo
 	 * @param disciplina 
 	 * 			a ser alocada
+	 * @param ignorarCreditos
+	 * 			se deve ser considerado o limite de credito para esta alocacao
+	 * 
 	 * @return boolean informado se pode ou nao alocar a disciplina
 	 */
 	public boolean podeAlocar(Disciplina disciplina, boolean ignorarCreditos) {
@@ -135,7 +142,10 @@ public class Periodo extends Model {
 	/**
 	 * Verifica se a disciplina pode ser desalocada deste periodo
 	 * @param disciplina 
-	 * 			a ser alocada
+	 * 			a ser desalocada
+	 * @param ignorarCreditos
+	 * 			se deve ser considerado o limite de credito para esta desalocacao
+	 * 
 	 * @return boolean informado se pode ou nao desalocar a disciplina
 	 */
 	public boolean podeDesalocar(Disciplina disciplina, boolean ignorarCreditos) {

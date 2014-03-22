@@ -37,7 +37,7 @@ public class Disciplina extends Model {
 	 * @param nome da disciplina a ser criada
 	 * @param creditos que a disciplina possui
 	 * @param dificuldade da disciplina
-	 * @param periodo previsto para disciplina ser cursada
+	 * @param periodoPrevisto para disciplina ser cursada
 	 * @param id numero unico para cada disciplina
 	 */
 	public Disciplina(String nome, int creditos, int dificuldade, int periodoPrevisto, int id) {
@@ -150,7 +150,7 @@ public class Disciplina extends Model {
 	 * Retorna Set com todas as disciplinas  que sao pre-requisitos
 	 * para a disciplina
 	 * 
-	 * @return Set com disciplinas
+	 * @return List com disciplinas
 	 */
 	public List<Disciplina> getPreRequisitos() {
 		return preRequisitos;
@@ -171,7 +171,7 @@ public class Disciplina extends Model {
 	 * Retorna Set com todas as disciplinas  que sao pos-requisitos
 	 * para a disciplina
 	 * 
-	 * @return Set com disciplinas
+	 * @return List com disciplinas
 	 */
 	public List<Disciplina> getPosRequisitos() {
 		return posRequisitos;
