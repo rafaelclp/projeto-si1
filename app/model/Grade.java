@@ -154,7 +154,7 @@ public class Grade extends Model {
 		}
 		
 		else {
-			if (preRequisitosFaltando(disciplina, periodo).size() > 0 && !estaAlocado(disciplina)) {
+			if (preRequisitosFaltando(disciplina, periodo).size() > 0) {
 				throw new InvalidOperationException("Essa disciplina tem pre-requisitos faltando.");
 			}
 			
@@ -169,13 +169,13 @@ public class Grade extends Model {
 		}
 	}
 	
-	private void moverDisciplina(Disciplina disciplina, int indexPeriodoNovo) {
+	private void moverDisciplina(Disciplina disciplina, int indexPeriodoNovo) throws InvalidOperationException {
 		int indexPeriodoAntigo = getPeriodoDaDisciplina(disciplina);
 		Periodo periodoAntigo = getPeriodo(indexPeriodoAntigo);
+		int ultimoPeriodo = obterUltimoPeriodo();
+		Periodo periodoNovo = getPeriodo(indexPeriodoNovo);
+		periodoNovo.alocarDisciplina(disciplina, ultimoPeriodo<=indexPeriodoNovo);
 		try {
-			int ultimoPeriodo = obterUltimoPeriodo();
-			Periodo periodoNovo = getPeriodo(indexPeriodoNovo);
-			periodoNovo.alocarDisciplina(disciplina, ultimoPeriodo<=indexPeriodoNovo);
 			periodoAntigo.desalocarDisciplina(disciplina);
 		} catch (InvalidOperationException e) {
 			// nunca entra aqui...
