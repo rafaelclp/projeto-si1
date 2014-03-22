@@ -79,5 +79,17 @@ var GeradorHTML = {
 		menu += '</ul>';
 		menu += '</li>';
 		return menu;
+	},
+
+	/**
+	 * Gera uma lista de entradas/elementos, um em cada linha, iniciados com um glyphicon-asterisk.
+	 * @param entradas Valores a serem listados.
+	 * @return O HTML da lista gerada.
+	**/
+	gerarLista: function(entradas) {
+		var lista = "";
+		for (int i = 0; i < entradas.length; i++)
+			lista += '<span class=\"glyphicon glyphicon-asterisk\" style=\"font-size:10px\"></span> ' + entradas[i] + '<br />';
+		return lista;
 	}
 };
