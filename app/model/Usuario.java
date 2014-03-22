@@ -47,7 +47,7 @@ public class Usuario extends Model {
 		setNome(nome);
 		setUsuario(usuario);
 		setSenha(senha);
-		grade = new Grade();
+		setGrade(new Grade());
 	}
 
 	private String gerarSalt() {
@@ -113,6 +113,14 @@ public class Usuario extends Model {
 	public void setSenha(String senha) {
 		setSalt(gerarSalt());
 		setSenhaHasheada(hashearSenha(senha, salt));
+	}
+
+	public Grade getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Grade grade) {
+		this.grade = grade;
 	}
 	
 	public static boolean existeUsuario(String usuario) {
