@@ -5,12 +5,12 @@ import java.util.List;
 import model.Disciplina;
 import model.Grade;
 import model.InvalidOperationException;
+import model.Usuario;
 
 public class Control {
-
-	// CREATOR: O Control é o responsável pela grade
-	// Grade de disciplinas/periodos
-    static Grade grade = new Grade();
+    
+    static Usuario usuario = new Usuario("qwerty123", "qwerty123", "qwerty123");
+    static Grade grade = usuario.getGrade();
 
     /**
      * Responsavel pela message do index
@@ -34,32 +34,26 @@ public class Control {
      */
     // CONTROLLER: Funcionalidade pro usuario
     public static String alocarDisciplina(int id, int periodo) {
+    	String resposta;
         Disciplina disciplina = grade.getDisciplinaPorID(id);
-        String resposta;
-        
-        try {
-        	if (disciplina == null) {
-        		// Resposta => erro:<mensagem de erro>
-        		resposta = montarResposta("erro", "Você não pode alocar disciplinas que não existem.");
-        	} else if (grade.associarDisciplinaAoPeriodo(disciplina, periodo)) {
-        		// Resposta => alocar:<id>,<periodo>
-        		resposta = montarResposta("alocar", id +"," + periodo);
-        	} else {
-        		// Resposta => erro:<mensagem de erro>
-        		List<Disciplina> preRequisitosFaltando = grade.preRequisitosFaltando(disciplina, periodo);
-        		resposta = "Pré-requisitos não cumpridos:<br />";
-        	    for (Disciplina i : preRequisitosFaltando) {
-        	    	resposta += "<span class=\"glyphicon glyphicon-asterisk\" style=\"font-size:10px\"></span> "
-        	                + i.getNome() + "<br />";
-        	    }
-            	resposta = montarResposta("erro", resposta);
-        	}
-        } catch (InvalidOperationException e) {
-        	// Resposta => erro:<mensagem de erro>
-        	resposta = montarResposta("erro", e.getMessage());
-        }
-
+       	if (disciplina == null) {
+       		// Resposta => erro:<mensagem de erro>
+       		resposta = montarResposta("erro", "Você não pode alocar disciplinas que não existem.");
+       	} else {
+            resposta = "" + disciplina.getId();
+       		// Resposta => erro:<mensagem de erro>
+       		List<Disciplina> preRequisitosFaltando = grade.preRequisitosFaltando(disciplina, periodo);
+       	    for (Disciplina i : preRequisitosFaltando) {
+       	    	resposta += ", " + i.getId();
+       	    }
+           	resposta = montarResposta("erro", resposta);
+       	}
         return resposta;
+    }
+    
+    public static void setUsuario (Usuario usuario) {
+    	Control.usuario = usuario;
+    	Control.grade = Control.usuario.getGrade();
     }
 
     /**
