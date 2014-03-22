@@ -19,7 +19,10 @@ public class Control {
      */
     // CONTROLLER: Funcionalidade pro usuario
     public static String index() {
-        return grade.toString();
+    	if (grade == null) {
+    		return "[]";
+    	}
+    	return grade.toString();
     }
     
     /**
