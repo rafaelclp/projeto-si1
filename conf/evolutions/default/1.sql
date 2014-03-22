@@ -44,8 +44,8 @@ create table disciplinas_preRequisitos (
 
 create table disciplinas_posRequisitos (
   disciplina_id                  bigint not null,
-  prerequisito_id                bigint not null,
-  constraint pk_disciplinas_posRequisitos primary key (disciplina_id, prerequisito_id))
+  posrequisito_id                bigint not null,
+  constraint pk_disciplinas_posRequisitos primary key (disciplina_id, posrequisito_id))
 ;
 
 create table periodo_disciplina (
@@ -72,7 +72,7 @@ alter table disciplinas_preRequisitos add constraint fk_disciplinas_preRequisito
 
 alter table disciplinas_posRequisitos add constraint fk_disciplinas_posRequisitos__01 foreign key (disciplina_id) references disciplina (id) on delete restrict on update restrict;
 
-alter table disciplinas_posRequisitos add constraint fk_disciplinas_posRequisitos__02 foreign key (prerequisito_id) references disciplina (id) on delete restrict on update restrict;
+alter table disciplinas_posRequisitos add constraint fk_disciplinas_posRequisitos__02 foreign key (posrequisito_id) references disciplina (id) on delete restrict on update restrict;
 
 alter table periodo_disciplina add constraint fk_periodo_disciplina_periodo_01 foreign key (periodo_id) references periodo (id) on delete restrict on update restrict;
 
