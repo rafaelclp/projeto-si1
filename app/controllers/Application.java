@@ -1,12 +1,13 @@
 package controllers;
 
+import model.Usuario;
 import play.mvc.Controller;
 import play.mvc.Result;
 
 public class Application extends Controller {
 	
     public static Result index() {
-        return ok(views.html.index.render(Control.index()));
+    	return ok(views.html.indexLogado.render(Control.index(), Control.getPeriodoCursando(), Control.getUsuario()));
     }
     
     public static Result obterPreRequisitosNaoAlocados(Long id, Long periodo) {
@@ -29,7 +30,7 @@ public class Application extends Controller {
     	return ok(views.html.response.render(Control.moverDisciplina(id.intValue(), periodo.intValue())));
     }
     
-    public static Result setarPeriodoCursando(Long periodo) {
+    public static Result alterarPeriodoCursando(Long periodo) {
     	return ok(views.html.response.render(Control.alterarPeriodoCursando(periodo.intValue())));
     }
 	
