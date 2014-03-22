@@ -53,9 +53,10 @@ public class Grade extends Model {
 	 * @param id
 	 *            da disciplina a ser retornada
 	 * @return Disciplina cujo ID é o passado como argumento
+	 * @throws InvalidOperationException 
 	 */
 	// INFORMATION EXPERT: Grade contem todas as disciplinas
-	public Disciplina getDisciplinaPorID(int id) {
+	public Disciplina getDisciplinaPorID(int id) throws InvalidOperationException {
 		Disciplina retorno = null;
 
 		for (Disciplina i : disciplinas) {
@@ -64,6 +65,11 @@ public class Grade extends Model {
 				break;
 			}
 		}
+		
+		if (retorno == null) {
+			throw new InvalidOperationException("Você não pode alocar disciplinas que não existem.");
+		}
+		
 		return retorno;
 	}
 	
@@ -85,7 +91,7 @@ public class Grade extends Model {
 	 * @return Lista das disciplinas presentes na grade do curso
 	 */
 	// INFORMATION EXPERT: Grade contem uma lista com todas as disciplinas
-	public List<Disciplina> getTodasDisciplinas() {
+	public List<Disciplina> getDisciplinas() {
 		return disciplinas;
 	}
 	
@@ -142,7 +148,11 @@ public class Grade extends Model {
 		if (periodo < 1 || periodo > 12) {
 			throw new InvalidOperationException("Não podem ser alocadas disciplinas para períodos que não existem.");
 		}
-
+		
+		if (preRequisitosFaltando(disciplina, periodo).size() > 0 && !estaAlocado(disciplina)) {
+			throw new InvalidOperationException("Essa disciplina tem pre-requisitos faltando.");
+		}
+		
 		Periodo p = getPeriodo(periodo);
 		int ultimoPeriodo = obterUltimoPeriodo();
 		boolean ignorarCreditos = false;
@@ -151,13 +161,7 @@ public class Grade extends Model {
             ignorarCreditos = true;
 		}
 		
-		try {
-			p.alocarDisciplina(disciplina, ignorarCreditos);
-		}
-		catch (InvalidOperationException e) {
-			// nunca entra aqui...
-			e.printStackTrace();
-		}
+		p.alocarDisciplina(disciplina, ignorarCreditos);
 	}
 	
 	/**
@@ -171,26 +175,20 @@ public class Grade extends Model {
 	 * @throws InvalidOperationException caso nao faca sentido desalocar (ja desalocada, ou primeiro periodo)
 	 */
 	// INFORMATION EXPERT: Grade contem todos os periodos
-	public List<Disciplina> desalocarDisciplina(Disciplina disciplina, boolean force) throws InvalidOperationException {
+	public void desalocarDisciplina(Disciplina disciplina) throws InvalidOperationException {
 		int periodo = getPeriodoDaDisciplina(disciplina);
 		
         if (periodo == 0) {
             throw new InvalidOperationException("Esta disciplina já está desalocada.");
         }
-
+        
         List<Disciplina> posRequisitosAlocados = posRequisitosAlocados(disciplina);
-        posRequisitosAlocados.add(disciplina);
 
-        if (force || posRequisitosAlocados.size() == 1) {
-        	for (Disciplina i : posRequisitosAlocados) {
-                int periodoIndex = getPeriodoDaDisciplina(i);
-                Periodo p = getPeriodo(periodoIndex);
-                p.desalocarDisciplina(i);
-            }
-        } else {
-        	posRequisitosAlocados = new ArrayList<Disciplina>();
+       	for (Disciplina i : posRequisitosAlocados) {
+               int periodoIndex = getPeriodoDaDisciplina(i);
+               Periodo p = getPeriodo(periodoIndex);
+               p.desalocarDisciplina(i);
         }
-        return posRequisitosAlocados;
 	}
 	
 	/**
@@ -264,16 +262,29 @@ public class Grade extends Model {
 	 */
 	// INFORMATION EXPERT: Grade contem todos os periodos
 	public void resetar() {
+		limpar();
+		setar();
+	}
+	
+	private void limpar() {
 		for (Periodo periodo : getPeriodos()) {
 			periodo.resetar();
 		}
+	}
+	
+	private void setar() {
 		for (Disciplina disciplina : disciplinas) {
-			if (disciplina.getPeriodoPrevisto() == 1) {
-				Periodo primeiroPeriodo = getPeriodo(1);
+			if (disciplina.getPeriodoPrevisto() == 0) {
 				try {
-					primeiroPeriodo.alocarDisciplina(disciplina, true);
+					associarDisciplinaAoPeriodo(disciplina, obterUltimoPeriodo());
 				} catch (InvalidOperationException e) {
-					// nunca entra aqui...
+					e.printStackTrace();
+				}
+			}
+			else {
+				try {
+					associarDisciplinaAoPeriodo(disciplina, disciplina.getPeriodoPrevisto());
+				} catch (InvalidOperationException e) {
 					e.printStackTrace();
 				}
 			}
@@ -287,7 +298,7 @@ public class Grade extends Model {
 	 * 
 	 * @return Lista das disciplinas irregulares.
 	 */
-	private List<Disciplina> obterDisciplinasIrregulares() {
+	public List<Disciplina> obterDisciplinasIrregulares() {
 		List<Disciplina> disciplinasIrregulares = new ArrayList<Disciplina>();
 		
 		for (int periodo = 1; periodo <= MAXIMO_DE_PERIODOS; periodo++) {
