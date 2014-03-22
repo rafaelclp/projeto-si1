@@ -3,14 +3,19 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+
+import play.db.ebean.Model;
 
 /**
  * Classe que representa um periodo de um aluno
  * 
  */
-public class Periodo {
+@Entity
+public class Periodo extends Model {
+	private static final long serialVersionUID = 18217409829147L;
 
 	@Id
 	private int id;
