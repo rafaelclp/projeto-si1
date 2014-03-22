@@ -9,7 +9,6 @@ import javax.persistence.Transient;
 import play.db.ebean.Model;
 
 public class Grade extends Model {
-
 	private static final long serialVersionUID = 1543790286461L;
 
 	private static final int MAXIMO_DE_PERIODOS = 12;
