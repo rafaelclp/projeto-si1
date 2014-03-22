@@ -173,9 +173,10 @@ public class Grade extends Model {
 		int indexPeriodoAntigo = getPeriodoDaDisciplina(disciplina);
 		Periodo periodoAntigo = getPeriodo(indexPeriodoAntigo);
 		try {
-			periodoAntigo.desalocarDisciplina(disciplina);
+			int ultimoPeriodo = obterUltimoPeriodo();
 			Periodo periodoNovo = getPeriodo(indexPeriodoNovo);
-			periodoNovo.alocarDisciplina(disciplina, false);
+			periodoNovo.alocarDisciplina(disciplina, ultimoPeriodo<=indexPeriodoNovo);
+			periodoAntigo.desalocarDisciplina(disciplina);
 		} catch (InvalidOperationException e) {
 			// nunca entra aqui...
 			e.printStackTrace();

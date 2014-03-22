@@ -32,7 +32,7 @@ public class Control {
 		}
     	List<Disciplina> preRequisitosNaoAlocados = grade.preRequisitosFaltando(disciplina, periodo);
     	for (Disciplina d : preRequisitosNaoAlocados) {
-    		resposta += ", " + d.getId();
+    		resposta += "," + d.getId();
     	}
     	return montarResposta("ids", resposta);
     }
@@ -79,7 +79,7 @@ public class Control {
 		}
     	List<Disciplina> posRequisitosAlocados = grade.posRequisitosAlocados(disciplina);
     	for (Disciplina d : posRequisitosAlocados) {
-    		resposta += ", " + d.getId();
+    		resposta += "," + d.getId();
     	}
     	return montarResposta("ids", resposta);
     }
@@ -111,7 +111,7 @@ public class Control {
         	
         	// Resposta => desalocar:<id1>,<id2>,<...>
 	       	for (Disciplina d : posRequisitosAlocados) {
-	       		resposta += ", " + d.getId();
+	       		resposta += "," + d.getId();
 	       	}
 	       	resposta = montarResposta("desalocar", resposta);
         } catch (InvalidOperationException e) {
@@ -134,7 +134,7 @@ public class Control {
     	List<Disciplina> irregulares = grade.obterDisciplinasIrregulares();
     	for (int i = 0; i < irregulares.size(); i++) {
     		if (i > 0) {
-    			resposta += ", ";
+    			resposta += ",";
     		}
     		Disciplina d = irregulares.get(i);
     		resposta += d.getId();
