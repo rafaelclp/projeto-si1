@@ -63,7 +63,7 @@ var ControladorHTML = {
 			var altura_por_disciplina = 32;
 			var altura_base = 20 + 32;
 
-			var marcarCursando = '<div align="right" style="float: right">(<a href="#!" onclick="Controlador.alterarPeriodoCursando(' + i + ')" class="marcarCursar">Cursar</a>)</div>';
+			var marcarCursando = '<div align="right" style="float: right">(<a href="#!" onclick="Controlador.alterarPeriodoCursando(' + (i+1) + ')" class="marcarCursar">Cursar</a>)</div>';
 			var classe = "panel-primary";
 			if (i+1 == Grade.periodoCursando) {
 				marcarCursando = "";

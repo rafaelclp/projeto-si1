@@ -256,7 +256,7 @@ var Controlador = {
 			break;
 
 		case "periodoCursando":
-			setarPeriodoCursando(parseInt(parametros.trim()));
+			Controlador.setarPeriodoCursando(parseInt(parametros.trim()));
 			ControladorHTML.desenharPaineis();
 			break;
 
