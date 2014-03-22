@@ -7,11 +7,12 @@
 		- dificuldade: dificuldade prevista para a disciplina
 		- periodo_previsto: período em que "deveria" ser cursada ou 0 (optativa)
 		- periodo: período que o usuário escolheu para cursá-la ou 0 (não alocada)
+		- irregular: informa se está irregular/vermelha(1) ou não(0)
 */
 
 /**
  * Cria uma disciplina através de uma lista/array
- * @param lista Lista no formato [id, nome, creditos, dificuldade, periodo_previsto, periodo].
+ * @param lista Lista no formato [id, nome, creditos, dificuldade, periodo_previsto, periodo, irregular?].
 **/
 function Disciplina(lista) {
 	this.id = lista[0];
@@ -20,6 +21,7 @@ function Disciplina(lista) {
 	this.dificuldade = lista[3];
 	this.periodo_previsto = lista[4];
 	this.periodo = lista[5];
+	this.irregular = lista[6];
 }
 
 /**
