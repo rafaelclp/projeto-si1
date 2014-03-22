@@ -30,14 +30,32 @@ var Grade = {
 	},
 
 	/**
+	 * Altera a regularidade das disciplinas da grade.
+	 * @param disciplinas_irregulares Lista de ids das disciplinas irregulares.
+	**/
+	alterarRegularidade: function(disciplinas_irregulares) {
+		var esta_irregular = {};
+		for (var i = 0; i < disciplinas_irregulares; i++)
+			esta_irregular[disciplinas_irregulares[i]] = true;
+
+		for (var i = 0; i < this.disciplinas.length; i++) {
+			var id = this.disciplinas[i].id;
+			this.disciplinas[i].irregular = esta_irregular[id] ? 1 : 0;
+		}
+	},
+
+	/**
 	 * Aloca uma disciplina pelo id a um período.
 	 * @param id ID da disciplina a ser alocada.
 	 * @param periodo Periodo em que a disciplina deve ser alocada.
+	 * @param esta_irregular Informa se a disciplina alocada está irregular.
 	**/
-	alocarDisciplina: function(id, periodo) {
+	alocarDisciplina: function(id, periodo, esta_irregular) {
 		var disciplina = this.procurarDisciplina(id);
-		if (disciplina != null)
+		if (disciplina != null) {
 			disciplina.alocar(periodo);
+			disciplina.irregular = esta_irregular ? 1 : 0;
+		}
 	},
 
 	/**
