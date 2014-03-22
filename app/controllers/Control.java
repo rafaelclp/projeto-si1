@@ -119,8 +119,8 @@ public class Control {
 		}
 
         try {
-        	grade.desalocarDisciplina(disciplina);
         	List<Disciplina> posRequisitosAlocados = grade.posRequisitosAlocados(disciplina);
+        	grade.desalocarDisciplina(disciplina);
         	
         	// Resposta => desalocar:<id1>,<id2>,<...>
 	       	for (Disciplina d : posRequisitosAlocados) {

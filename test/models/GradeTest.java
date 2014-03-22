@@ -59,7 +59,7 @@ public class GradeTest {
         	fail("Não deveria lançar exceção.");
         }
         
-        List<Disciplina> DisciplinasNaGrade = gradeTeste.getTodasDisciplinas();
+        List<Disciplina> DisciplinasNaGrade = gradeTeste.getDisciplinas();
         List<Disciplina> DisciplinasNoPrimPeriodo = periodoTeste.getDisciplinas();
 
         assertEquals(DisciplinasNaGrade.size(), 64);
@@ -81,7 +81,11 @@ public class GradeTest {
     
     @Test
     public void associaDisciplinaAoPeriodo() {
-    	calculoII = gradeTeste.getDisciplinaPorID(13);
+    	try {
+    		calculoII = gradeTeste.getDisciplinaPorID(13);
+    	} catch (InvalidOperationException e) {
+    		fail("Não deveria falhar");
+    	}
     	try {
     		gradeTeste.associarDisciplinaAoPeriodo(calculoII, 2);
     	} catch (InvalidOperationException e) {
@@ -129,23 +133,21 @@ public class GradeTest {
     
     @Test
     public void desalocaDisciplina() {
-    	List<Disciplina> disciplinasDesalocadas;
-    	Disciplina disciplina;
+    	try {
+			calculoII = gradeTeste.getDisciplinaPorID(13);
+		} catch (InvalidOperationException e1) {
+			fail("Deveria ser possível obter pelo id.");
+		}
 
-    	calculoII = gradeTeste.getDisciplinaPorID(13);
     	try {
     		gradeTeste.associarDisciplinaAoPeriodo(calculoII, 2);
-
-    		disciplinasDesalocadas = gradeTeste.desalocarDisciplina(calculoII, false);
-    		assertEquals(1, disciplinasDesalocadas.size());
-    		disciplina = disciplinasDesalocadas.get(0);
-    		assertEquals(calculoII.getId(), disciplina.getId());
+    		gradeTeste.desalocarDisciplina(calculoII);
     	} catch (InvalidOperationException e) {
     		fail("Deveria conseguir desalocar.");
     	}
     	
     	try {
-    		gradeTeste.desalocarDisciplina(calculoII, false);
+    		gradeTeste.desalocarDisciplina(calculoII);
     		fail("Não deveria ser válido desalocar uma disciplina que já está desalocada.");
     	} catch (InvalidOperationException e) {
     		assertEquals(e.getMessage(), "Esta disciplina já está desalocada.");
@@ -156,15 +158,7 @@ public class GradeTest {
     		gradeTeste.associarDisciplinaAoPeriodo(calculoII, 2);
     		probabilidade = gradeTeste.getDisciplinaPorID(17);
     		gradeTeste.associarDisciplinaAoPeriodo(probabilidade, 3);
-    		disciplinasDesalocadas = gradeTeste.desalocarDisciplina(calculoII, false);
-    		assertEquals(0, disciplinasDesalocadas.size());
-    	} catch (InvalidOperationException e) {
-    		fail("Deveria ser valido tentar desalocar uma disciplina alocada.");
-    	}
-    	
-    	try {
-    		disciplinasDesalocadas = gradeTeste.desalocarDisciplina(calculoII, true);
-    		assertEquals(2, disciplinasDesalocadas.size());
+    		gradeTeste.desalocarDisciplina(calculoII);
     	} catch (InvalidOperationException e) {
     		fail("Deveria ser valido tentar desalocar uma disciplina alocada.");
     	}
@@ -173,10 +167,14 @@ public class GradeTest {
     @Test
     public void reseta() {
     	// Aloca o necessario para o teste
-    	calculoII = gradeTeste.getDisciplinaPorID(13);
+    	try {
+			calculoII = gradeTeste.getDisciplinaPorID(13);
+		} catch (InvalidOperationException e1) {
+		}
+
     	try {
     		gradeTeste.associarDisciplinaAoPeriodo(calculoII, 2);
-    		gradeTeste.desalocarDisciplina(calculoII, true);
+    		gradeTeste.desalocarDisciplina(calculoII);
     		gradeTeste.associarDisciplinaAoPeriodo(calculoII, 2);
     	} catch (InvalidOperationException e) {
     		fail("Deveria conseguir alocar/desalocar.");
@@ -185,7 +183,7 @@ public class GradeTest {
     	// Verifica se apos o reset ainda esta alocado
 		gradeTeste.resetar();
 		try {
-			gradeTeste.desalocarDisciplina(calculoII, false);
+			gradeTeste.desalocarDisciplina(calculoII);
 			fail("Cálculo II já deveria estar desalocado.");
 		} catch (InvalidOperationException e) {
 		}
