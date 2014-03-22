@@ -1,6 +1,6 @@
 package controllers;
 
-import model.Usuario;
+import models.Usuario;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -10,6 +10,8 @@ public class Application extends Controller {
     	if (!estaLogado()) {
     		return ok(views.html.index.render(Control.index()));
     	}
+    	
+    	//return ok(views.html.indexLogado.render(Control.index(), 12, new Usuario("rafaelclp", "rafael", "rafael")));
     	return ok(views.html.indexLogado.render(Control.index(), Control.getPeriodoCursando(), Control.getUsuario()));
     }
     
@@ -95,7 +97,7 @@ public class Application extends Controller {
     		String[] nome = request().body().asFormUrlEncoded().get("nome");
     		String[] usuario = request().body().asFormUrlEncoded().get("usuario");
     		String[] senha = request().body().asFormUrlEncoded().get("senha");
-    		
+
     		if (nome != null && usuario != null && senha != null) {
     			resposta = Control.registrar(nome[0], usuario[0], senha[0]);
     			if (resposta == "sucesso") {

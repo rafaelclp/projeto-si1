@@ -2,10 +2,10 @@ package controllers;
 
 import java.util.List;
 
-import model.Disciplina;
-import model.Grade;
-import model.InvalidOperationException;
-import model.Usuario;
+import models.Disciplina;
+import models.Grade;
+import models.InvalidOperationException;
+import models.Usuario;
 
 public class Control {
     
