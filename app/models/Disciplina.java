@@ -3,13 +3,11 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.Transient;
 
 import play.db.ebean.Model;
 
@@ -29,13 +27,11 @@ public class Disciplina extends Model {
 	private int dificuldade;
 	private int periodoPrevisto;
 	
-	//@Transient
 	@ManyToMany
 	@JoinTable(name="disciplinas_preRequisitos", joinColumns=@JoinColumn(name="disciplina_id", referencedColumnName="id"),
 			inverseJoinColumns=@JoinColumn(name="prerequisito_id", referencedColumnName="id"))
 	private List<Disciplina> preRequisitos;
 	
-	//@Transient
 	@ManyToMany
 	@JoinTable(name="disciplinas_posRequisitos", joinColumns=@JoinColumn(name="disciplina_id", referencedColumnName="id"),
 			inverseJoinColumns=@JoinColumn(name="prerequisito_id", referencedColumnName="id"))

@@ -9,8 +9,8 @@ import models.Usuario;
 
 public class Control {
     
-    private static Usuario usuario = new Usuario("qwerty123", "qwerty123", "qwerty123");
-    private static Grade grade = usuario.getGrade();
+    private static Usuario usuario;
+    private static Grade grade;
 
     /**
      * Responsavel pela message do index
@@ -184,7 +184,7 @@ public class Control {
      * tipo:parametros
      * 
      * @param tipo
-     *            da resposta (erro, alocar, desalocar, confirmar)
+     *            da resposta (erro, alocar, desalocar, ...)
      * @param parametros
      *            lista de parametros da resposta separados por virgula
      * @return tipo:parametros
@@ -198,7 +198,7 @@ public class Control {
      * Monta uma resposta para uma requisicao, no formato tipo
      *
      * @param tipo
-     * 			da resposta (erro, alocar, desalocar, confirmar)
+     * 			da resposta
      * @return tipo
      */
     private static String montarResposta(String tipo) {
