@@ -38,26 +38,13 @@ public class Grade extends Model {
 	 */
 	public Grade() {
 		setPeriodos(new ArrayList<Periodo>());
-		disciplinas = CarregadorDeDisciplinas.carregarDisciplinas(tipoDeGrade);
+		disciplinas = CarregadorDeDisciplinas.carregaDisciplinas(tipoDeGrade);
 		
 		for (int i = 0; i < MAXIMO_DE_PERIODOS; i++) {
 			periodos.add(new Periodo());
 		}
 		
 		resetar();
-	}
-
-	/**
-	 * preenche a lista com todas as disciplinas do curso, apartir de um arquivo
-	 * XML, que é manipulado por uma objeto do tipo LeitorArquivo
-	 * 
-	 */
-	// PURE FABRICATION: Tinha que haver um modo das disciplinas entrarem na grade,
-	//					resolvemos fazer por leitura de arquivo.
-	private void preencherDisciplinas() {
-		// cria classe para leitura de dados apartir de arquivo.
-		LeitorArquivo loader = new LeitorArquivo();
-		disciplinas = loader.carregaDisciplinas();
 	}
 
 	/**
@@ -257,13 +244,15 @@ public class Grade extends Model {
 	// INFORMATION EXPERT: Grade contem todas as disciplinas e periodos
 	public String toString() {
         String result = "[";
+        List<Disciplina> disciplinasIrregulares = obterDisciplinasIrregulares();
         for (int i = 0; i < disciplinas.size(); i++) {
             if (i > 0) {
                 result += ", ";
             }
             Disciplina disciplina = disciplinas.get(i);
             result += "[" + disciplina.toString();
-            result += ", " + getPeriodoDaDisciplina(disciplina) + "]";
+            result += ", " + getPeriodoDaDisciplina(disciplina);
+            result += ", " + (disciplinasIrregulares.contains(disciplina) ? "1" : "0") + "]";
         }
         result += "]";
         return result;
