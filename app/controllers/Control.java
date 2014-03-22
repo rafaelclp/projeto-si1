@@ -143,11 +143,7 @@ public class Control {
     }
 
 	public static String alterarPeriodoCursando(int periodo) {
-		try {
-			grade.setPeriodoCursando(periodo);
-		} catch (InvalidOperationException e) {
-			return montarResposta("erro", e.getMessage());
-		}
+		grade.setPeriodoCursando(periodo);
 		return montarResposta("periodoCursando", "" + periodo);
 	}
 

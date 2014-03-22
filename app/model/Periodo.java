@@ -153,15 +153,6 @@ public class Periodo extends Model {
 	public boolean passouDoLimiteDeCreditos() {
 		return CREDITOS_MAXIMO < totalDeCreditos();
 	}
-	
-	/**
-	 * Verifica se o periodo tem menos creditos do que o minimo permitido
-	 * 
-	 * @return boolean informando se o periodo tem menos credito que o minimo
-	 */
-	public boolean naoTemCreditosSuficiente() {
-		return CREDITOS_MINIMO > totalDeCreditos();
-	}
 
 	/**
 	 * Reseta o periodo

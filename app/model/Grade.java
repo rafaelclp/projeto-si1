@@ -371,31 +371,8 @@ public class Grade extends Model {
 		return periodoCursando;
 	}
 
-	public void setPeriodoCursando(int periodoCursando) throws InvalidOperationException {
-		List<Integer> periodosFuturosIrregulares = periodosFuturosIrregulares(periodoCursando);
-		if (periodosFuturosIrregulares.size() > 0) {
-			String resposta = "";
-			for (int i = 0; i < periodosFuturosIrregulares.size(); i++) {
-				if (i > 0) {
-					resposta += " ,";
-				}
-				resposta += periodosFuturosIrregulares.get(i);
-			}
-			throw new InvalidOperationException("Os períodos " + resposta + " não podem ficar irregulares");
-		}
+	public void setPeriodoCursando(int periodoCursando) {
 		this.periodoCursando = periodoCursando;
-	}
-
-	private List<Integer> periodosFuturosIrregulares(int periodo) {
-		List<Integer> periodosFuturosIrregulares = new ArrayList<Integer>();
-		int ultimoPeriodo = obterUltimoPeriodo();
-		for (int i = periodo; i < ultimoPeriodo; i++) {
-			Periodo p = getPeriodo(i);
-			if (p.naoTemCreditosSuficiente()) {
-				periodosFuturosIrregulares.add(i);
-			}
-		}
-		return periodosFuturosIrregulares;
 	}
 
 	public List<Periodo> getPeriodos() {
