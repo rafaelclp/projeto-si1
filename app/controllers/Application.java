@@ -11,7 +11,6 @@ public class Application extends Controller {
     		return ok(views.html.index.render(Control.index()));
     	}
     	
-    	//return ok(views.html.indexLogado.render(Control.index(), 12, new Usuario("rafaelclp", "rafael", "rafael")));
     	return ok(views.html.indexLogado.render(Control.index(), Control.getPeriodoCursando(), Control.getUsuario()));
     }
     
@@ -66,7 +65,9 @@ public class Application extends Controller {
 	}
 
     private static boolean estaLogado() {
-    	return Control.logar(session("usuario"), session("senha")) == "sucesso";
+    	String usuario = session("usuario");
+    	String senha = session("senha");
+    	return Control.logar(usuario, senha) == "sucesso";
     }
 
     public static Result deslogar() {

@@ -19,6 +19,9 @@ public class Control {
      */
     // CONTROLLER: Funcionalidade pro usuario
     public static String index() {
+    	if (grade == null) {
+    		return "[]"; // grade vazia
+    	}
         return grade.toString();
     }
     
