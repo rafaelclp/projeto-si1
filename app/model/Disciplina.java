@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import play.db.ebean.Model;
 
@@ -24,7 +25,10 @@ public class Disciplina extends Model {
 	private int dificuldade;
 	private int periodoPrevisto;
 	
+	@ManyToMany
 	private List<Disciplina> preRequisitos;
+	
+	@ManyToMany
 	private List<Disciplina> posRequisitos;
 	
 	/**
