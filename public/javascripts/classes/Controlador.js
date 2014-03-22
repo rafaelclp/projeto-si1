@@ -152,7 +152,7 @@ var Controlador = {
 				s = s.substr(k + d.length);
 				l--;
 			}
-			if (s != "") lista.push(s);
+			lista.push(s);
 			return lista;
 		};
 
@@ -184,7 +184,8 @@ var Controlador = {
 			parametros = parametros.split(",");
 			var disciplinas_irregulares = [];
 			for (var i = 0; i < parametros.length; i++)
-				disciplinas_irregulares.push(parseInt(parametros[i].trim()));
+				if (parametros[i].trim().length > 0)
+					disciplinas_irregulares.push(parseInt(parametros[i].trim()));
 			Grade.alterarRegularidade(disciplinas_irregulares);
 			ControladorHTML.desenharPaineis();
 			break;
