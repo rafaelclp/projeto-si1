@@ -17,16 +17,22 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+/**
+ * Classe que carrega lista de disciplinas de um arquivo
+ * 
+ */
 public class CarregadorDeDisciplinas {
 
 	private static Map<String, List<Disciplina>> cache = new TreeMap<String, List<Disciplina>>();
-
-    /**
-     * Carrega disciplinas e retorna lista com todas as
+	
+	/**
+	 * Carrega disciplinas e retorna lista com todas as
      * disciplinas contidas no arquivo XML
      * 
-     * @return Set das disciplinas criadas apartir do arquivo XML
-     */
+	 * @param arquivo
+	 * 			XML de onde serão lidas as disciplinas
+	 * @return Lista das disciplinas contidas no arquivo XML
+	 */
     public static List<Disciplina> carregaDisciplinas(String arquivo) {
     	if (!cache.containsKey(arquivo)) {
     		 cache.put(arquivo, carregaDisciplinasDoArquivo(arquivo));
@@ -34,6 +40,13 @@ public class CarregadorDeDisciplinas {
     	return cache.get(arquivo);
     }
 
+    /**
+     * Carrega disciplinas do arquivo a partir do tipo de grade
+     * 
+     * @param tipoDeGrade
+     * 			Tipo de grade do qual serão carregadas as disciplinas
+     * @return Lista das disciplinas contidas no arquivo XML
+     */
     public static List<Disciplina> carregaDisciplinas(TipoDeGrade tipoDeGrade) {
     	String arquivo = null;
     	if (tipoDeGrade == TipoDeGrade.FLUXOGRAMA_OFICIAL) {
@@ -42,10 +55,13 @@ public class CarregadorDeDisciplinas {
 
     	return carregaDisciplinas(arquivo);
     }
-
+    
     /**
-     * Verifica cada disciplina no arquivo e inicia o
-     * processo de criacao da mesma
+     * Preenche e retorna lista das disciplinas contidas no arquivo XML
+     * 
+     * @param arquivo
+     * 			XML do qual serão lidas as disciplinas
+     * @return Lista das disciplinas carregadas
      */
     private static List<Disciplina> carregaDisciplinasDoArquivo(String arquivo) {
     	List<Disciplina> disciplinas = new ArrayList<Disciplina>();
@@ -66,13 +82,16 @@ public class CarregadorDeDisciplinas {
     	
     	return disciplinas;
     }
-
+    
     /**
      * Cria disciplina com os dados retirados de cada Element cadeira presente
      * no arquivo XML
      * 
+     * @param disciplinas
+     * 			Lista de disciplinas ja carregadas
      * @param nodeDisciplina
-     *            node da arvore o qual possui dados de uma disciplina
+     * 			No que representa a cadeira a ser criada
+     * @return Disciplina criada a partir do no
      */
     private static Disciplina criaDisciplina(List<Disciplina> disciplinas, Node nodeDisciplina) {
         Element cadeiraXML = (Element) nodeDisciplina;
