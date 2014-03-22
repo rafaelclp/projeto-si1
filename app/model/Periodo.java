@@ -5,6 +5,10 @@ import java.util.List;
 
 import javax.persistence.Id;
 
+/**
+ * Classe que representa um periodo de um aluno
+ * 
+ */
 public class Periodo {
 
 	@Id

@@ -8,6 +8,10 @@ import javax.persistence.Id;
 
 import play.db.ebean.Model;
 
+/**
+ * Classe que representa uma disciplina do curso
+ * 
+ */
 @Entity
 public class Disciplina extends Model {
 	private static final long serialVersionUID = 4983178414872139L;
