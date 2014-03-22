@@ -155,7 +155,7 @@ public class Grade extends Model {
 			p.alocarDisciplina(disciplina, ignorarCreditos);
 		}
 		catch (InvalidOperationException e) {
-			throw e;
+			e.printStackTrace();
 		}
 	}
 	
