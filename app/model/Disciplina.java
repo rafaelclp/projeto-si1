@@ -3,9 +3,14 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 
-public class Disciplina {
+import play.db.ebean.Model;
+
+@Entity
+public class Disciplina extends Model {
+	private static final long serialVersionUID = 4983178414872139L;
 
 	@Id
 	private int id;
@@ -213,9 +218,10 @@ public class Disciplina {
 		}
 		return true;
 	}
-	
-	public static List<Disciplina> all() {
-		// TODO Rafael
-		return null;
+
+	private static Finder<Long, Disciplina> find = new Finder<Long, Disciplina>(Long.class,
+			Disciplina.class);
+	public static List<Disciplina> obterTodas() {
+		return find.all();
 	}
 }
