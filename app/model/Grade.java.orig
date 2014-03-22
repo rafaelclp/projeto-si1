@@ -56,6 +56,15 @@ public class Grade extends Model {
 	}
 
 	/**
+<<<<<<< HEAD
+=======
+	 * preenche a lista com todas as disciplinas do curso, apartir de um arquivo
+	 * XML, que é manipulado por uma objeto do tipo LeitorArquivo
+	 * 
+	 */
+	// PURE FABRICATION: Tinha que haver um modo das disciplinas entrarem na grade,
+	//					resolvemos fazer por leitura de arquivo.
+	private void preencherDisciplinas() {
 		disciplinas.add(new Disciplina("Programação I", 4, 4, 1, 1));
 		disciplinas.add(new Disciplina("Leitura e Prod. de Textos", 4, 2, 1, 2));
 		disciplinas.add(new Disciplina("Cálculo I", 4, 7, 1, 3));
@@ -120,6 +129,13 @@ public class Grade extends Model {
 		disciplinas.add(new Disciplina("TECC (Algoritmos Avançados I)", 2, 9, 0, 62));
 		disciplinas.add(new Disciplina("TECC (Redes Ad Hoc sem fio)", 4, 5, 0, 63));
 		disciplinas.add(new Disciplina("TECC (Jogos digitais)", 4, 5, 0, 64));
+		// cria classe para leitura de dados apartir de arquivo.
+		//LeitorArquivo loader = new LeitorArquivo();
+		//disciplinas = loader.carregaDisciplinas();
+	}
+
+	/**
+>>>>>>> bc79817f096d533a65dabac51897cf6eaa0a416e
 	 * Retorna Disciplina com id passado como argumento, ou null caso nao possua
 	 * disciplina com o dado id.
 	 * 
