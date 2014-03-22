@@ -38,6 +38,7 @@ public class Grade extends Model {
 	public Grade() {
 		setPeriodos(new ArrayList<Periodo>());
 		disciplinas = CarregadorDeDisciplinas.carregaDisciplinas(tipoDeGrade);
+		periodoCursando = 1;
 		
 		for (int i = 0; i < MAXIMO_DE_PERIODOS; i++) {
 			periodos.add(new Periodo());
@@ -387,7 +388,8 @@ public class Grade extends Model {
 
 	private List<Integer> periodosFuturosIrregulares(int periodo) {
 		List<Integer> periodosFuturosIrregulares = new ArrayList<Integer>();
-		for (int i = periodo; i < MAXIMO_DE_PERIODOS; i++) {
+		int ultimoPeriodo = obterUltimoPeriodo();
+		for (int i = periodo; i < ultimoPeriodo; i++) {
 			Periodo p = getPeriodo(i);
 			if (p.naoTemCreditosSuficiente()) {
 				periodosFuturosIrregulares.add(i);
