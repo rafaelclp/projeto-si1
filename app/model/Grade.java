@@ -149,19 +149,37 @@ public class Grade extends Model {
 			throw new InvalidOperationException("Não podem ser alocadas disciplinas para períodos que não existem.");
 		}
 		
-		if (preRequisitosFaltando(disciplina, periodo).size() > 0 && !estaAlocado(disciplina)) {
-			throw new InvalidOperationException("Essa disciplina tem pre-requisitos faltando.");
+		if (estaAlocado(disciplina)) {
+			moverDisciplina(disciplina, periodo);
 		}
 		
-		Periodo p = getPeriodo(periodo);
-		int ultimoPeriodo = obterUltimoPeriodo();
-		boolean ignorarCreditos = false;
-		
-		if (ultimoPeriodo <= periodo) {
-            ignorarCreditos = true;
+		else {
+			if (preRequisitosFaltando(disciplina, periodo).size() > 0 && !estaAlocado(disciplina)) {
+				throw new InvalidOperationException("Essa disciplina tem pre-requisitos faltando.");
+			}
+			
+			Periodo p = getPeriodo(periodo);
+			boolean ignorarCreditos = false;
+			
+			if (obterUltimoPeriodo() <= periodo) {
+	            ignorarCreditos = true;
+			}
+			
+			p.alocarDisciplina(disciplina, ignorarCreditos);
 		}
-		
-		p.alocarDisciplina(disciplina, ignorarCreditos);
+	}
+	
+	private void moverDisciplina(Disciplina disciplina, int indexPeriodoNovo) {
+		int indexPeriodoAntigo = getPeriodoDaDisciplina(disciplina);
+		Periodo periodoAntigo = getPeriodo(indexPeriodoAntigo);
+		try {
+			periodoAntigo.desalocarDisciplina(disciplina);
+			Periodo periodoNovo = getPeriodo(indexPeriodoNovo);
+			periodoNovo.alocarDisciplina(disciplina, false);
+		} catch (InvalidOperationException e) {
+			// nunca entra aqui...
+			e.printStackTrace();
+		}
 	}
 	
 	/**
