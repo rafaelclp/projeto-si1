@@ -87,7 +87,7 @@ public class Control {
 	        		if (i > 0) {
 	        			resposta += ",";
 	        		}
-	        		resposta += disciplina.getID();
+	        		resposta += disciplina.getId();
 	        	}
 	        	resposta = montarResposta("desalocar", resposta);
         	} else {
@@ -110,6 +110,7 @@ public class Control {
 
     /**
      * Reseta todas as alteracoes feitas pelo usuario
+     * @throws InvalidOperationException 
      */
     // CONTROLLER: Funcionalidade pro usuario
     public static void resetar() {

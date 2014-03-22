@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -15,47 +17,54 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class LeitorArquivo {
+public class CarregadorDeDisciplinas {
 
-	// Lista de disciplinas obtidas do arquivo
-    private final List<Disciplina> disciplinas;
-
-    /**
-     * Construtor
-     * 
-     */
-    public LeitorArquivo() {
-        disciplinas = new ArrayList<Disciplina>();
-    }
+	private static Map<String, List<Disciplina>> cache = new TreeMap<String, List<Disciplina>>();
 
     /**
-     * Metodo responsavel por carregar disciplinas, retorna lista com todas as
+     * Carrega disciplinas e retorna lista com todas as
      * disciplinas contidas no arquivo XML
      * 
      * @return Set das disciplinas criadas apartir do arquivo XML
      */
-    public List<Disciplina> carregaDisciplinas() {
-        this.populaDisciplinas();
-        return this.disciplinas;
+    public static List<Disciplina> carregaDisciplinas(String arquivo) {
+    	if (!cache.containsKey(arquivo)) {
+    		 cache.put(arquivo, carregaDisciplinasDoArquivo(arquivo));
+    	}
+    	return cache.get(arquivo);
+    }
+
+    public static List<Disciplina> carregaDisciplinas(TipoDeGrade tipoDeGrade) {
+    	String arquivo = null;
+    	if (tipoDeGrade == TipoDeGrade.FLUXOGRAMA_OFICIAL) {
+    		arquivo = "cadeiras.xml";
+    	}
+
+    	return carregaDisciplinas(arquivo);
     }
 
     /**
-     * Metodo responsavel por verificar cada disciplina no arquivo e iniciar o
+     * Verifica cada disciplina no arquivo e inicia o
      * processo de criacao da mesma
      */
-    private void populaDisciplinas() {
-        try {
-            Document doc = parserXML();
+    private static List<Disciplina> carregaDisciplinasDoArquivo(String arquivo) {
+    	List<Disciplina> disciplinas = new ArrayList<Disciplina>();
+
+    	try {
+            Document doc = parserXML(arquivo);
             NodeList nList = doc.getElementsByTagName("cadeira");
+            
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nodeDisciplina = nList.item(temp);
                 if (nodeDisciplina.getNodeType() == Node.ELEMENT_NODE) {
-                    criaDisciplina(nodeDisciplina);
+                    disciplinas.add(criaDisciplina(disciplinas, nodeDisciplina));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    	
+    	return disciplinas;
     }
 
     /**
@@ -65,37 +74,33 @@ public class LeitorArquivo {
      * @param nodeDisciplina
      *            node da arvore o qual possui dados de uma disciplina
      */
-    private void criaDisciplina(Node nodeDisciplina) {
-
+    private static Disciplina criaDisciplina(List<Disciplina> disciplinas, Node nodeDisciplina) {
         Element cadeiraXML = (Element) nodeDisciplina;
-        // Atributo da nova Disciplina
+        
         String nome = cadeiraXML.getAttribute("nome");
-        String id = cadeiraXML.getAttribute("id");
+        int id = Integer.parseInt(cadeiraXML.getAttribute("id"));
         int dificuldade = Integer.parseInt(cadeiraXML
                 .getElementsByTagName("dificuldade").item(0).getTextContent());
         int creditos = Integer.parseInt(cadeiraXML
                 .getElementsByTagName("creditos").item(0).getTextContent());
         int periodo = Integer.parseInt(cadeiraXML
                 .getElementsByTagName("periodo").item(0).getTextContent());
-        // Cria Disciplina com atributos
+        
         Disciplina novaDisciplina = new Disciplina(nome, creditos, dificuldade,
-                periodo, Integer.parseInt(id));
+                periodo, id);
 
-        // List com todos os IDs dos pre-requisitos de disciplina
         NodeList requisitos = cadeiraXML.getElementsByTagName("id");
-        // para cada elemento em requisitos, adiciona o mesmo como pre-requisito
-        // a disciplina
+        
         for (int i = 0; i < requisitos.getLength(); i++) {
             for (Disciplina dis : disciplinas) {
-                if (("" + dis.getId()).equals(requisitos.item(i)
-                        .getTextContent())) {
+                if (("" + dis.getId()).equals(requisitos.item(i).getTextContent())) {
                     novaDisciplina.addPreRequisito(dis);
+                    dis.addPosRequisito(novaDisciplina);
                 }
             }
         }
-        // adiciona disciplina criada a lista de disciplinas
-        disciplinas.add(novaDisciplina);
 
+        return novaDisciplina;
     }
 
     /**
@@ -108,14 +113,14 @@ public class LeitorArquivo {
      * @throws SAXException
      * @throws IOException
      */
-    private static Document parserXML() throws ParserConfigurationException,
+    private static Document parserXML(String arquivo) throws ParserConfigurationException,
             SAXException, IOException {
-        // Carrega XML
-        File arquivoXML = new File("cadeiras.xml");
-        // Cria XML parser retorna DOM trees
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        
+    	File arquivoXML = new File(arquivo);
+        
+    	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        // XML Document normalizado
+        
         Document parser = dBuilder.parse(arquivoXML);
         parser.getDocumentElement().normalize();
 

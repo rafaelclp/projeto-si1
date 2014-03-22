@@ -152,7 +152,6 @@ public class Disciplina {
 	 */
 	public void addPreRequisito(Disciplina disciplina) {
 		this.preRequisitos.add(disciplina);
-		disciplina.addPosRequisito(this);
 	}
 
 	/**
