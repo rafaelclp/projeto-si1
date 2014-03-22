@@ -51,7 +51,7 @@ public class CarregadorDeDisciplinas {
     public static List<Disciplina> carregaDisciplinas(TipoDeGrade tipoDeGrade) {
     	String arquivo = null;
     	if (tipoDeGrade == TipoDeGrade.FLUXOGRAMA_OFICIAL) {
-    		arquivo = "cadeiras.xml";
+    		arquivo = "conf/res/cadeiras.xml";
     	}
 
     	return carregaDisciplinas(arquivo);
