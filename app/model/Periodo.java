@@ -125,6 +125,15 @@ public class Periodo extends Model {
 		}
 		return true;
 	}
+	
+	/**
+	 * Verifica se o periodo tem mais creditos do que o maximo permitido
+	 * 
+	 * @return boolean informando se o periodo tem mais credito que o permitido
+	 */
+	public boolean passouDoLimiteDeCreditos() {
+		return CREDITOS_MAXIMO < totalDeCreditos();
+	}
 
 	/**
 	 * Reseta o periodo

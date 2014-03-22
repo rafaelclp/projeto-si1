@@ -160,8 +160,15 @@ public class Grade extends Model {
 			
 			Periodo p = getPeriodo(periodo);
 			boolean ignorarCreditos = false;
+			int indexUltimoPeriodo = obterUltimoPeriodo();
 			
-			if (obterUltimoPeriodo() <= periodo) {
+			if (indexUltimoPeriodo < periodo) {
+	            Periodo ultimoPeriodo = getPeriodo(indexUltimoPeriodo);
+	            if (ultimoPeriodo.passouDoLimiteDeCreditos())
+	            	throw new InvalidOperationException("O período " + indexUltimoPeriodo + " não pode ficar irregular.");
+			}
+			
+			if (indexUltimoPeriodo == periodo) {
 	            ignorarCreditos = true;
 			}
 			
