@@ -1,9 +1,16 @@
-package model;
+package models;
 
+import static play.test.Helpers.*;
 import static org.junit.Assert.*;
+
+import java.util.List;
+
+import models.Disciplina;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import play.test.FakeApplication;
 
 public class DisciplinaTest {
 
@@ -64,4 +71,27 @@ public class DisciplinaTest {
 		assertNotEquals("1, \"Fund. de Física Clássica\", 1, 1, 1", ffc.toString());
 	}
 
+	@Test
+	public void registraNoBD() {
+		FakeApplication app = fakeApplication(inMemoryDatabase());
+		start(app);
+
+		List<Disciplina> resultado = Disciplina.obterTodas();
+		assertEquals(resultado.size(), 0);
+		Disciplina d = new Disciplina("Algebra", 4, 6, 1, 7);
+		d.save();
+
+		resultado = Disciplina.obterTodas();
+		assertNotNull(resultado);
+		assertEquals(resultado.size(), 1);
+		assertEquals(resultado.get(0).getId(), 7);
+		assertEquals(resultado.get(0).getNome(), "Algebra");
+
+		d = new Disciplina("Algebra 2", 4, 6, 1, 7);
+		resultado = Disciplina.obterTodas();
+		assertNotNull(resultado);
+		assertEquals(resultado.size(), 1);
+		assertEquals(resultado.get(0).getId(), 7);
+		assertEquals(resultado.get(0).getNome(), "Algebra 2");
+	}
 }

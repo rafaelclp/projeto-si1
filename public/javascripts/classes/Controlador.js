@@ -35,15 +35,15 @@ var Controlador = {
 	 * @param senha Senha do usuário.
 	 */
 	logar: function(usuario, senha) {
-		data = {
+		var data = {
 			"usuario": usuario,
 			"senha": senha
 		};
 
-		var jqxhr = this.__requisitarPagina("/logar/", false, data);
+		var jqxhr = this.__requisitarPagina("/logar", false, data);
 
 		jqxhr.aoTratarRequisicao = function(data, textStatus) {
-			var parts = data.split(":");
+			var parts = data.trim().split(":");
 			if (parts[0] == "sucesso") {
 				location.href = "/";
 				return true;
@@ -59,16 +59,17 @@ var Controlador = {
 	 * @param senha Senha do usuário.
 	 */
 	registrar: function(nome, usuario, senha) {
-		data = {
+		var data = {
 			"nome": nome,
 			"usuario": usuario,
 			"senha": senha
 		};
 
-		var jqxhr = this.__requisitarPagina("/registrar/", false, data);
+
+		var jqxhr = this.__requisitarPagina("/registrar", false, data);
 
 		jqxhr.aoTratarRequisicao = function(data, textStatus) {
-			var parts = data.split(":");
+			var parts = data.trim().split(":");
 			if (parts[0] == "sucesso") {
 				location.href = "/";
 				return true;
@@ -203,7 +204,7 @@ var Controlador = {
 	__tratarRequisicao: function(data, textStatus, jqxhr) {
 		Dialogos.loading.esconder();
 
-		//alert(data);
+		alert(data);
 		if (jqxhr && jqxhr.aoTratarRequisicao)
 			if (jqxhr.aoTratarRequisicao(data, textStatus))
 				return; // true = resolveu toda a requisição

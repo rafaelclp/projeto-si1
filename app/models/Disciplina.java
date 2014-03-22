@@ -1,10 +1,12 @@
-package model;
+package models;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import play.db.ebean.Model;
@@ -18,7 +20,7 @@ public class Disciplina extends Model {
 	private static final long serialVersionUID = 4983178414872139L;
 
 	@Id
-	private int id;
+	private Long id;
 	
 	private String nome;
 	private int creditos;
@@ -26,11 +28,18 @@ public class Disciplina extends Model {
 	private int periodoPrevisto;
 	
 	@ManyToMany
+	@JoinTable(name="disciplinas_preRequisitos", joinColumns=@JoinColumn(name="disciplina_id", referencedColumnName="id"),
+			inverseJoinColumns=@JoinColumn(name="prerequisito_id", referencedColumnName="id"))
 	private List<Disciplina> preRequisitos;
 	
 	@ManyToMany
+	@JoinTable(name="disciplinas_posRequisitos", joinColumns=@JoinColumn(name="disciplina_id", referencedColumnName="id"),
+			inverseJoinColumns=@JoinColumn(name="prerequisito_id", referencedColumnName="id"))
 	private List<Disciplina> posRequisitos;
 	
+	private static Finder<Long, Disciplina> find = new Finder<Long, Disciplina>(Long.class,
+			Disciplina.class);
+
 	/**
 	 * Cria uma nova disciplina com o nome e creditos dados
 	 * 
@@ -76,7 +85,7 @@ public class Disciplina extends Model {
 	 * @return int do codigo da disciplina
 	 */
 	public int getId(){
-		return this.id;
+		return this.id.intValue();
 	}
 	
 	/**
@@ -86,7 +95,7 @@ public class Disciplina extends Model {
 	 * 			Id da disciplina
 	 */
 	public void setId(int id) {
-		this.id = id;
+		this.id = new Long(id);
 	}
 	
 	/**
@@ -227,8 +236,6 @@ public class Disciplina extends Model {
 		return true;
 	}
 
-	private static Finder<Long, Disciplina> find = new Finder<Long, Disciplina>(Long.class,
-			Disciplina.class);
 	public static List<Disciplina> obterTodas() {
 		return find.all();
 	}

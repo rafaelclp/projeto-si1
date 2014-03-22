@@ -1,10 +1,15 @@
-package model;
+package models;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.List;
+
+import models.Disciplina;
+import models.Grade;
+import models.InvalidOperationException;
+import models.Periodo;
 
 import org.junit.Before;
 import org.junit.Test;

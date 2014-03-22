@@ -1,6 +1,9 @@
-package model;
+package models;
 
 import static org.junit.Assert.*;
+import models.Disciplina;
+import models.InvalidOperationException;
+import models.Periodo;
 
 import org.junit.Before;
 import org.junit.Test;

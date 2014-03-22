@@ -1,4 +1,4 @@
-package model;
+package models;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -13,8 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 import play.db.ebean.Model;
-
-import com.avaje.ebean.Ebean;
 
 /**
  * 
@@ -48,6 +46,9 @@ public class Usuario extends Model {
 	@OneToOne(cascade=CascadeType.ALL)
 	private Grade grade;
 	
+	private static Finder<String, Usuario> find = new Finder<String, Usuario>(String.class,
+			Usuario.class);
+	
 	/**
 	 * Constructor
 	 * 
@@ -68,7 +69,7 @@ public class Usuario extends Model {
 	 * @return salt gerado
 	 */
 	private String gerarSalt() {
-		return (new BigInteger(128, new SecureRandom())).toString(32);
+		return (new BigInteger(64, new SecureRandom())).toString(32);
 	}
 
 	/**
@@ -169,18 +170,16 @@ public class Usuario extends Model {
 	 * @return senha hasheada
 	 */
 	private static String hashearSenha(String senha, String salt) {
+		String senhaComSalt = (senha+salt);
 		String senhaHasheada = null;
 		try {
-			byte[] senhaComSalt = (senha+salt).getBytes("UTF-8");
 			MessageDigest md = MessageDigest.getInstance("MD5");
-
-			byte[] senhaMD5 = md.digest(senhaComSalt);
-			senhaHasheada = senhaMD5.toString();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			md.update(senhaComSalt.getBytes(), 0, senhaComSalt.length());
+			senhaHasheada = new BigInteger(1, md.digest()).toString(16);
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
+
 		return senhaHasheada;
 	}
 
@@ -219,7 +218,7 @@ public class Usuario extends Model {
 	 * @return se o usuario existe
 	 */
 	public static boolean existeUsuario(String usuario) {
-		List<Usuario> listaUsuarios = Ebean.find(Usuario.class)
+		List<Usuario> listaUsuarios = find
 				.where()
 					.eq("usuario", usuario)
 				.findList();
@@ -294,7 +293,7 @@ public class Usuario extends Model {
 	 */
 	public static Usuario logar(String usuario, String senha) throws InvalidOperationException {
 		Usuario u = null;
-		List<Usuario> listaUsuarios = Ebean.find(Usuario.class)
+		List<Usuario> listaUsuarios = find
 				.where()
 					.eq("usuario", usuario)
 				.findList();
