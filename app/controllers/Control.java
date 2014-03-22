@@ -19,7 +19,7 @@ public class Control {
      */
     // CONTROLLER: Funcionalidade pro usuario
     public static String index() {
-        return grade.disciplinasParaString();
+        return grade.toString();
     }
 
     /**
@@ -87,7 +87,7 @@ public class Control {
 	        		if (i > 0) {
 	        			resposta += ",";
 	        		}
-	        		resposta += disciplina.getID();
+	        		resposta += disciplina.getId();
 	        	}
 	        	resposta = montarResposta("desalocar", resposta);
         	} else {
