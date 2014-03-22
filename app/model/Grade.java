@@ -141,7 +141,7 @@ public class Grade extends Model {
 	 * @param periodo 
 	 * 			a ser associado
 	 * @return se foi possivel alocar ou nao
-	 * @throws InvalidOperationException caso nao faca sentido alocar (primeiro periodo, >28 creditos)
+	 * @throws InvalidOperationException caso nao faca sentido alocar
 	 */
 	// INFORMATION EXPERT: Grade contem todas as disciplinas e periodos
 	public void associarDisciplinaAoPeriodo(Disciplina disciplina, int periodo) throws InvalidOperationException {
@@ -180,11 +180,14 @@ public class Grade extends Model {
 	private void moverDisciplina(Disciplina disciplina, int indexPeriodoNovo) throws InvalidOperationException {
 		int indexPeriodoAntigo = getPeriodoDaDisciplina(disciplina);
 		Periodo periodoAntigo = getPeriodo(indexPeriodoAntigo);
+		
 		int ultimoPeriodo = obterUltimoPeriodo();
+		
 		Periodo periodoNovo = getPeriodo(indexPeriodoNovo);
 		periodoNovo.alocarDisciplina(disciplina, ultimoPeriodo<=indexPeriodoNovo);
+		
 		try {
-			periodoAntigo.desalocarDisciplina(disciplina);
+			periodoAntigo.desalocarDisciplina(disciplina, periodoCursando>indexPeriodoAntigo);
 		} catch (InvalidOperationException e) {
 			// nunca entra aqui...
 			e.printStackTrace();
@@ -203,18 +206,19 @@ public class Grade extends Model {
 	 */
 	// INFORMATION EXPERT: Grade contem todos os periodos
 	public void desalocarDisciplina(Disciplina disciplina) throws InvalidOperationException {
-		int periodo = getPeriodoDaDisciplina(disciplina);
+		int indexPeriodo = getPeriodoDaDisciplina(disciplina);
+		Periodo periodo = getPeriodo(indexPeriodo);
 		
-        if (periodo == 0) {
+        if (indexPeriodo == 0) {
             throw new InvalidOperationException("Esta disciplina já está desalocada.");
         }
         
         List<Disciplina> posRequisitosAlocados = posRequisitosAlocados(disciplina);
 
        	for (Disciplina i : posRequisitosAlocados) {
-               int periodoIndex = getPeriodoDaDisciplina(i);
-               Periodo p = getPeriodo(periodoIndex);
-               p.desalocarDisciplina(i);
+       		indexPeriodo = getPeriodoDaDisciplina(i);
+            periodo = getPeriodo(indexPeriodo);
+            periodo.desalocarDisciplina(i, periodoCursando>indexPeriodo);
         }
 	}
 	
@@ -366,8 +370,30 @@ public class Grade extends Model {
 		return periodoCursando;
 	}
 
-	public void setPeriodoCursando(int periodoCursando) {
+	public void setPeriodoCursando(int periodoCursando) throws InvalidOperationException {
+		List<Integer> periodosFuturosIrregulares = periodosFuturosIrregulares(periodoCursando);
+		if (periodosFuturosIrregulares.size() > 0) {
+			String resposta = "";
+			for (int i = 0; i < periodosFuturosIrregulares.size(); i++) {
+				if (i > 0) {
+					resposta += " ,";
+				}
+				resposta += periodosFuturosIrregulares.get(i);
+			}
+			throw new InvalidOperationException("Os períodos " + resposta + " não podem ficar irregulares");
+		}
 		this.periodoCursando = periodoCursando;
+	}
+
+	private List<Integer> periodosFuturosIrregulares(int periodo) {
+		List<Integer> periodosFuturosIrregulares = new ArrayList<Integer>();
+		for (int i = periodo; i < MAXIMO_DE_PERIODOS; i++) {
+			Periodo p = getPeriodo(i);
+			if (p.naoTemCreditosSuficiente()) {
+				periodosFuturosIrregulares.add(i);
+			}
+		}
+		return periodosFuturosIrregulares;
 	}
 
 	public List<Periodo> getPeriodos() {

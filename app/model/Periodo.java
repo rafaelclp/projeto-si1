@@ -23,6 +23,7 @@ public class Periodo extends Model {
 	@ManyToMany
 	private List<Disciplina> disciplinas;
 
+	final int CREDITOS_MINIMO = 12;
 	final int CREDITOS_MAXIMO = 28;
 
 	/**
@@ -69,8 +70,9 @@ public class Periodo extends Model {
 	 * @throws InvalidOperationException
 	 */
 	public void alocarDisciplina(Disciplina disciplina, boolean ignorarCreditos) throws InvalidOperationException {
-		if(!podeAlocar(disciplina, ignorarCreditos))
+		if (!podeAlocar(disciplina, ignorarCreditos)) {
 			throw new InvalidOperationException("Disciplina não pode ser alocada neste período.");
+		}
 		this.disciplinas.add(disciplina);
 	}
 
@@ -82,9 +84,13 @@ public class Periodo extends Model {
 	 *            
 	 * @throws InvalidOperationException
 	 */
-	public void desalocarDisciplina(Disciplina disciplina) throws InvalidOperationException {
-		if(!disciplinas.remove(disciplina))
+	public void desalocarDisciplina(Disciplina disciplina, boolean ignorarCreditos) throws InvalidOperationException {
+		if (!podeDesalocar(disciplina, ignorarCreditos)) {
+			throw new InvalidOperationException("Disciplina não pode ser desalocada deste período.");
+		}
+		if (!disciplinas.remove(disciplina)) {
 			throw new InvalidOperationException("Disciplina não existente neste período.");
+		}
 	}
 	
 	/**
@@ -127,12 +133,34 @@ public class Periodo extends Model {
 	}
 	
 	/**
+	 * Verifica se a disciplina pode ser desalocada deste periodo
+	 * @param disciplina 
+	 * 			a ser alocada
+	 * @return boolean informado se pode ou nao desalocar a disciplina
+	 */
+	public boolean podeDesalocar(Disciplina disciplina, boolean ignorarCreditos) {
+		if (!ignorarCreditos && this.totalDeCreditos() - disciplina.getCreditos() < CREDITOS_MINIMO) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
 	 * Verifica se o periodo tem mais creditos do que o maximo permitido
 	 * 
-	 * @return boolean informando se o periodo tem mais credito que o permitido
+	 * @return boolean informando se o periodo tem mais credito que o maximo
 	 */
 	public boolean passouDoLimiteDeCreditos() {
 		return CREDITOS_MAXIMO < totalDeCreditos();
+	}
+	
+	/**
+	 * Verifica se o periodo tem menos creditos do que o minimo permitido
+	 * 
+	 * @return boolean informando se o periodo tem menos credito que o minimo
+	 */
+	public boolean naoTemCreditosSuficiente() {
+		return CREDITOS_MINIMO > totalDeCreditos();
 	}
 
 	/**
@@ -142,6 +170,5 @@ public class Periodo extends Model {
 	public void resetar() {
 		disciplinas.clear();
 	}
-
 
 }
