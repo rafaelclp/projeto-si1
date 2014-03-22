@@ -35,12 +35,49 @@ var Controlador = {
 	},
 
 	/**
+	 * Move uma disciplina para outro periodo.
+	 * @id ID da disciplina a ser movida.
+	 * @periodo Período em que deve ser alocada.
+	**/
+	moverDisciplina: function(id, periodo) {
+		var jqxhr = this.__requisitarPagina("moverDisciplina/" + id + "/" + periodo);
+
+		jqxhr.aoTratarRequisicao = function(data, textStatus) {
+			var parts = data.trim().split(":", 2);
+			if (parts[0] == "irregulares")
+				Grade.alocarDisciplina(id, periodo);
+			return false;
+		};
+	},
+
+	/**
 	 * Requisita a alocação de uma disciplina.
 	 * @id ID da disciplina a ser alocada.
 	 * @periodo Período em que deve ser alocada.
 	**/
 	alocarDisciplina: function(id, periodo) {
-		this.__requisitarPagina("alocarDisciplina/" + id + "/" + periodo);
+		var jqxhr = this.__requisitarPagina("obterPreRequisitosNaoAlocados/" + id + "/" + periodo);
+
+		jqxhr.aoTratarRequisicao = function(data, textStatus) {
+			// parametros extra: id, periodo
+			var parts = data.trim().split(":", 2);
+			if (parts[0] == "ids") {
+				var ids = parts[1].split(",");
+				if (ids.length < 2) { // só tem ele mesmo
+					this.__requisitarPagina("alocarDisciplina/" + id + "/" + periodo);
+					return true;
+				}
+				var nomes = [];
+				for (var i = 0; i < ids.length; i++) {
+					var disciplina = Grade.procurarDisciplina(parseInt(ids[i]));
+					if (disciplina != null && ids[i] != id)
+						nomes.push(disciplina.nome);
+				}
+				var erro = "Pré-requisitos não cumpridos:<br />" + GeradorHTML.gerarLista(nomes);
+				Dialogos.erro.mostrar(erro);
+			}
+			return false;
+		};
 	},
 
 	/**
@@ -48,7 +85,33 @@ var Controlador = {
 	 * @id ID da disciplina a ser desalocada.
 	**/
 	desalocarDisciplina: function(id) {
-		this.__requisitarPagina("desalocarDisciplina/" + id + "/false");
+		var jqxhr = this.__requisitarPagina("obterPosRequisitosAlocados/" + id);
+
+		jqxhr.aoTratarRequisicao = function(data, textStatus) {
+			// parametros extra: id
+			var parts = data.trim().split(":", 2);
+			if (parts[0] == "ids") {
+				var ids = parts[1].split(",");
+				if (ids.length < 2) { // só tem ele mesmo
+					this.__requisitarPagina("desalocarDisciplina/" + id);
+					return true;
+				}
+				var nomes = [];
+				for (var i = 0; i < ids.length; i++) {
+					var disciplina = Grade.procurarDisciplina(parseInt(ids[i]));
+					if (disciplina != null && ids[i] != id)
+						nomes.push(disciplina.nome);
+				}
+				var mensagemConfirmacao = "Ao desalocar esta disciplina, serão desalocadas também estas outras:<br />";
+				mensagemConfirmacao += GeradorHTML.gerarLista(nomes);
+				Dialogos.confirmar.mostrar(mensagemConfirmacao, "desalocarDisciplina/" + id)
+					.aoConfirmar(function(pagina) {
+						Controlador.__requisitarPagina(pagina);
+					});
+				return true;
+			}
+			return false;
+		};
 	},
 
 	/**
@@ -56,6 +119,7 @@ var Controlador = {
 	 * @param url URI da página a ser requisitada.
 	 * @param usarGET Usar método GET? (true: sim)
 	 * @param data Dados a serem enviados para o servidor no formato {"chave": valor, ...}
+	 * @return jqxhr da requisição em aberto.
 	**/
 	__requisitarPagina: function(url, usarGET, data) {
 		Dialogos.loading.mostrar();
@@ -74,6 +138,10 @@ var Controlador = {
 	**/
 	__tratarRequisicao: function(data, textStatus, jqxhr) {
 		Dialogos.loading.esconder();
+
+		if (jqxhr && jqxhr.aoTratarRequisicao)
+			if (jqxhr.aoTratarRequisicao(data, textStatus))
+				return; // true = resolveu toda a requisição
 
 		var split = function(s,d,l) {
 			l = l || 0;
@@ -112,14 +180,13 @@ var Controlador = {
 			ControladorHTML.desenharPaineis();
 			break;
 
-		case "confirmar":
-			parametros = split(parametros, ",", 1);
-			var pagina = parametros[0];
-			var mensagem = parametros[1];
-			Dialogos.confirmar.mostrar(mensagem, pagina)
-				.aoConfirmar(function(pagina) {
-					Controlador.__requisitarPagina(pagina);
-				});
+		case "irregulares":
+			parametros = parametros.split(",");
+			var disciplinas_irregulares = [];
+			for (var i = 0; i < parametros.length; i++)
+				disciplinas_irregulares.push(parseInt(parametros[i].trim()));
+			Grade.alterarRegularidade(disciplinas_irregulares);
+			ControladorHTML.desenharPaineis();
 			break;
 
 		case "erro":

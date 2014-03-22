@@ -56,7 +56,7 @@ var ControladorHTML = {
 			}
 
 			if (total_creditos > 0) {
-				conteudo += this.__gerarBotaoDeDisciplina('Créditos: ' + total_creditos + ' | Dificuldade: ' + total_dificuldade, "btn-danger");
+				conteudo += this.__gerarBotaoDeDisciplina('Créditos: ' + total_creditos + ' | Dificuldade: ' + total_dificuldade, "btn-info");
 			}
 
 			var j = parseInt(i/3);
@@ -161,10 +161,15 @@ var ControladorHTML = {
 	**/
 	__obterMenuDropdownDeDisciplina: function(index) {
 		var obj = Grade.disciplinas[index];
-		return GeradorHTML.gerarMenuDropdown(
-			this.__gerarBotaoDeDisciplinaPorIndex(index),
-			[{"js": "Controlador.desalocarDisciplina(" + obj.id + ")", "value": "Desalocar"}]
-		);
+		var menu = [
+			{"js": "Controlador.desalocarDisciplina(" + obj.id + ")", "value": "Desalocar"}
+			{"type": "divider"},
+			{"type": "header", "value": "Mover para..."}
+		];
+		for (var i = 1; i <= Configuracoes.NUMERO_DE_PERIODOS; i++)
+			if (i != obj.periodo)
+				menu.push({"js": "Controlador.moverDisciplina(" + obj.id + ", " + i + ")", "value": "Periodo " + i});
+		return GeradorHTML.gerarMenuDropdown(this.__gerarBotaoDeDisciplinaPorIndex(index), menu);
 	},
 
 	/**
@@ -184,6 +189,6 @@ var ControladorHTML = {
 	**/
 	__gerarBotaoDeDisciplinaPorIndex: function(index) {
 		var obj = Grade.disciplinas[index];
-		return this.__gerarBotaoDeDisciplina(obj.creditos + ' <span style="color:#bbb">|</span> ' + obj.nome, "btn-default");
+		return this.__gerarBotaoDeDisciplina(obj.creditos + ' <span style="color:#bbb">|</span> ' + obj.nome, obj.irregular ? "btn-danger" : "btn-default");
 	}
 };
