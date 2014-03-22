@@ -107,7 +107,7 @@ public class Grade extends Model {
 	}
 
 	private int obterUltimoPeriodo() {
-		int ultimoPeriodo = 0;
+		int ultimoPeriodo = 1;
 		for (int i = 1; i <= MAXIMO_DE_PERIODOS; i++) {
 			Periodo p = getPeriodo(i);
 			if (p.totalDeCreditos() > 0) {
@@ -148,6 +148,14 @@ public class Grade extends Model {
 		if (periodo < 1 || periodo > 12) {
 			throw new InvalidOperationException("Não podem ser alocadas disciplinas para períodos que não existem.");
 		}
+
+		int indexUltimoPeriodo = obterUltimoPeriodo();
+		
+		if (indexUltimoPeriodo < periodo) {
+            Periodo ultimoPeriodo = getPeriodo(indexUltimoPeriodo);
+            if (ultimoPeriodo.passouDoLimiteDeCreditos())
+            	throw new InvalidOperationException("O período " + indexUltimoPeriodo + " não pode ficar irregular.");
+		}
 		
 		if (estaAlocado(disciplina)) {
 			moverDisciplina(disciplina, periodo);
@@ -160,13 +168,6 @@ public class Grade extends Model {
 			
 			Periodo p = getPeriodo(periodo);
 			boolean ignorarCreditos = false;
-			int indexUltimoPeriodo = obterUltimoPeriodo();
-			
-			if (indexUltimoPeriodo < periodo) {
-	            Periodo ultimoPeriodo = getPeriodo(indexUltimoPeriodo);
-	            if (ultimoPeriodo.passouDoLimiteDeCreditos())
-	            	throw new InvalidOperationException("O período " + indexUltimoPeriodo + " não pode ficar irregular.");
-			}
 			
 			if (indexUltimoPeriodo == periodo) {
 	            ignorarCreditos = true;
