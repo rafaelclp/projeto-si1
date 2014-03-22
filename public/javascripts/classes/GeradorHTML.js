@@ -88,7 +88,7 @@ var GeradorHTML = {
 	**/
 	gerarLista: function(entradas) {
 		var lista = "";
-		for (int i = 0; i < entradas.length; i++)
+		for (var i = 0; i < entradas.length; i++)
 			lista += '<span class=\"glyphicon glyphicon-asterisk\" style=\"font-size:10px\"></span> ' + entradas[i] + '<br />';
 		return lista;
 	}

@@ -56,7 +56,7 @@ var Controlador = {
 	 * @periodo Período em que deve ser alocada.
 	**/
 	alocarDisciplina: function(id, periodo) {
-		var jqxhr = this.__requisitarPagina("obterPreRequisitosNaoAlocados/" + id + "/" + periodo);
+		var jqxhr = this.__requisitarPagina("obterPreRequisitosNaoAlocados/" + id + "/" + periodo, true);
 
 		jqxhr.aoTratarRequisicao = function(data, textStatus) {
 			// parametros extra: id, periodo
@@ -64,7 +64,7 @@ var Controlador = {
 			if (parts[0] == "ids") {
 				var ids = parts[1].split(",");
 				if (ids.length < 2) { // só tem ele mesmo
-					this.__requisitarPagina("alocarDisciplina/" + id + "/" + periodo);
+					Controlador.__requisitarPagina("alocarDisciplina/" + id + "/" + periodo);
 					return true;
 				}
 				var nomes = [];
@@ -85,7 +85,7 @@ var Controlador = {
 	 * @id ID da disciplina a ser desalocada.
 	**/
 	desalocarDisciplina: function(id) {
-		var jqxhr = this.__requisitarPagina("obterPosRequisitosAlocados/" + id);
+		var jqxhr = this.__requisitarPagina("obterPosRequisitosAlocados/" + id, true);
 
 		jqxhr.aoTratarRequisicao = function(data, textStatus) {
 			// parametros extra: id
@@ -93,7 +93,7 @@ var Controlador = {
 			if (parts[0] == "ids") {
 				var ids = parts[1].split(",");
 				if (ids.length < 2) { // só tem ele mesmo
-					this.__requisitarPagina("desalocarDisciplina/" + id);
+					Controlador.__requisitarPagina("desalocarDisciplina/" + id);
 					return true;
 				}
 				var nomes = [];

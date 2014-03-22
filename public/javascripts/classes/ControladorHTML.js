@@ -162,7 +162,7 @@ var ControladorHTML = {
 	__obterMenuDropdownDeDisciplina: function(index) {
 		var obj = Grade.disciplinas[index];
 		var menu = [
-			{"js": "Controlador.desalocarDisciplina(" + obj.id + ")", "value": "Desalocar"}
+			{"js": "Controlador.desalocarDisciplina(" + obj.id + ")", "value": "Desalocar"},
 			{"type": "divider"},
 			{"type": "header", "value": "Mover para..."}
 		];
