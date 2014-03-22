@@ -10,7 +10,7 @@ var ControladorHTML = {
 	inicializar: function() {
 		if (!this.inicializado) {
 			this.inicializado = true;
-			setInterval(function() { ControladorHTML.__atualizarInfo() }, 500);
+			setInterval(function() { ControladorHTML.__atualizarInfo() }, 100);
 		}
 	},
 
@@ -107,6 +107,17 @@ var ControladorHTML = {
 			periodos.pop();
 		}
 
+		var msg = "";
+
+		var creditosCursados = Grade.getCreditosCursados();
+		var creditosCursando = Grade.getCreditosCursando();
+		var creditosACursar = Grade.getCreditosACursar();
+		var creditosTotais = creditosCursados + creditosCursando + creditosACursar;
+		msg += "Créditos cursados: " + creditosCursados;
+		msg += "<br />Créditos sendo cursados: " + creditosCursando;
+		msg += "<br />Créditos a serem cursados: " + creditosACursar;
+		msg += "<br />Créditos totais: " + creditosTotais + "/" + Configuracoes.MIN_CREDITOS_PARA_FORMAR;
+
 		// Exibe ou esconde a mensagem dos períodos incompletos
 		if (periodos.length > 0) {
 			var texto = "";
@@ -122,10 +133,10 @@ var ControladorHTML = {
 			else
 				texto = "Os periodos " + texto + " ainda não possuem o mínimo de créditos.";
 
-			Dialogos.info.mostrar(texto);
+			msg += "<br /><br />" + texto;
 		}
-		else
-			Dialogos.info.esconder();
+
+		Dialogos.info.mostrar(msg);
 	},
 
 	/**
