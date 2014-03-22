@@ -204,7 +204,6 @@ var Controlador = {
 	__tratarRequisicao: function(data, textStatus, jqxhr) {
 		Dialogos.loading.esconder();
 
-		alert(data);
 		if (jqxhr && jqxhr.aoTratarRequisicao)
 			if (jqxhr.aoTratarRequisicao(data, textStatus))
 				return; // true = resolveu toda a requisição

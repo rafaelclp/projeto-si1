@@ -45,7 +45,7 @@ public class Grade extends Model {
 	 */
 	public Grade() {
 		setPeriodos(new ArrayList<Periodo>());
-		disciplinas = CarregadorDeDisciplinas.carregaDisciplinas(tipoDeGrade);
+		disciplinas = new ArrayList<Disciplina>();//CarregadorDeDisciplinas.carregaDisciplinas(tipoDeGrade);
 		periodoCursando = 1;
 		
 		for (int i = 0; i < MAXIMO_DE_PERIODOS; i++) {

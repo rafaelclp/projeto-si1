@@ -34,7 +34,7 @@ public class Disciplina extends Model {
 	
 	@ManyToMany
 	@JoinTable(name="disciplinas_posRequisitos", joinColumns=@JoinColumn(name="disciplina_id", referencedColumnName="id"),
-			inverseJoinColumns=@JoinColumn(name="prerequisito_id", referencedColumnName="id"))
+			inverseJoinColumns=@JoinColumn(name="posrequisito_id", referencedColumnName="id"))
 	private List<Disciplina> posRequisitos;
 	
 	private static Finder<Long, Disciplina> find = new Finder<Long, Disciplina>(Long.class,

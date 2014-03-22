@@ -85,13 +85,14 @@ public class DisciplinaTest {
 		assertNotNull(resultado);
 		assertEquals(resultado.size(), 1);
 		assertEquals(resultado.get(0).getId(), 7);
-		assertEquals(resultado.get(0).getNome(), "Algebra");
+		assertEquals("Algebra", resultado.get(0).getNome());
 
 		d = new Disciplina("Algebra 2", 4, 6, 1, 7);
+		d.update();
 		resultado = Disciplina.obterTodas();
 		assertNotNull(resultado);
 		assertEquals(resultado.size(), 1);
 		assertEquals(resultado.get(0).getId(), 7);
-		assertEquals(resultado.get(0).getNome(), "Algebra 2");
+		assertEquals("Algebra 2", resultado.get(0).getNome());
 	}
 }
