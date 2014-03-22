@@ -43,22 +43,14 @@ public class ControlTest {
 		Control.index();
 		// Desaloca sem problema
 		Control.alocarDisciplina(13, 2);
-    	assertEquals("desalocar:13", Control.desalocarDisciplina(13, false));
+    	assertEquals("desalocar:13", Control.desalocarDisciplina(13));
     	
     	// Ja esta desalocado
-    	assertEquals("erro:Esta disciplina já está desalocada.", Control.desalocarDisciplina(13, false));
-    	
-    	// Nao pode desalocar do primeiro periodo
-    	assertEquals("erro:Disciplinas do primeiro período não podem ser desalocadas.", Control.desalocarDisciplina(3, false));
-    	
-    	// Tem que confirmar desalocacao por causa de pos-requisito alocado
-    	Control.alocarDisciplina(13, 2);
-    	Control.alocarDisciplina(17, 3);
-    	assertEquals("confirmar:/desalocarDisciplina/13/true,Ao desalocar esta disciplina, serão desalocadas também estas outras:<br /><span class" +
-    			"=\"glyphicon glyphicon-asterisk\" style=\"font-size:10px\"></span> Probabilidade e Est.<br />", Control.desalocarDisciplina(13, false));
-    	
+    	assertEquals("erro:Esta disciplina já está desalocada.", Control.desalocarDisciplina(13));
+    	    	
     	// Desaloca sem problema por ter permissao do usuario
-    	String result = Control.desalocarDisciplina(13, true);
+    	Control.alocarDisciplina(13, 2);
+    	String result = Control.desalocarDisciplina(13);
     	if (!result.equals("desalocar:13,17") && !result.equals("desalocar:17,13")) {
     		fail("Deveria desalocar os dois.");
     	}
@@ -68,11 +60,11 @@ public class ControlTest {
 	public void reseta() {
 		Control.index();
 		Control.alocarDisciplina(13, 2);
-    	assertEquals("desalocar:13", Control.desalocarDisciplina(13, false));
+    	assertEquals("desalocar:13", Control.desalocarDisciplina(13));
     	
 
 		Control.alocarDisciplina(13, 2);
 		Control.resetar();
-    	assertEquals("erro:Esta disciplina já está desalocada.", Control.desalocarDisciplina(13, false));
+    	assertEquals("erro:Esta disciplina já está desalocada.", Control.desalocarDisciplina(13));
 	}
 }

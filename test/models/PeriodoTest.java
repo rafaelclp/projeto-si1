@@ -73,12 +73,12 @@ public class PeriodoTest {
 			periodoTeste.alocarDisciplina(calculoI, false);
 			periodoTeste.alocarDisciplina(vetorial, false);
 			
-			periodoTeste.desalocarDisciplina(calculoI);
+			periodoTeste.desalocarDisciplina(calculoI, false);
 			assertFalse(periodoTeste.contains(calculoI));
 			assertTrue(periodoTeste.getDisciplinas().contains(vetorial));
 			assertFalse(periodoTeste.getDisciplinas().isEmpty());
 			
-			periodoTeste.desalocarDisciplina(vetorial);
+			periodoTeste.desalocarDisciplina(vetorial, false);
 			assertFalse(periodoTeste.contains(vetorial));
 			assertTrue(periodoTeste.getDisciplinas().isEmpty());
 		
@@ -87,7 +87,7 @@ public class PeriodoTest {
 		}
 		
 		try {
-			periodoTeste.desalocarDisciplina(vetorial);
+			periodoTeste.desalocarDisciplina(vetorial, false);
 		} catch (InvalidOperationException e) {
 			assertEquals(e.getMessage(), "Disciplina não existente neste período.");
 		}
@@ -107,19 +107,19 @@ public class PeriodoTest {
 			periodoTeste.alocarDisciplina(ffc, false);
 			assertEquals(periodoTeste.totalDeCreditos(), 12);
 			
-			periodoTeste.desalocarDisciplina(ffc);
+			periodoTeste.desalocarDisciplina(ffc, false);
 			assertEquals(periodoTeste.totalDeCreditos(), 8);
 			
-			periodoTeste.desalocarDisciplina(vetorial);
+			periodoTeste.desalocarDisciplina(vetorial, false);
 			assertEquals(periodoTeste.totalDeCreditos(), 4);
 			
 			periodoTeste.alocarDisciplina(ffc, false);
 			assertEquals(periodoTeste.totalDeCreditos(), 8);
 			
-			periodoTeste.desalocarDisciplina(calculoI);
+			periodoTeste.desalocarDisciplina(calculoI, false);
 			assertEquals(periodoTeste.totalDeCreditos(), 4);
 			
-			periodoTeste.desalocarDisciplina(ffc);
+			periodoTeste.desalocarDisciplina(ffc, false);
 			assertEquals(periodoTeste.totalDeCreditos(), 0);
 		
 		} catch (InvalidOperationException e) {

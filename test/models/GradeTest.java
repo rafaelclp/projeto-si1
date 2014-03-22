@@ -193,4 +193,6 @@ public class GradeTest {
 		List<Disciplina> disciplinas = periodo.getDisciplinas();
 		assertEquals(6, disciplinas.size());
     }
+
+    
 }
