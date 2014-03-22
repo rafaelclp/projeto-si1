@@ -9,8 +9,8 @@ import model.Usuario;
 
 public class Control {
     
-    static Usuario usuario = new Usuario("qwerty123", "qwerty123", "qwerty123");
-    static Grade grade = usuario.getGrade();
+    private static Usuario usuario = new Usuario("qwerty123", "qwerty123", "qwerty123");
+    private static Grade grade = usuario.getGrade();
 
     /**
      * Responsavel pela message do index
@@ -20,6 +20,21 @@ public class Control {
     // CONTROLLER: Funcionalidade pro usuario
     public static String index() {
         return grade.toString();
+    }
+    
+    public static String obterPreRequisitosNaoAlocados(int id, int periodo) {
+    	String resposta = "" + id;
+    	Disciplina disciplina;
+		try {
+			disciplina = grade.getDisciplinaPorID(id);
+		} catch (InvalidOperationException e) {
+			return montarResposta("erro", e.getMessage());
+		}
+    	List<Disciplina> preRequisitosNaoAlocados = grade.preRequisitosFaltando(disciplina, periodo);
+    	for (Disciplina d : preRequisitosNaoAlocados) {
+    		resposta += ", " + d.getId();
+    	}
+    	return montarResposta("ids", resposta);
     }
 
     /**
@@ -35,25 +50,38 @@ public class Control {
     // CONTROLLER: Funcionalidade pro usuario
     public static String alocarDisciplina(int id, int periodo) {
     	String resposta;
-        Disciplina disciplina = grade.getDisciplinaPorID(id);
-       	if (disciplina == null) {
-       		// Resposta => erro:<mensagem de erro>
-       		resposta = montarResposta("erro", "Você não pode alocar disciplinas que não existem.");
-       	} else {
-            resposta = "" + disciplina.getId();
-       		// Resposta => erro:<mensagem de erro>
-       		List<Disciplina> preRequisitosFaltando = grade.preRequisitosFaltando(disciplina, periodo);
-       	    for (Disciplina i : preRequisitosFaltando) {
-       	    	resposta += ", " + i.getId();
-       	    }
-           	resposta = montarResposta("erro", resposta);
-       	}
+        Disciplina disciplina = null;
+		try {
+			disciplina = grade.getDisciplinaPorID(id);
+		} catch (InvalidOperationException e) {
+			// nunca vai vir aqui
+			e.printStackTrace();
+		}
+		
+		try {
+			grade.associarDisciplinaAoPeriodo(disciplina, periodo);
+		} catch (InvalidOperationException e) {
+			return montarResposta("erro", e.getMessage());
+		}
+		
+        resposta = disciplina.getId() + ", " + periodo;
+       	resposta = montarResposta("alocar", resposta);
         return resposta;
     }
     
-    public static void setUsuario (Usuario usuario) {
-    	Control.usuario = usuario;
-    	Control.grade = Control.usuario.getGrade();
+    public static String obterPosRequisitosAlocados(int id) {
+    	String resposta = "" + id;
+    	Disciplina disciplina;
+		try {
+			disciplina = grade.getDisciplinaPorID(id);
+		} catch (InvalidOperationException e) {
+			return montarResposta("erro", e.getMessage());
+		}
+    	List<Disciplina> posRequisitosAlocados = grade.posRequisitosAlocados(disciplina);
+    	for (Disciplina d : posRequisitosAlocados) {
+    		resposta += ", " + d.getId();
+    	}
+    	return montarResposta("ids", resposta);
     }
 
     /**
@@ -67,39 +95,51 @@ public class Control {
      * @return string com a resposta da requisicao
      */
     // CONTROLLER: Funcionalidade pro usuario
-    public static String desalocarDisciplina(int id, boolean force) {
-        Disciplina disciplina = grade.getDisciplinaPorID(id);
-        String resposta = "";
+    public static String desalocarDisciplina(int id) {
+        Disciplina disciplina;
+        String resposta = "" + id;
+        
+        try {
+			disciplina = grade.getDisciplinaPorID(id);
+		} catch (InvalidOperationException e) {
+			return montarResposta("erro", e.getMessage());
+		}
 
         try {
-        	List<Disciplina> disciplinasDesalocadas = grade.desalocarDisciplina(disciplina, force);
+        	grade.desalocarDisciplina(disciplina);
+        	List<Disciplina> posRequisitosAlocados = grade.posRequisitosAlocados(disciplina);
         	
-        	if (!disciplinasDesalocadas.isEmpty()) {
-        		// Resposta => desalocar:<id1>,<id2>,<...>
-	        	for (int i = 0; i < disciplinasDesalocadas.size(); i++) {
-	        		disciplina = disciplinasDesalocadas.get(i);
-	        		if (i > 0) {
-	        			resposta += ",";
-	        		}
-	        		resposta += disciplina.getId();
-	        	}
-	        	resposta = montarResposta("desalocar", resposta);
-        	} else {
-        		// Resposta => confirmar:<url caso confirme>,<mensagem da caixa>
-        		resposta = "/desalocarDisciplina/" + id + "/true,";
-        		resposta += "Ao desalocar esta disciplina, serão desalocadas também estas outras:<br />";
-        		List<Disciplina> posRequisitosAlocados = grade.posRequisitosAlocados(disciplina);
-        		for (Disciplina i : posRequisitosAlocados) {
-        	        resposta += "<span class=\"glyphicon glyphicon-asterisk\" style=\"font-size:10px\"></span> "
-        	                + i.getNome() + "<br />";
-        	    }
-        		resposta = montarResposta("confirmar", resposta);
-        	}
+        	// Resposta => desalocar:<id1>,<id2>,<...>
+	       	for (Disciplina d : posRequisitosAlocados) {
+	       		resposta += ", " + d.getId();
+	       	}
+	       	resposta = montarResposta("desalocar", resposta);
         } catch (InvalidOperationException e) {
         	// Resposta => erro:<mensagem de erro>
         	resposta = montarResposta("erro", e.getMessage());
         }
+        
         return resposta;
+    }
+    
+    public static String moverDisciplina(int id, int periodo) {
+    	Disciplina disciplina;
+    	String resposta = "";
+    	try {
+			disciplina = grade.getDisciplinaPorID(id);
+	    	grade.associarDisciplinaAoPeriodo(disciplina, periodo);
+		} catch (InvalidOperationException e) {
+			montarResposta("erro", e.getMessage());
+		}
+    	List<Disciplina> irregulares = grade.obterDisciplinasIrregulares();
+    	for (int i = 0; i < irregulares.size(); i++) {
+    		if (i > 0) {
+    			resposta += ", ";
+    		}
+    		Disciplina d = irregulares.get(i);
+    		resposta += d.getId();
+    	}
+    	return montarResposta("irregulares", resposta);
     }
 
     /**
@@ -124,6 +164,11 @@ public class Control {
     // PURE FABRICATION: Usado para formatar as respostas das requisições
     private static String montarResposta(String tipo, String parametros) {
     	return tipo + ":" + parametros;
+    }
+    
+    public static void setUsuario (Usuario usuario) {
+    	Control.usuario = usuario;
+    	Control.grade = Control.usuario.getGrade();
     }
 
 }
