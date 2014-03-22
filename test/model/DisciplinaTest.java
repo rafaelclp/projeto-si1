@@ -26,7 +26,7 @@ public class DisciplinaTest {
 		assertEquals(4, calculoI.getCreditos());
 		assertEquals(7, calculoI.getDificuldade());
 		assertEquals(1, calculoI.getPeriodoPrevisto());
-		assertEquals(3, calculoI.getID());
+		assertEquals(3, calculoI.getId());
 		
 		assertNotEquals(calculoI.toString(), vetorial.toString());
 	}
@@ -45,11 +45,12 @@ public class DisciplinaTest {
 	
 	@Test
 	public void adicionaPosRequisito(){
-		calculoII.addPreRequisito(calculoI);
+		calculoI.addPosRequisito(calculoII);
+		
 		assertTrue(calculoI.getPosRequisitos().contains(calculoII));
 		
-		ffc.addPreRequisito(calculoI);	
-		ffc.addPreRequisito(vetorial);
+		calculoI.addPosRequisito(ffc);	
+		vetorial.addPosRequisito(ffc);
 		assertTrue(calculoI.getPosRequisitos().contains(ffc));
 		assertTrue(vetorial.getPosRequisitos().contains(ffc));
 		assertFalse(calculoII.getPosRequisitos().contains(ffc));
