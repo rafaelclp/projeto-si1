@@ -129,7 +129,7 @@ public class Control {
 			disciplina = grade.getDisciplinaPorID(id);
 	    	grade.associarDisciplinaAoPeriodo(disciplina, periodo);
 		} catch (InvalidOperationException e) {
-			montarResposta("erro", e.getMessage());
+			return montarResposta("erro", e.getMessage());
 		}
     	List<Disciplina> irregulares = grade.obterDisciplinasIrregulares();
     	for (int i = 0; i < irregulares.size(); i++) {
