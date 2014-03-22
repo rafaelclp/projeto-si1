@@ -27,7 +27,8 @@ public class CarregadorDeDisciplinas {
 	
 	/**
 	 * Carrega disciplinas e retorna lista com todas as
-     * disciplinas contidas no arquivo XML
+     * disciplinas contidas no arquivo XML. Se já tiverem sido
+     * carregadas anteriormente, apenas as retorna da memória.
      * 
 	 * @param arquivo
 	 * 			XML de onde serão lidas as disciplinas
@@ -84,13 +85,13 @@ public class CarregadorDeDisciplinas {
     }
     
     /**
-     * Cria disciplina com os dados retirados de cada Element cadeira presente
+     * Cria disciplina com os dados retirados de um Element cadeira presente
      * no arquivo XML
      * 
      * @param disciplinas
      * 			Lista de disciplinas ja carregadas
      * @param nodeDisciplina
-     * 			No que representa a cadeira a ser criada
+     * 			No XML que representa a cadeira a ser criada
      * @return Disciplina criada a partir do no
      */
     private static Disciplina criaDisciplina(List<Disciplina> disciplinas, Node nodeDisciplina) {
