@@ -155,6 +155,7 @@ public class Grade extends Model {
 			p.alocarDisciplina(disciplina, ignorarCreditos);
 		}
 		catch (InvalidOperationException e) {
+			// nunca entra aqui...
 			e.printStackTrace();
 		}
 	}
@@ -272,7 +273,8 @@ public class Grade extends Model {
 				try {
 					primeiroPeriodo.alocarDisciplina(disciplina, true);
 				} catch (InvalidOperationException e) {
-					// Nunca entra aqui
+					// nunca entra aqui...
+					e.printStackTrace();
 				}
 			}
 		}
