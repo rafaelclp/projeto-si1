@@ -3,12 +3,28 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Grade {
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
-	final int MAXIMO_DE_PERIODOS = 12;
+import play.db.ebean.Model;
+
+public class Grade extends Model {
+
+	private static final long serialVersionUID = 1543790286461L;
+
+	private static final int MAXIMO_DE_PERIODOS = 12;
+	
+	@Id
+	private int id;
+	
+	private int periodoCursando;
+	
+	@Transient
+	private TipoDeGrade tipoDeGrade = TipoDeGrade.FLUXOGRAMA_OFICIAL;
 	
 	// CREATOR: Grade contem uma lista com as disciplinas
 	// Lista com todas as disciplinas da grade
+	@Transient
 	private List<Disciplina> disciplinas;
 
 	// CREATOR: Grade contem uma lista de períodos
@@ -20,12 +36,11 @@ public class Grade {
 	 * Inicializa as variaveis e reseta o sistema (aloca primeiro periodo)
 	 * @throws InvalidOperationException 
 	 */
-	public Grade() throws InvalidOperationException {
-		periodos = new ArrayList<Periodo>();
-		disciplinas = new ArrayList<Disciplina>();
-		this.preencherDisciplinas();
+	public Grade() {
+		setPeriodos(new ArrayList<Periodo>());
+		disciplinas = CarregadorDeDisciplinas.carregarDisciplinas(tipoDeGrade);
 		
-		for (int i = 0; i < 12; i++) {
+		for (int i = 0; i < MAXIMO_DE_PERIODOS; i++) {
 			periodos.add(new Periodo());
 		}
 		
@@ -75,7 +90,7 @@ public class Grade {
 	 */
 	// INFORMATION EXPERT: Grade contem todos os periodos
 	public Periodo getPeriodo(int index) {
-		return periodos.get(index-1);
+		return getPeriodos().get(index-1);
 	}
 
 	/**
@@ -97,6 +112,17 @@ public class Grade {
 	// INFORMATION EXPERT: Grade contem todas as disciplinas e periodos
 	private boolean estaAlocado(Disciplina disciplina) {
 		return getPeriodoDaDisciplina(disciplina) != 0;
+	}
+
+	private int obterUltimoPeriodo() {
+		int ultimoPeriodo = 0;
+		for (int i = 1; i <= MAXIMO_DE_PERIODOS; i++) {
+			Periodo p = getPeriodo(i);
+			if (p.totalDeCreditos() > 0) {
+				ultimoPeriodo = i;
+			}
+		}
+		return ultimoPeriodo;
 	}
 
 	/**
@@ -126,29 +152,25 @@ public class Grade {
 	 * @throws InvalidOperationException caso nao faca sentido alocar (primeiro periodo, >28 creditos)
 	 */
 	// INFORMATION EXPERT: Grade contem todas as disciplinas e periodos
-	public boolean associarDisciplinaAoPeriodo(Disciplina disciplina, int periodo) throws InvalidOperationException {
-		boolean resposta = true;
-		if (periodo == 1) {
-			throw new InvalidOperationException("Não podem ser alocadas disciplinas para o primeiro período.");
-		}
-
+	public void associarDisciplinaAoPeriodo(Disciplina disciplina, int periodo) throws InvalidOperationException {
 		if (periodo < 1 || periodo > 12) {
 			throw new InvalidOperationException("Não podem ser alocadas disciplinas para períodos que não existem.");
 		}
 
 		Periodo p = getPeriodo(periodo);
-		if (!p.podeAlocar(disciplina, false)) {
-            throw new InvalidOperationException("O período não pode ter mais de 28 créditos.");
+		int ultimoPeriodo = obterUltimoPeriodo();
+		boolean ignorarCreditos = false;
+		
+		if (ultimoPeriodo <= periodo) {
+            ignorarCreditos = true;
 		}
-
-        List<Disciplina> preRequisitosFaltando = preRequisitosFaltando(disciplina, periodo);
-        if (!preRequisitosFaltando.isEmpty()) {
-    	    resposta = false;
-        } else {
-        	p.alocarDisciplina(disciplina, false);
-        }
-
-        return resposta;
+		
+		try {
+			p.alocarDisciplina(disciplina, ignorarCreditos);
+		}
+		catch (InvalidOperationException e) {
+			throw e;
+		}
 	}
 	
 	/**
@@ -167,10 +189,6 @@ public class Grade {
 		
         if (periodo == 0) {
             throw new InvalidOperationException("Esta disciplina já está desalocada.");
-        }
-        
-        if (periodo == 1) {
-            throw new InvalidOperationException("Disciplinas do primeiro período não podem ser desalocadas.");
         }
 
         List<Disciplina> posRequisitosAlocados = posRequisitosAlocados(disciplina);
@@ -237,7 +255,7 @@ public class Grade {
 	 * @return String no formato JSON
 	 */
 	// INFORMATION EXPERT: Grade contem todas as disciplinas e periodos
-	public String disciplinasParaString() {
+	public String toString() {
         String result = "[";
         for (int i = 0; i < disciplinas.size(); i++) {
             if (i > 0) {
@@ -256,14 +274,18 @@ public class Grade {
 	 * @throws InvalidOperationException 
 	 */
 	// INFORMATION EXPERT: Grade contem todos os periodos
-	public void resetar() throws InvalidOperationException {
-		for (Periodo periodo : periodos) {
+	public void resetar() {
+		for (Periodo periodo : getPeriodos()) {
 			periodo.resetar();
 		}
 		for (Disciplina disciplina : disciplinas) {
 			if (disciplina.getPeriodoPrevisto() == 1) {
 				Periodo primeiroPeriodo = getPeriodo(1);
-				primeiroPeriodo.alocarDisciplina(disciplina, false);
+				try {
+					primeiroPeriodo.alocarDisciplina(disciplina, true);
+				} catch (InvalidOperationException e) {
+					// Nunca entra aqui
+				}
 			}
 		}
 	}
@@ -302,5 +324,29 @@ public class Grade {
 			}
 		}
 		return disciplinasIrregulares;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getPeriodoCursando() {
+		return periodoCursando;
+	}
+
+	public void setPeriodoCursando(int periodoCursando) {
+		this.periodoCursando = periodoCursando;
+	}
+
+	public List<Periodo> getPeriodos() {
+		return periodos;
+	}
+
+	public void setPeriodos(List<Periodo> periodos) {
+		this.periodos = periodos;
 	}
 }
