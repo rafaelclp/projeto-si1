@@ -45,7 +45,7 @@ public class Grade extends Model {
 	 */
 	public Grade() {
 		setPeriodos(new ArrayList<Periodo>());
-		disciplinas = new ArrayList<Disciplina>();//CarregadorDeDisciplinas.carregaDisciplinas(tipoDeGrade);
+		disciplinas = CarregadorDeDisciplinas.carregaDisciplinas(tipoDeGrade);
 		periodoCursando = 1;
 		
 		for (int i = 0; i < MAXIMO_DE_PERIODOS; i++) {
@@ -139,7 +139,8 @@ public class Grade extends Model {
 	 */
 	// INFORMATION EXPERT: Grade contem todos os periodos
 	public int getPeriodoDaDisciplina(Disciplina disciplina) {
-		for (int i = 1; i <= periodos.size(); i++) {
+		int ultimoPeriodo = obterUltimoPeriodo();
+		for (int i = 1; i <= ultimoPeriodo; i++) {
 			if (getPeriodo(i).contains(disciplina)) {
 				return i;
 			}
@@ -225,12 +226,13 @@ public class Grade extends Model {
 	// INFORMATION EXPERT: Grade contem todos os periodos
 	public void desalocarDisciplina(Disciplina disciplina) throws InvalidOperationException {
 		int indexPeriodo = getPeriodoDaDisciplina(disciplina);
-		Periodo periodo = getPeriodo(indexPeriodo);
 		
         if (indexPeriodo == 0) {
             throw new InvalidOperationException("Esta disciplina já está desalocada.");
         }
         
+		Periodo periodo = getPeriodo(indexPeriodo);
+		
         List<Disciplina> posRequisitosAlocados = posRequisitosAlocados(disciplina);
 
        	for (Disciplina i : posRequisitosAlocados) {
@@ -238,6 +240,8 @@ public class Grade extends Model {
             periodo = getPeriodo(indexPeriodo);
             periodo.desalocarDisciplina(i, periodoCursando>indexPeriodo);
         }
+       	
+       	periodo.desalocarDisciplina(disciplina, periodoCursando>indexPeriodo);
 	}
 	
 	/**
@@ -253,6 +257,7 @@ public class Grade extends Model {
 		int periodo = getPeriodoDaDisciplina(disciplina);
 		
 		for (Disciplina i : disciplina.getPosRequisitos()) {
+			//periodo < getPeriodoDaDisciplina OU getPeriodoDaDisciplina != 0 ?
 			if (periodo < getPeriodoDaDisciplina(i) && !posRequisitosAlocados.contains(i)) {
 				for (Disciplina j : posRequisitosAlocados(i)) {
 					if (!posRequisitosAlocados.contains(j)) {
@@ -354,13 +359,10 @@ public class Grade extends Model {
 	 */
 	public List<Disciplina> obterDisciplinasIrregulares() {
 		List<Disciplina> disciplinasIrregulares = new ArrayList<Disciplina>();
+		int ultimoPeriodo = obterUltimoPeriodo();
 		
-		for (int periodo = 1; periodo <= MAXIMO_DE_PERIODOS; periodo++) {
+		for (int periodo = 1; periodo <= ultimoPeriodo; periodo++) {
 			Periodo p = getPeriodo(periodo);
-			if (p == null) {
-				// a grade tem menos períodos do que o máximo
-				break;
-			}
 			List<Disciplina> disciplinas = p.getDisciplinas();
 			
 			for (Disciplina disciplina : disciplinas) {
@@ -368,7 +370,7 @@ public class Grade extends Model {
 				
 				boolean disciplinaRegular = true;
 				for (Disciplina preRequisito : preRequisitos) {
-					if (!estaAlocado(preRequisito) || getPeriodoDaDisciplina(preRequisito) >= periodo) {
+					if (!estaAlocado(preRequisito) || getPeriodoDaDisciplina(preRequisito) >= periodo || disciplinasIrregulares.contains(preRequisito)) {
 						disciplinaRegular = false;
 						break;
 					}
