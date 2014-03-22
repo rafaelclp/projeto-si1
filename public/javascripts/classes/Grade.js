@@ -3,10 +3,12 @@
 		Armazena uma lista de disciplinas acessíveis tanto por index quanto
 		por id, e realiza operações de alocar/desalocar tais disciplinas.
 		- disciplinas: lista das disciplinas na grade.
+		- periodoCursando: periodo a ser cursado no momento.
 */
 
 var Grade = {
 	"disciplinas": [],
+	"periodoCursando": 0,
 
 	/**
 	 * Altera a lista de disciplinas.

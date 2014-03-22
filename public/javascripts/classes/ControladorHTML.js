@@ -62,8 +62,18 @@ var ControladorHTML = {
 			var j = parseInt(i/3);
 			var altura_por_disciplina = 32;
 			var altura_base = 20 + 32;
-			html += GeradorHTML.gerarPainel('Periodo ' + (i+1), conteudo,
-				(maximo_de_disciplinas[j] > 0 ? maximo_de_disciplinas[j] + 1 : 0) * altura_por_disciplina + altura_base);
+
+			var marcarCursando = '<div align="right" style="float: right">(<a href="#!" onclick="Controlador.alterarPeriodoCursando(' + i + ')" class="marcarCursar">Cursar</a>)</div>';
+			var classe = "panel-primary";
+			if (i+1 == Grade.periodoCursando) {
+				marcarCursando = "";
+				classe = "panel-default";
+			}
+
+			html += GeradorHTML.gerarPainel('Periodo ' + (i+1) + marcarCursando, conteudo,
+				(maximo_de_disciplinas[j] > 0 ? maximo_de_disciplinas[j] + 1 : 0) * altura_por_disciplina + altura_base,
+				classe
+			);
 		}
 
 		var yPosition = $(document).scrollTop();

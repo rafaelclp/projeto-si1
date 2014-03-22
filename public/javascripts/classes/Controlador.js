@@ -14,6 +14,70 @@ var Controlador = {
 	},
 
 	/**
+	 * Altera o periodo que o usuario está cursando (requisita a mudança ao servidor).
+	 * @param periodo Novo período.
+	 */
+	alterarPeriodoCursando: function(periodo) {
+		this.__requisitarPagina("/alterarPeriodoCursando/" + periodo);
+	},
+
+	/**
+	 * Seta o periodo que o usuario está cursando.
+	 * @param periodo Novo período.
+	 */
+	setarPeriodoCursando: function(periodo) {
+		Grade.periodoCursando = periodo;
+	},
+
+	/**
+	 * Tenta logar um usuario@senha.
+	 * @param usuario Nome de usuário a ser logado.
+	 * @param senha Senha do usuário.
+	 */
+	logar: function(usuario, senha) {
+		data = {
+			"usuario": usuario,
+			"senha": senha
+		};
+
+		var jqxhr = this.__requisitarPagina("/logar/", false, data);
+
+		jqxhr.aoTratarRequisicao = function(data, textStatus) {
+			var parts = data.split(":");
+			if (parts[0] == "sucesso") {
+				location.href = "/";
+				return true;
+			}
+			return false;
+		};
+	},
+
+	/**
+	 * Tenta registrar um usuário.
+	 * @param nome Nome do usuário.
+	 * @param usuario Nome de usuário a ser logado.
+	 * @param senha Senha do usuário.
+	 */
+	registrar: function(nome, usuario, senha) {
+		data = {
+			"nome": nome,
+			"usuario": usuario,
+			"senha": senha
+		};
+
+		var jqxhr = this.__requisitarPagina("/registrar/", false, data);
+
+		jqxhr.aoTratarRequisicao = function(data, textStatus) {
+			var parts = data.split(":");
+			if (parts[0] == "sucesso") {
+				location.href = "/";
+				return true;
+			}
+			return false;
+		};
+	},
+
+	/**
 	 * Altera a lista de disciplinas da grade.
 	 * @param lista_de_listas Uma lista com listas no formato:
 	 *			[id, "nome", creditos, dificuldade, periodo_previsto, periodo]
@@ -139,6 +203,7 @@ var Controlador = {
 	__tratarRequisicao: function(data, textStatus, jqxhr) {
 		Dialogos.loading.esconder();
 
+		//alert(data);
 		if (jqxhr && jqxhr.aoTratarRequisicao)
 			if (jqxhr.aoTratarRequisicao(data, textStatus))
 				return; // true = resolveu toda a requisição
@@ -187,6 +252,11 @@ var Controlador = {
 				if (parametros[i].trim().length > 0)
 					disciplinas_irregulares.push(parseInt(parametros[i].trim()));
 			Grade.alterarRegularidade(disciplinas_irregulares);
+			ControladorHTML.desenharPaineis();
+			break;
+
+		case "periodoCursando":
+			setarPeriodoCursando(parseInt(parametros.trim()));
 			ControladorHTML.desenharPaineis();
 			break;
 

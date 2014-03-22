@@ -12,10 +12,11 @@ var GeradorHTML = {
 	 * @param altura Altura (height) do conteúdo do painel.
 	 * @return O HTML do painel.
 	**/
-	gerarPainel: function(titulo, conteudo, altura) {
+	gerarPainel: function(titulo, conteudo, altura, classe) {
+		classe = classe || "panel-primary";
 		var painel =  "";
 		painel += '<div class="col-sm-4">';
-		painel += '<div class="panel panel-primary">';
+		painel += '<div class="panel ' + classe + '">';
 		painel += '<div class="panel-heading">';
 		painel += '<h3 class="panel-title">' + titulo + '</h3>';
 		painel += '</div>';
