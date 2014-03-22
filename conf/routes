@@ -12,6 +12,7 @@ POST	/alocarDisciplina/:id/:periodo					controllers.Application.alocarDisciplina
 GET 	/obterPosRequisitosAlocados/:id					controllers.Application.obterPosRequisitosAlocados(id: Long)
 POST	/desalocarDisciplina/:id						controllers.Application.desalocarDisciplina(id: Long)
 POST	/moverDisciplina/:id/:periodo					controllers.Application.moverDisciplina(id: Long, periodo: Long)
+GET		/alterarPeriodoCursando/:periodo					controllers.Application.alterarPeriodoCursando(periodo: Long)
 GET		/resetar										controllers.Application.resetar()
 
 # Map static resources from the /public folder to the /assets URL path

@@ -28,6 +28,10 @@ public class Application extends Controller {
     public static Result moverDisciplina(Long id, Long periodo) {
     	return ok(views.html.response.render(Control.moverDisciplina(id.intValue(), periodo.intValue())));
     }
+    
+    public static Result setarPeriodoCursando(Long periodo) {
+    	return ok(views.html.response.render(Control.alterarPeriodoCursando(periodo.intValue())));
+    }
 	
     public static Result resetar() {
     	Control.resetar();

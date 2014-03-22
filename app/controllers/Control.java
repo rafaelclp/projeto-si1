@@ -142,6 +142,15 @@ public class Control {
     	return montarResposta("irregulares", resposta);
     }
 
+	public static String alterarPeriodoCursando(int periodo) {
+		try {
+			grade.setPeriodoCursando(periodo);
+		} catch (InvalidOperationException e) {
+			return montarResposta("erro", e.getMessage());
+		}
+		return montarResposta("periodoCursando", "" + periodo);
+	}
+
     /**
      * Reseta todas as alteracoes feitas pelo usuario
      * @throws InvalidOperationException 
@@ -166,9 +175,17 @@ public class Control {
     	return tipo + ":" + parametros;
     }
     
-    public static void setUsuario (Usuario usuario) {
+    public static void setUsuario(Usuario usuario) {
     	Control.usuario = usuario;
     	Control.grade = Control.usuario.getGrade();
+    }
+    
+    public static Usuario getUsuario() {
+    	return usuario;
+    }
+    
+    public static int getPeriodoCursando() {
+    	return grade.getPeriodoCursando();
     }
 
 }
