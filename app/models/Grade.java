@@ -2,6 +2,7 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -76,6 +77,28 @@ public class Grade extends Model {
 		resetar();
 	}
 	
+	/**
+	 * Gera um plano (grade) aleatório.
+	 */
+	public void gerarPlanoAleatorio() {
+		List<Periodo> periodos = new ArrayList<Periodo>();
+		for (int i = 0; i < MAXIMO_DE_PERIODOS; i++) {
+			periodos.add(new Periodo());
+		}
+		this.periodos = periodos;
+		for (Disciplina disciplina : disciplinas) {
+			boolean adicionado = false;
+			do {
+				int id = (Math.abs((new Random()).nextInt()) % MAXIMO_DE_PERIODOS) + 1;
+				try {
+					getPeriodo(id).alocarDisciplina(disciplina, false);
+					adicionado = true;
+				} catch (InvalidOperationException e) {
+				}
+			} while (!adicionado);
+		}
+	}
+
 	/**
 	 * Retorna Disciplina com id passado como argumento, ou null caso nao possua
 	 * disciplina com o dado id.

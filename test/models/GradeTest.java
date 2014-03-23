@@ -192,6 +192,11 @@ public class GradeTest {
 		List<Disciplina> disciplinas = periodo.getDisciplinas();
 		assertEquals(6, disciplinas.size());
 		assertTrue(disciplinas.contains(calculoI));
+		
+		for (int i = 0; i < 100; i++) {
+			// Tenta garantir "probabilisticamente" que ao resetar para uma grade aleatória não causará erro/exceção
+			gradeTeste.gerarPlanoAleatorio();
+		}
     }
 
     @Test

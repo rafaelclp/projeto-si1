@@ -1,6 +1,8 @@
 package controllers;
 
+import models.CarregadorDeDisciplinas;
 import models.InvalidOperationException;
+import models.TipoDeGrade;
 import models.Usuario;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -112,47 +114,58 @@ public class Application extends Controller {
     	return ok(views.html.response.render(resposta));
     }
     
+    private static void registrarUsuario(String nome, String usuario, String senha) {
+    	try {
+			Usuario u = Usuario.registrar(nome, usuario, senha);
+			u.getGrade().setDisciplinas(CarregadorDeDisciplinas.carregaDisciplinas(TipoDeGrade.FLUXOGRAMA_OFICIAL));
+			u.getGrade().gerarPlanoAleatorio();
+			u.getGrade().save();
+		} catch (InvalidOperationException e) {
+			e.printStackTrace();
+		}
+    }
+    
     public static Result inicializarUsuarios() {
     	if (!Usuario.existeUsuario("usuario")) {
-			Control.registrar("Usuario", "usuario", "usuario");
-			Control.registrar("Rafael Perrella", "rafaelclp", "rafael");
-			Control.registrar("Remy De Fru", "dfremy", "remydf");
-			Control.registrar("Bilbo Bolseiro", "bilbo", "12345678");
-			Control.registrar("Samwise Gamgee", "sam", "12345678");
-			Control.registrar("Galadriel", "driel", "12345678");
-			Control.registrar("Frodo Bolseiro", "frodo", "12345678");
-			Control.registrar("Boromir", "boromir", "12345678");
-			Control.registrar("Smaug", "smaug", "12345678");
-			Control.registrar("Legolas", "legolas", "12345678");
-			Control.registrar("Gollum", "smeagol", "12345678");
-			Control.registrar("Azog", "azog", "12345678");
-			Control.registrar("Saruman", "contact", "12345678");
-			Control.registrar("Gandalf", "gandalf", "12345678");
-			Control.registrar("Radagast", "radagast", "12345678");
-			Control.registrar("Aragorn", "aragorn", "12345678");
-			Control.registrar("Faramir", "faramir", "12345678");
-			Control.registrar("Celeborn", "celeborn", "12345678");
-			Control.registrar("Peregrin Tuk", "pippin", "12345678");
-			Control.registrar("Meriadoc Brandybuck", "merry", "12345678");
-			Control.registrar("Belladonna Tuk", "bella", "12345678");
-			Control.registrar("Sauron", "sauron", "12345678");
-			Control.registrar("Beorn", "beorn", "12345678");
-			Control.registrar("Balin", "balin", "12345678");
-			Control.registrar("Thorin", "thorin", "12345678");
-			Control.registrar("Bifur", "bifur", "12345678");
-			Control.registrar("Bombur", "bombur", "12345678");
-			Control.registrar("Bofur", "bofur", "12345678");
-			Control.registrar("Dori", "dori", "12345678");
-			Control.registrar("Durin", "durin", "12345678");
-			Control.registrar("Fili", "fili", "12345678");
-			Control.registrar("Kili", "kili", "12345678");
-			Control.registrar("Gimli", "gimli", "12345678");
-			Control.registrar("Ori", "ori", "12345678");
-			Control.registrar("Fangorn", "fangorn", "12345678");
-			Control.registrar("Barbarvore", "barbarvore", "12345678");
-			Control.registrar("Fimbrethil", "fimbrethil", "12345678");
-			Control.registrar("Tolkien", "tolkien", "12345678");
-			Control.registrar("Iluvatar", "god", "12345678");
+    		registrarUsuario("Usuario", "usuario", "usuario");
+    		registrarUsuario("Rafael Perrella", "rafaelclp", "rafael");
+    		registrarUsuario("Remy De Fru", "dfremy", "remydf");
+    		registrarUsuario("Bilbo Bolseiro", "bilbo", "12345678");
+    		registrarUsuario("Samwise Gamgee", "sam", "12345678");
+    		registrarUsuario("Galadriel", "driel", "12345678");
+    		registrarUsuario("Frodo Bolseiro", "frodo", "12345678");
+    		registrarUsuario("Boromir", "boromir", "12345678");
+    		registrarUsuario("Smaug", "smaug", "12345678");
+    		registrarUsuario("Legolas", "legolas", "12345678");
+    		registrarUsuario("Gollum", "smeagol", "12345678");
+    		registrarUsuario("Azog", "azog", "12345678");
+    		registrarUsuario("Saruman", "contact", "12345678");
+    		registrarUsuario("Gandalf", "gandalf", "12345678");
+    		registrarUsuario("Radagast", "radagast", "12345678");
+    		registrarUsuario("Aragorn", "aragorn", "12345678");
+    		registrarUsuario("Faramir", "faramir", "12345678");
+    		registrarUsuario("Celeborn", "celeborn", "12345678");
+    		registrarUsuario("Peregrin Tuk", "pippin", "12345678");
+    		registrarUsuario("Meriadoc Brandybuck", "merry", "12345678");
+    		registrarUsuario("Belladonna Tuk", "bella", "12345678");
+    		registrarUsuario("Sauron", "sauron", "12345678");
+    		registrarUsuario("Beorn", "beorn", "12345678");
+    		registrarUsuario("Balin", "balin", "12345678");
+    		registrarUsuario("Thorin", "thorin", "12345678");
+    		registrarUsuario("Bifur", "bifur", "12345678");
+    		registrarUsuario("Bombur", "bombur", "12345678");
+    		registrarUsuario("Bofur", "bofur", "12345678");
+    		registrarUsuario("Dori", "dori", "12345678");
+    		registrarUsuario("Durin", "durin", "12345678");
+    		registrarUsuario("Fili", "fili", "12345678");
+    		registrarUsuario("Kili", "kili", "12345678");
+    		registrarUsuario("Gimli", "gimli", "12345678");
+    		registrarUsuario("Ori", "ori", "12345678");
+    		registrarUsuario("Fangorn", "fangorn", "12345678");
+    		registrarUsuario("Barbarvore", "barbarvore", "12345678");
+    		registrarUsuario("Fimbrethil", "fimbrethil", "12345678");
+    		registrarUsuario("Tolkien", "tolkien", "12345678");
+    		registrarUsuario("Iluvatar", "god", "12345678");
         	return ok(views.html.response.render("Usuários inicializados."));
     	}
     	return ok(views.html.response.render("Os usuários já foram inicializados..."));
