@@ -73,7 +73,7 @@ var Grade = {
 	**/
 	alterarRegularidade: function(disciplinas_irregulares) {
 		var esta_irregular = {};
-		for (var i = 0; i < disciplinas_irregulares; i++)
+		for (var i = 0; i < disciplinas_irregulares.length; i++)
 			esta_irregular[disciplinas_irregulares[i]] = true;
 
 		for (var i = 0; i < this.disciplinas.length; i++) {
