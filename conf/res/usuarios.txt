@@ -1,0 +1,39 @@
+Usuario:usuario:usuario
+Rafael Perrella:rafaelclp:rafael
+Rémy De Fru:dfremy:remydf
+Bilbo Bolseiro:bilbo@shireuniversity.com:12345678
+Samwise Gamgee:sam@shireuniversity.com:12345678
+Galadriel:driel@lothlorienmail.com:12345678
+Frodo Bolseiro:frodo@shireuniversity.com:12345678
+Boromir:boromir@tirith.com:12345678
+Smaug:smaug@dragmail.com:12345678
+Legolas:legolas@lothlorienmail.com:12345678
+Gollum:smeagol@hotmail.com:12345678
+Azog:azog@towerofsaruman.com:12345678
+Saruman:contact@towerofsaruman.com:12345678
+Gandalf:gandalf@govmiddleearth.com:12345678
+Radagast:radagast@govmiddleearth.com:12345678
+Aragorn:aragorn@tirith.com:12345678
+Faramir:faramir@tirith.com:12345678
+Celeborn:celeborn@lothlorienmail.com:12345678
+Peregrin Tuk:pippin@shireuniversity.com:12345678
+Meriadoc Brandybuck:merry@shireuniversity.com:12345678
+Belladonna Tuk:bella@shireuniversity.com:12345678
+Sauron:sauron@darkside.com:12345678
+Beorn:beorn@cavesmail.com:12345678
+Balin:balin@moriamail.com:12345678
+Thorin:thorin@moriamail.com:12345678
+Bifur:bifur@moriamail.com:12345678
+Bombur:bombur@moriamail.com:12345678
+Bofur:bofur@moriamail.com:12345678
+Dori:dori@moriamail.com:12345678
+Durin:durin@moriamail.com:12345678
+Fili:fili@moriamail.com:12345678
+Kili:kili@moriamail.com:12345678
+Gimli:gimli@moriamail.com:12345678
+Ori:ori@moriamail.com:12345678
+Fangorn:fangorn@entsmail.com:12345678
+Barbarvore:barbarvore@entsmail.com:12345678
+Fimbrethil:fimbrethil@entsmail.com:12345678
+Tolkien:tolkien@govmiddleearth.com:12345678
+Iluvatar:god@middleeartchproject.com:12345678

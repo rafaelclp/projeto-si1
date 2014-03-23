@@ -1,5 +1,7 @@
 package controllers;
 
+import models.InvalidOperationException;
+import models.Usuario;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -108,5 +110,55 @@ public class Application extends Controller {
     		}
     	}
     	return ok(views.html.response.render(resposta));
+    }
+    
+    public static Result inicializarUsuarios() {
+    	if (!Usuario.existeUsuario("usuario")) {
+    		try {
+    			Usuario.registrar("Usuario", "usuario", "usuario");
+    			Usuario.registrar("Rafael Perrella", "rafaelclp", "rafael");
+    			Usuario.registrar("RÚmy De Fru", "dfremy", "remydf");
+    			Usuario.registrar("Bilbo Bolseiro", "bilbo", "12345678");
+    			Usuario.registrar("Samwise Gamgee", "sam", "12345678");
+    			Usuario.registrar("Galadriel", "driel", "12345678");
+    			Usuario.registrar("Frodo Bolseiro", "frodo", "12345678");
+    			Usuario.registrar("Boromir", "boromir", "12345678");
+    			Usuario.registrar("Smaug", "smaug", "12345678");
+    			Usuario.registrar("Legolas", "legolas", "12345678");
+    			Usuario.registrar("Gollum", "smeagol", "12345678");
+    			Usuario.registrar("Azog", "azog", "12345678");
+    			Usuario.registrar("Saruman", "contact", "12345678");
+    			Usuario.registrar("Gandalf", "gandalf", "12345678");
+    			Usuario.registrar("Radagast", "radagast", "12345678");
+    			Usuario.registrar("Aragorn", "aragorn", "12345678");
+    			Usuario.registrar("Faramir", "faramir", "12345678");
+    			Usuario.registrar("Celeborn", "celeborn", "12345678");
+    			Usuario.registrar("Peregrin Tuk", "pippin", "12345678");
+    			Usuario.registrar("Meriadoc Brandybuck", "merry", "12345678");
+    			Usuario.registrar("Belladonna Tuk", "bella", "12345678");
+    			Usuario.registrar("Sauron", "sauron", "12345678");
+    			Usuario.registrar("Beorn", "beorn", "12345678");
+    			Usuario.registrar("Balin", "balin", "12345678");
+    			Usuario.registrar("Thorin", "thorin", "12345678");
+    			Usuario.registrar("Bifur", "bifur", "12345678");
+    			Usuario.registrar("Bombur", "bombur", "12345678");
+    			Usuario.registrar("Bofur", "bofur", "12345678");
+    			Usuario.registrar("Dori", "dori", "12345678");
+    			Usuario.registrar("Durin", "durin", "12345678");
+    			Usuario.registrar("Fili", "fili", "12345678");
+    			Usuario.registrar("Kili", "kili", "12345678");
+    			Usuario.registrar("Gimli", "gimli", "12345678");
+    			Usuario.registrar("Ori", "ori", "12345678");
+    			Usuario.registrar("Fangorn", "fangorn", "12345678");
+    			Usuario.registrar("Barbarvore", "barbarvore", "12345678");
+    			Usuario.registrar("Fimbrethil", "fimbrethil", "12345678");
+    			Usuario.registrar("Tolkien", "tolkien", "12345678");
+    			Usuario.registrar("Iluvatar", "god", "12345678");
+    		} catch (InvalidOperationException e) {
+    			e.printStackTrace();
+    		}
+        	return ok(views.html.response.render("Usuários inicializados."));
+    	}
+    	return ok(views.html.response.render("Os usuários já foram inicializados..."));
     }
 }

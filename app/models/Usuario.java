@@ -22,10 +22,10 @@ import play.db.ebean.Model;
 public class Usuario extends Model {
 	private static final long serialVersionUID = 8941221341321L;
 
-	private static final int TAMANHO_USUARIO_MINIMO = 4;
+	private static final int TAMANHO_USUARIO_MINIMO = 3;
 	private static final int TAMANHO_USUARIO_MAXIMO = 20;
 
-	private static final int TAMANHO_NOME_MINIMO = 8;
+	private static final int TAMANHO_NOME_MINIMO = 3;
 	private static final int TAMANHO_NOME_MAXIMO = 64;
 
 	private static final int TAMANHO_SENHA_MINIMO = 6;
