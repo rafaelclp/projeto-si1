@@ -26,7 +26,7 @@ public class Disciplina extends Model {
 	private int creditos;
 	private int dificuldade;
 	private int periodoPrevisto;
-	
+
 	@ManyToMany
 	@JoinTable(name="disciplinas_preRequisitos", joinColumns=@JoinColumn(name="disciplina_id", referencedColumnName="id"),
 			inverseJoinColumns=@JoinColumn(name="prerequisito_id", referencedColumnName="id"))
@@ -49,15 +49,24 @@ public class Disciplina extends Model {
 	 * @param periodoPrevisto para disciplina ser cursada
 	 * @param id numero unico para cada disciplina
 	 */
-	public Disciplina(String nome, int creditos, int dificuldade, int periodoPrevisto, int id) {
+	public Disciplina(String nome, int creditos, int dificuldade, int periodoPrevisto, Long id) {
 		setNome(nome);
 		setCreditos(creditos);
 		setDificuldade(dificuldade);
 		setPeriodoPrevisto(periodoPrevisto);
-		setId(id);
+		setId(new Long(id));
 		
 		this.preRequisitos = new ArrayList<Disciplina>();
 		this.posRequisitos = new ArrayList<Disciplina>();
+	}
+
+	/**
+	 * Obtém uma lista de todas as disciplinas no banco de dados.
+	 * 
+	 * @return Lista das disciplinas
+	 */
+	public static List<Disciplina> obterTodas() {
+		return find.all();
 	}
 
 	/**
@@ -84,8 +93,8 @@ public class Disciplina extends Model {
 	 * 
 	 * @return int do codigo da disciplina
 	 */
-	public int getId(){
-		return this.id.intValue();
+	public Long getId(){
+		return this.id;
 	}
 	
 	/**
@@ -94,8 +103,8 @@ public class Disciplina extends Model {
 	 * @param id
 	 * 			Id da disciplina
 	 */
-	public void setId(int id) {
-		this.id = new Long(id);
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	/**
@@ -234,9 +243,5 @@ public class Disciplina extends Model {
 			return false;
 		}
 		return true;
-	}
-
-	public static List<Disciplina> obterTodas() {
-		return find.all();
 	}
 }
