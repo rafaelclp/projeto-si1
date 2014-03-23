@@ -92,7 +92,7 @@ var ControladorHTML = {
 			creditos.push(0);
 		for (var i = 0; i < Grade.disciplinas.length; i++)
 			creditos[Grade.disciplinas[i].periodo] += Grade.disciplinas[i].creditos;
-		for (var i = 1; i < creditos.length; i++)
+		for (var i = Grade.periodoCursando; i < creditos.length; i++)
 			if (creditos[i] < Configuracoes.MIN_CREDITOS)
 				periodos.push(i);
 
@@ -113,10 +113,10 @@ var ControladorHTML = {
 		var creditosCursando = Grade.getCreditosCursando();
 		var creditosACursar = Grade.getCreditosACursar();
 		var creditosTotais = creditosCursados + creditosCursando + creditosACursar;
-		msg += "Créditos cursados: " + creditosCursados;
-		msg += "<br />Créditos sendo cursados: " + creditosCursando;
-		msg += "<br />Créditos a serem cursados: " + creditosACursar;
-		msg += "<br />Créditos totais: " + creditosTotais + "/" + Configuracoes.MIN_CREDITOS_PARA_FORMAR;
+		msg += "<b>Créditos cursados:</b> " + creditosCursados;
+		msg += "<br /><b>Créditos sendo cursados:</b> " + creditosCursando;
+		msg += "<br /><b>Créditos a serem cursados:</b> " + creditosACursar;
+		msg += "<br /><b>Créditos totais:</b> " + creditosTotais + "/" + Configuracoes.MIN_CREDITOS_PARA_FORMAR;
 
 		// Exibe ou esconde a mensagem dos períodos incompletos
 		if (periodos.length > 0) {
