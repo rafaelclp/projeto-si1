@@ -13,25 +13,23 @@ create table disciplina (
 ;
 
 create table grade (
-  id                        integer not null,
+  id                        bigint not null,
   periodo_cursando          integer,
   constraint pk_grade primary key (id))
 ;
 
 create table periodo (
-  id                        integer not null,
-  creditos_minimo           integer,
-  creditos_maximo           integer,
+  id                        bigint not null,
   constraint pk_periodo primary key (id))
 ;
 
 create table usuario (
-  id                        integer not null,
+  id                        bigint not null,
   nome                      varchar(255),
   usuario                   varchar(255),
   senha_hasheada            varchar(255),
   salt                      varchar(255),
-  grade_id                  integer,
+  grade_id                  bigint,
   constraint pk_usuario primary key (id))
 ;
 
@@ -48,8 +46,14 @@ create table disciplinas_posRequisitos (
   constraint pk_disciplinas_posRequisitos primary key (disciplina_id, posrequisito_id))
 ;
 
+create table grade_periodo (
+  grade_id                       bigint not null,
+  periodo_id                     bigint not null,
+  constraint pk_grade_periodo primary key (grade_id, periodo_id))
+;
+
 create table periodo_disciplina (
-  periodo_id                     integer not null,
+  periodo_id                     bigint not null,
   disciplina_id                  bigint not null,
   constraint pk_periodo_disciplina primary key (periodo_id, disciplina_id))
 ;
@@ -74,6 +78,10 @@ alter table disciplinas_posRequisitos add constraint fk_disciplinas_posRequisito
 
 alter table disciplinas_posRequisitos add constraint fk_disciplinas_posRequisitos__02 foreign key (posrequisito_id) references disciplina (id) on delete restrict on update restrict;
 
+alter table grade_periodo add constraint fk_grade_periodo_grade_01 foreign key (grade_id) references grade (id) on delete restrict on update restrict;
+
+alter table grade_periodo add constraint fk_grade_periodo_periodo_02 foreign key (periodo_id) references periodo (id) on delete restrict on update restrict;
+
 alter table periodo_disciplina add constraint fk_periodo_disciplina_periodo_01 foreign key (periodo_id) references periodo (id) on delete restrict on update restrict;
 
 alter table periodo_disciplina add constraint fk_periodo_disciplina_discipl_02 foreign key (disciplina_id) references disciplina (id) on delete restrict on update restrict;
@@ -89,6 +97,8 @@ drop table if exists disciplinas_preRequisitos;
 drop table if exists disciplinas_posRequisitos;
 
 drop table if exists grade;
+
+drop table if exists grade_periodo;
 
 drop table if exists periodo;
 
