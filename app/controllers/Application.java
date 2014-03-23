@@ -64,6 +64,7 @@ public class Application extends Controller {
 	}
 
     private static boolean estaLogado() {
+    	// TODO: armazenar senha hasheada na session em vez de senha normal
     	String usuario = session("usuario");
     	String senha = session("senha");
     	return Control.logar(usuario, senha) == "sucesso";

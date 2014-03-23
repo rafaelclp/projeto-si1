@@ -1,10 +1,15 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import play.db.ebean.Model.Finder;
+import models.CarregadorDeDisciplinas;
 import models.Disciplina;
 import models.Grade;
 import models.InvalidOperationException;
+import models.Periodo;
+import models.TipoDeGrade;
 import models.Usuario;
 
 public class Control {
@@ -70,6 +75,7 @@ public class Control {
 		
 		try {
 			grade.associarDisciplinaAoPeriodo(disciplina, periodo);
+			usuario.save();
 		} catch (InvalidOperationException e) {
 			return montarResposta("erro", e.getMessage());
 		}
@@ -121,6 +127,7 @@ public class Control {
         try {
         	List<Disciplina> posRequisitosAlocados = grade.posRequisitosAlocados(disciplina);
         	grade.desalocarDisciplina(disciplina);
+        	grade.save();
         	
         	// Resposta => desalocar:<id1>,<id2>,<...>
 	       	for (Disciplina d : posRequisitosAlocados) {
@@ -148,6 +155,7 @@ public class Control {
     	try {
 			disciplina = grade.getDisciplinaPorID(id);
 	    	grade.associarDisciplinaAoPeriodo(disciplina, periodo);
+	    	grade.save();
 		} catch (InvalidOperationException e) {
 			return montarResposta("erro", e.getMessage());
 		}
@@ -170,6 +178,7 @@ public class Control {
      */
 	public static String alterarPeriodoCursando(int periodo) {
 		grade.setPeriodoCursando(periodo);
+		grade.save();
 		return montarResposta("periodoCursando", "" + periodo);
 	}
 
@@ -180,6 +189,7 @@ public class Control {
     // CONTROLLER: Funcionalidade pro usuario
     public static void resetar() {
         grade.resetar();
+        grade.save();
     }
 
     /**
@@ -217,6 +227,7 @@ public class Control {
     	Control.usuario = usuario;
     	if (usuario != null) {
     		Control.grade = Control.usuario.getGrade();
+    		Control.usuario.getGrade().setDisciplinas(CarregadorDeDisciplinas.carregaDisciplinas(TipoDeGrade.FLUXOGRAMA_OFICIAL));
     	}
     }
     
@@ -270,6 +281,7 @@ public class Control {
     	} catch (InvalidOperationException e) {
     		return montarResposta("erro", e.getMessage());
     	}
+    	resetar();
     	return montarResposta("sucesso");
     }
 }
