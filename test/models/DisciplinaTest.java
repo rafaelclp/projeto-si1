@@ -21,10 +21,10 @@ public class DisciplinaTest {
 
 	@Before
 	public void setUp() {
-		calculoI = new Disciplina("Cálculo I", 4, 7, 1, 3);
-		vetorial = new Disciplina("Algebra Vetorial", 4, 3, 1, 4);
-		calculoII = new Disciplina("Cálculo II", 4, 7, 2, 13);
-		ffc = new Disciplina("Fund. de Física Clássica", 4, 8, 2, 12);
+		calculoI = new Disciplina("Cálculo I", 4, 7, 1, 3L);
+		vetorial = new Disciplina("Algebra Vetorial", 4, 3, 1, 4L);
+		calculoII = new Disciplina("Cálculo II", 4, 7, 2, 13L);
+		ffc = new Disciplina("Fund. de Física Clássica", 4, 8, 2, 12L);
 	}
 
 	@Test
@@ -33,7 +33,7 @@ public class DisciplinaTest {
 		assertEquals(4, calculoI.getCreditos());
 		assertEquals(7, calculoI.getDificuldade());
 		assertEquals(1, calculoI.getPeriodoPrevisto());
-		assertEquals(3, calculoI.getId());
+		assertEquals(3, calculoI.getId().intValue());
 		
 		assertNotEquals(calculoI.toString(), vetorial.toString());
 	}
@@ -78,21 +78,47 @@ public class DisciplinaTest {
 
 		List<Disciplina> resultado = Disciplina.obterTodas();
 		assertEquals(resultado.size(), 0);
-		Disciplina d = new Disciplina("Algebra", 4, 6, 1, 7);
+		Disciplina d = new Disciplina("Algebra", 4, 6, 1, 7L);
 		d.save();
 
 		resultado = Disciplina.obterTodas();
 		assertNotNull(resultado);
 		assertEquals(resultado.size(), 1);
-		assertEquals(resultado.get(0).getId(), 7);
+		assertEquals(resultado.get(0).getId().intValue(), 7);
 		assertEquals("Algebra", resultado.get(0).getNome());
 
-		d = new Disciplina("Algebra 2", 4, 6, 1, 7);
+		d = new Disciplina("Algebra 2", 4, 6, 1, 7L);
 		d.update();
 		resultado = Disciplina.obterTodas();
 		assertNotNull(resultado);
 		assertEquals(resultado.size(), 1);
-		assertEquals(resultado.get(0).getId(), 7);
+		assertEquals(resultado.get(0).getId().intValue(), 7);
 		assertEquals("Algebra 2", resultado.get(0).getNome());
+	}
+	
+	/**
+	 * Teste para verificar se não há problema nas relações
+	 * dos atributos de Disciplina que as impeçam de serem carregadas
+	 * corretamente no banco de dados
+	 */
+	@Test
+	public void carregaNoBD() {
+		FakeApplication app = fakeApplication(inMemoryDatabase());
+		start(app);
+
+		CarregadorDeDisciplinas.limparCache();
+		List<Disciplina> l = CarregadorDeDisciplinas.carregaDisciplinas(TipoDeGrade.FLUXOGRAMA_OFICIAL);
+		assertEquals(64, l.size());
+
+		List<Disciplina> all = Disciplina.obterTodas();
+		assertEquals(l.size(), all.size());
+		
+		Disciplina programacaoI = null;
+		for (int i = 0; i < all.size(); i++) {
+			if (all.get(i).getNome().equals("Programação I")) {
+				programacaoI = all.get(i);
+			}
+		}
+		assertEquals(4, programacaoI.getPosRequisitos().size());
 	}
 }
