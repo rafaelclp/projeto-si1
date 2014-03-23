@@ -32,7 +32,7 @@ public class Usuario extends Model {
 	private static final int TAMANHO_SENHA_MAXIMO = 64;
 	
 	@Id
-	private int id;
+	private Long id;
 
 	private String nome;
 
@@ -112,7 +112,7 @@ public class Usuario extends Model {
 	 * 
 	 * @return id do aluno
 	 */
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -121,7 +121,7 @@ public class Usuario extends Model {
 	 * 
 	 * @param id atribuido
 	 */
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.persistence.PersistenceException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,6 +27,13 @@ public class CarregadorDeDisciplinas {
 	private static Map<String, List<Disciplina>> cache = new TreeMap<String, List<Disciplina>>();
 	
 	/**
+	 * Limpa o cache.
+	 */
+	public static void limparCache() {
+		cache = new TreeMap<String, List<Disciplina>>();
+	}
+	
+	/**
 	 * Carrega disciplinas e retorna lista com todas as
      * disciplinas contidas no arquivo XML. Se já tiverem sido
      * carregadas anteriormente, apenas as retorna da memória.
@@ -37,6 +45,7 @@ public class CarregadorDeDisciplinas {
     public static List<Disciplina> carregaDisciplinas(String arquivo) {
     	if (!cache.containsKey(arquivo)) {
     		 cache.put(arquivo, carregaDisciplinasDoArquivo(arquivo));
+    		 carregaNoBancoDeDados(cache.get(arquivo));
     	}
     	return cache.get(arquivo);
     }
@@ -55,6 +64,29 @@ public class CarregadorDeDisciplinas {
     	}
 
     	return carregaDisciplinas(arquivo);
+    }
+    
+	/**
+	 * Carrega disciplinas no banco de dados.
+     * 
+	 * @param disciplinas Lista de disciplinas a serem carregadas.
+	 */
+    private static void carregaNoBancoDeDados(List<Disciplina> disciplinas) {
+    	for (Disciplina d : disciplinas) {
+    		Disciplina tmp = new Disciplina(d.getNome(), d.getCreditos(), d.getDificuldade(), d.getPeriodoPrevisto(), d.getId());
+    		try {
+    			// salva os atributos diretos (da tabela disciplina)
+    			tmp.save();
+    		} catch (PersistenceException e) {
+    			// disciplina já no banco de dados, atualiza
+    			tmp.update();
+    		}
+    	}
+
+    	for (Disciplina d : disciplinas) {
+    		// salva as relações Disciplina -> Disciplina (pre/pos-requisitos)
+    		d.update();
+    	}
     }
     
     /**
@@ -107,7 +139,7 @@ public class CarregadorDeDisciplinas {
                 .getElementsByTagName("periodo").item(0).getTextContent());
         
         Disciplina novaDisciplina = new Disciplina(nome, creditos, dificuldade,
-                periodo, id);
+                periodo, new Long(id));
 
         NodeList requisitos = cadeiraXML.getElementsByTagName("id");
         
