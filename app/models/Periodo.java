@@ -3,9 +3,11 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.PersistenceException;
 
 import play.db.ebean.Model;
 
@@ -18,14 +20,14 @@ public class Periodo extends Model {
 	private static final long serialVersionUID = 18217409829147L;
 
 	@Id
-	private int id;
+	private Long id = null;
 	
-	@ManyToMany
+	@ManyToMany(cascade=CascadeType.ALL)
 	private List<Disciplina> disciplinas;
 
-	final int CREDITOS_MINIMO = 12;
-	final int CREDITOS_MAXIMO = 28;
-
+	private static final int CREDITOS_MINIMO = 12;
+	private static final int CREDITOS_MAXIMO = 28;
+	
 	/**
 	 * Cria um novo periodo
 	 */
@@ -38,7 +40,7 @@ public class Periodo extends Model {
 	 * 
 	 * @return int do id do periodo
 	 */
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -48,7 +50,7 @@ public class Periodo extends Model {
 	 * @param id
 	 * 			do periodo
 	 */
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
@@ -169,7 +171,7 @@ public class Periodo extends Model {
 	 * 
 	 */
 	public void resetar() {
-		disciplinas.clear();
+		disciplinas = new ArrayList<Disciplina>();
 	}
 
 }

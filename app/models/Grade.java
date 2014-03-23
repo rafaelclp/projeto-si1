@@ -3,8 +3,12 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.PersistenceException;
 import javax.persistence.Transient;
 
 import play.db.ebean.Model;
@@ -22,9 +26,9 @@ public class Grade extends Model {
 	private static final int MAXIMO_DE_PERIODOS = 12;
 	
 	@Id
-	private int id;
+	private Long id;
 	
-	private int periodoCursando;
+	private int periodoCursando = 1;
 	
 	@Transient
 	private TipoDeGrade tipoDeGrade = TipoDeGrade.FLUXOGRAMA_OFICIAL;
@@ -36,25 +40,42 @@ public class Grade extends Model {
 
 	// CREATOR: Grade contem uma lista de períodos
 	// Lista com todos os periodos da grade
+	@ManyToMany(cascade=CascadeType.ALL)
 	private List<Periodo> periodos;
+
+	/**
+	 * Constructor para o Ebean
+	 * Inicializa as variaveis e reseta o sistema (aloca primeiro periodo)
+	 * @throws InvalidOperationException 
+	 */
+	public Grade() {
+		setPeriodos(new ArrayList<Periodo>());
+		this.disciplinas = new ArrayList<Disciplina>();
+		//this.disciplinas = CarregadorDeDisciplinas.carregaDisciplinas(tipoDeGrade);
+		periodoCursando = 1;
+
+		for (int i = 0; i < MAXIMO_DE_PERIODOS; i++) {
+			periodos.add(new Periodo());
+		}
+	}
 
 	/**
 	 * Constructor
 	 * Inicializa as variaveis e reseta o sistema (aloca primeiro periodo)
 	 * @throws InvalidOperationException 
 	 */
-	public Grade() {
+	// TODO: refatorar (dois construtores quase idênticos)
+	public Grade(List<Disciplina> disciplinas) {
 		setPeriodos(new ArrayList<Periodo>());
-		disciplinas = CarregadorDeDisciplinas.carregaDisciplinas(tipoDeGrade);
+		this.disciplinas = disciplinas;
 		periodoCursando = 1;
-		
+
 		for (int i = 0; i < MAXIMO_DE_PERIODOS; i++) {
 			periodos.add(new Periodo());
 		}
-		
 		resetar();
 	}
-
+	
 	/**
 	 * Retorna Disciplina com id passado como argumento, ou null caso nao possua
 	 * disciplina com o dado id.
@@ -102,6 +123,15 @@ public class Grade extends Model {
 	// INFORMATION EXPERT: Grade contem uma lista com todas as disciplinas
 	public List<Disciplina> getDisciplinas() {
 		return disciplinas;
+	}
+	
+	/**
+	 * Altera a lista de disciplinas
+	 * 
+	 * @param disciplinas Nova lista
+	 */
+	public void setDisciplinas(List<Disciplina> disciplinas) {
+		this.disciplinas = disciplinas;
 	}
 	
 	/**
@@ -388,7 +418,7 @@ public class Grade extends Model {
 	 * 
 	 * @return id da grade
 	 */
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -397,7 +427,7 @@ public class Grade extends Model {
 	 *
 	 * @param id atribuido
 	 */
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
