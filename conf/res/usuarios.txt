@@ -1,6 +1,6 @@
 Usuario:usuario:usuario
 Rafael Perrella:rafaelclp:rafael
-Rémy De Fru:dfremy:remydf
+Remy De Fru:dfremy:remydf
 Bilbo Bolseiro:bilbo@shireuniversity.com:12345678
 Samwise Gamgee:sam@shireuniversity.com:12345678
 Galadriel:driel@lothlorienmail.com:12345678
