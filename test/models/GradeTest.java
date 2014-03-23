@@ -1,18 +1,25 @@
 package models;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static play.test.Helpers.fakeApplication;
+import static play.test.Helpers.inMemoryDatabase;
+import static play.test.Helpers.start;
 
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import play.db.ebean.Model.Finder;
+import play.test.FakeApplication;
+
 public class GradeTest {
 
     private Periodo periodoTeste;
-    private Grade gradeTeste = new Grade();
+    private Grade gradeTeste;
 
     /*
      * DISCIPLINAS
@@ -29,14 +36,19 @@ public class GradeTest {
 
     @Before
     public void setUp() {
+		FakeApplication app = fakeApplication(inMemoryDatabase());
+		start(app);
+		CarregadorDeDisciplinas.limparCache();
+    	gradeTeste = new Grade(CarregadorDeDisciplinas.carregaDisciplinas(TipoDeGrade.FLUXOGRAMA_OFICIAL));
         periodoTeste = new Periodo();
+
         // nome , creditos, dificuldade, periodo, id
-        calculoI = new Disciplina("Cálculo I", 4, 7, 1, 3);
-        vetorial = new Disciplina("Algebra Vetorial", 4, 3, 1, 4);
-        lpt = new Disciplina("Leitura e Prod. de Textos", 4, 2, 1, 2);
-        p1 = new Disciplina("Programação I", 4, 4, 1, 1);
-        ic = new Disciplina("Int. à Computacação", 4, 5, 1, 5);
-        lp1 = new Disciplina("Lab. de Programação I", 4, 4, 1, 6);
+        calculoI = new Disciplina("Cálculo I", 4, 7, 1, 3L);
+        vetorial = new Disciplina("Algebra Vetorial", 4, 3, 1, 4L);
+        lpt = new Disciplina("Leitura e Prod. de Textos", 4, 2, 1, 2L);
+        p1 = new Disciplina("Programação I", 4, 4, 1, 1L);
+        ic = new Disciplina("Int. à Computacação", 4, 5, 1, 5L);
+        lp1 = new Disciplina("Lab. de Programação I", 4, 4, 1, 6L);
     }
 
     @Test
@@ -182,5 +194,85 @@ public class GradeTest {
 		assertTrue(disciplinas.contains(calculoI));
     }
 
+    @Test
+    public void registraNoBD() {
+    	Grade grade = new Grade();
+    	grade.setDisciplinas(CarregadorDeDisciplinas.carregaDisciplinas(TipoDeGrade.FLUXOGRAMA_OFICIAL));
+    	
+    	grade.setPeriodoCursando(2);
+    	grade.save();
+    	
+    	int id = grade.getId().intValue();
+		Finder<Long, Grade> find = new Finder<Long, Grade>(Long.class,
+				Grade.class);
+		grade = find.byId(new Long(id));
+		assertEquals(2, grade.getPeriodoCursando());
+		assertEquals(0, grade.getPeriodo(1).getDisciplinas().size());
+
+		Disciplina d = null, d2 = null;
+		try {
+			boolean associou = false;
+			grade.setDisciplinas(CarregadorDeDisciplinas.carregaDisciplinas(TipoDeGrade.FLUXOGRAMA_OFICIAL));
+			assertEquals(64, grade.getDisciplinas().size());
+			for (int i = 0; i < grade.getDisciplinas().size(); i++) {
+				d = grade.getDisciplinas().get(i);
+				if (d.getPreRequisitos().size() == 0) {
+					if (d2 == null) {
+						d2 = d;
+					} else {
+						grade.associarDisciplinaAoPeriodo(d, 1);
+						associou = true;
+						break;
+					}
+				}
+			}
+			assertTrue(associou);
+		} catch (InvalidOperationException e) {
+			fail("Deveria ser possível alocar uma disciplina sem pre-requisitos.");
+		}
+		grade.save();
+
+		Long periodo_id = grade.getPeriodo(1).getId();
+		Finder<Long, Periodo> findp = new Finder<Long, Periodo>(Long.class,
+				Periodo.class);
+		Periodo p = findp.byId(periodo_id);
+		assertEquals(1, grade.getPeriodo(1).getDisciplinas().size());
+		assertEquals(1, p.getDisciplinas().size());
+		assertEquals(d, p.getDisciplinas().get(0));
+
+		try {
+			p.alocarDisciplina(d2, false);
+		} catch (InvalidOperationException e) {
+			fail("Deveria alocar.");
+		}
+		p.save();
+		p = findp.byId(p.getId());
+		assertEquals(2, p.getDisciplinas().size());
+		assertEquals(d, p.getDisciplinas().get(1));
+		assertEquals(d2, p.getDisciplinas().get(0));
+
+		grade = find.byId(grade.getId());
+		assertNotNull(grade.getPeriodos());
+		assertEquals(12, grade.getPeriodos().size());
+		assertEquals(2, grade.getPeriodo(1).getDisciplinas().size());
+
+		List<Disciplina> l = grade.getPeriodo(1).getDisciplinas();
+		d2 = l.get(1);
+		assertEquals(d.getId(), d2.getId());
+    }
     
+    @Test
+    public void persistenciaAoResetar() {
+    	Grade grade = new Grade();
+    	grade.setDisciplinas(CarregadorDeDisciplinas.carregaDisciplinas(TipoDeGrade.FLUXOGRAMA_OFICIAL));
+    	grade.resetar();
+    	
+    	assertEquals(6, grade.getPeriodo(1).getDisciplinas().size());
+    	
+    	grade.save();
+    	Finder<Long, Grade> find = new Finder<Long, Grade>(Long.class,
+    			Grade.class);
+    	Grade g = find.byId(grade.getId());
+    	assertEquals(6, grade.getPeriodo(1).getDisciplinas().size());
+    }
 }

@@ -1,12 +1,21 @@
 package models;
 
 import static org.junit.Assert.*;
+import static play.test.Helpers.fakeApplication;
+import static play.test.Helpers.inMemoryDatabase;
+import static play.test.Helpers.start;
+
+import java.util.List;
+
 import models.Disciplina;
 import models.InvalidOperationException;
 import models.Periodo;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import play.db.ebean.Model.Finder;
+import play.test.FakeApplication;
 
 public class PeriodoTest {
 
@@ -20,10 +29,10 @@ public class PeriodoTest {
 	public void setUp() {
 		periodoTeste = new Periodo();
 		
-		calculoI = new Disciplina("Cáĺculo I", 4, 7, 1, 3);
-		vetorial = new Disciplina("Algebra Vetorial", 4, 3, 1, 4);
-		ffc = new Disciplina("Fund. de Física Clássica", 4, 8, 2, 12);
-		p1 = new Disciplina("Programação 1", 4, 8, 1, 6);
+		calculoI = new Disciplina("Cáĺculo I", 4, 7, 1, 3L);
+		vetorial = new Disciplina("Algebra Vetorial", 4, 3, 1, 4L);
+		ffc = new Disciplina("Fund. de Física Clássica", 4, 8, 2, 12L);
+		p1 = new Disciplina("Programação 1", 4, 8, 1, 6L);
 	}
 
 	@Test
@@ -165,5 +174,53 @@ public class PeriodoTest {
 		periodoTeste.resetar();
 		assertTrue(periodoTeste.totalDeCreditos() == 0);
 		assertFalse(periodoTeste.contains(p1));
+	}
+	
+	@Test
+	public void registraNoBD() {
+		FakeApplication app = fakeApplication(inMemoryDatabase());
+		start(app);
+
+		CarregadorDeDisciplinas.limparCache();
+		List<Disciplina> disciplinas = CarregadorDeDisciplinas.carregaDisciplinas(TipoDeGrade.FLUXOGRAMA_OFICIAL);
+		if (disciplinas.size() < 5) {
+			fail("Verifique se o carregador está correto, ele é necessário para testar o Periodo.");
+		}
+
+		Periodo p = new Periodo();
+		Disciplina d1 = disciplinas.get(0), d2 = disciplinas.get(1);
+		try {
+			p.alocarDisciplina(d1, false);
+			p.alocarDisciplina(d2, false);
+		} catch (InvalidOperationException e) {
+			fail("Deveria alocar");
+		}
+		p.save();
+
+		int id = p.getId().intValue();
+		Finder<Long, Periodo> find = new Finder<Long, Periodo>(Long.class,
+				Periodo.class);
+		p = find.byId(new Long(id+1));
+		assertNull(p);
+
+		p = find.byId(new Long(id));
+		assertEquals(2, p.getDisciplinas().size());
+		assertEquals(d1.getNome(), p.getDisciplinas().get(0).getNome());
+		assertEquals(d2.getNome(), p.getDisciplinas().get(1).getNome());
+		
+		Periodo p2 = new Periodo();
+		try {
+			p2.alocarDisciplina(d1, false);
+			p2.alocarDisciplina(d2, false);
+		} catch (InvalidOperationException e) {
+			fail("Deveria alocar");
+		}
+		p2.save();
+
+		assertNotEquals(p.getId(), p2.getId());
+		p2 = find.byId(new Long(p2.getId()));
+		assertEquals(2, p.getDisciplinas().size());
+		assertEquals(d1.getNome(), p.getDisciplinas().get(0).getNome());
+		assertEquals(d2.getNome(), p.getDisciplinas().get(1).getNome());
 	}
 }
