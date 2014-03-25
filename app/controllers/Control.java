@@ -1,14 +1,11 @@
 package controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import play.db.ebean.Model.Finder;
 import models.CarregadorDeDisciplinas;
 import models.Disciplina;
 import models.Grade;
 import models.InvalidOperationException;
-import models.Periodo;
 import models.TipoDeGrade;
 import models.Usuario;
 

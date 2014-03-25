@@ -7,7 +7,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.PersistenceException;
 
 import play.db.ebean.Model;
 
@@ -25,7 +24,6 @@ public class Periodo extends Model {
 	@ManyToMany(cascade=CascadeType.ALL)
 	private List<Disciplina> disciplinas;
 
-	private static final int CREDITOS_MINIMO = 12;
 	private static final int CREDITOS_MAXIMO = 28;
 	
 	/**
@@ -90,10 +88,7 @@ public class Periodo extends Model {
 	 * 
 	 * @throws InvalidOperationException se não puder desalocar
 	 */
-	public void desalocarDisciplina(Disciplina disciplina, boolean ignorarCreditos) throws InvalidOperationException {
-		if (!podeDesalocar(disciplina, ignorarCreditos)) {
-			throw new InvalidOperationException("Disciplina não pode ser desalocada deste período.");
-		}
+	public void desalocarDisciplina(Disciplina disciplina) throws InvalidOperationException {
 		if (!disciplinas.remove(disciplina)) {
 			throw new InvalidOperationException("Disciplina não existente neste período.");
 		}
@@ -136,22 +131,6 @@ public class Periodo extends Model {
 	 */
 	public boolean podeAlocar(Disciplina disciplina, boolean ignorarCreditos) {
 		if (!ignorarCreditos && totalDeCreditos() + disciplina.getCreditos() > CREDITOS_MAXIMO) {
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * Verifica se a disciplina pode ser desalocada deste periodo
-	 * @param disciplina 
-	 * 			a ser desalocada
-	 * @param ignorarCreditos
-	 * 			se deve ser considerado o limite de credito para esta desalocacao
-	 * 
-	 * @return boolean informado se pode ou nao desalocar a disciplina
-	 */
-	public boolean podeDesalocar(Disciplina disciplina, boolean ignorarCreditos) {
-		if (!ignorarCreditos && this.totalDeCreditos() - disciplina.getCreditos() < CREDITOS_MINIMO) {
 			return false;
 		}
 		return true;

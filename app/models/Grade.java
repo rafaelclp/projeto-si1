@@ -8,8 +8,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.PersistenceException;
 import javax.persistence.Transient;
 
 import play.db.ebean.Model;
@@ -262,7 +260,7 @@ public class Grade extends Model {
 		periodoNovo.alocarDisciplina(disciplina, ultimoPeriodo<=indexPeriodoNovo);
 		
 		try {
-			periodoAntigo.desalocarDisciplina(disciplina, periodoCursando>indexPeriodoAntigo);
+			periodoAntigo.desalocarDisciplina(disciplina);
 		} catch (InvalidOperationException e) {
 			// nunca entra aqui...
 			e.printStackTrace();
@@ -288,13 +286,13 @@ public class Grade extends Model {
 		
         List<Disciplina> posRequisitosAlocados = posRequisitosAlocados(disciplina);
 
-       	for (Disciplina i : posRequisitosAlocados) {
-       		indexPeriodo = getPeriodoDaDisciplina(i);
-            periodo = getPeriodo(indexPeriodo);
-            periodo.desalocarDisciplina(i, periodoCursando>indexPeriodo);
+       	for (Disciplina disc : posRequisitosAlocados) {
+       		indexPeriodo = getPeriodoDaDisciplina(disc);
+            Periodo p = getPeriodo(indexPeriodo);
+            p.desalocarDisciplina(disc);
         }
        	
-       	periodo.desalocarDisciplina(disciplina, periodoCursando>indexPeriodo);
+       	periodo.desalocarDisciplina(disciplina);
 	}
 	
 	/**
@@ -307,11 +305,9 @@ public class Grade extends Model {
 	// INFORMATION EXPERT: Grade contem todas as disciplinas
 	public List<Disciplina> posRequisitosAlocados(Disciplina disciplina) {
 		List<Disciplina> posRequisitosAlocados = new ArrayList<Disciplina>();
-		int periodo = getPeriodoDaDisciplina(disciplina);
 		
 		for (Disciplina i : disciplina.getPosRequisitos()) {
-			//periodo < getPeriodoDaDisciplina OU getPeriodoDaDisciplina != 0 ?
-			if (periodo < getPeriodoDaDisciplina(i) && !posRequisitosAlocados.contains(i)) {
+			if (getPeriodoDaDisciplina(i) != 0 && !posRequisitosAlocados.contains(i)) {
 				for (Disciplina j : posRequisitosAlocados(i)) {
 					if (!posRequisitosAlocados.contains(j)) {
 						posRequisitosAlocados.add(j);
