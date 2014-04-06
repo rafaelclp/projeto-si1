@@ -1,5 +1,9 @@
 package models;
 
+/**
+ * Exceção lançada caso uma operação inválida seja requisitada.
+ *
+ */
 public class InvalidOperationException extends Exception {
 	private static final long serialVersionUID = 4904122534675169254L;
 
