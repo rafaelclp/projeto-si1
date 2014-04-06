@@ -15,6 +15,8 @@ create table disciplina (
 create table grade (
   id                        bigint not null,
   periodo_cursando          integer,
+  tipo_de_grade             integer,
+  constraint ck_grade_tipo_de_grade check (tipo_de_grade in (0,1,2)),
   constraint pk_grade primary key (id))
 ;
 
