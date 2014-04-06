@@ -12,8 +12,7 @@ import javax.persistence.ManyToMany;
 import play.db.ebean.Model;
 
 /**
- * Classe que representa uma disciplina do curso
- * 
+ * Entidade responsável por armazenar os dados de uma disciplina.
  */
 @Entity
 public class Disciplina extends Model {
