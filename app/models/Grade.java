@@ -14,9 +14,7 @@ import play.db.ebean.Model;
 
 
 /**
- * 
- * Classe que representa a grade do aluno
- *
+ * Entidade responsável por armazenar a grade de um usuário.
  */
 @Entity
 public class Grade extends Model {
@@ -29,7 +27,6 @@ public class Grade extends Model {
 	
 	private int periodoCursando = 1;
 	
-	@Transient
 	private TipoDeGrade tipoDeGrade = TipoDeGrade.FLUXOGRAMA_OFICIAL;
 	
 	// CREATOR: Grade contem uma lista com as disciplinas
@@ -43,14 +40,13 @@ public class Grade extends Model {
 	private List<Periodo> periodos;
 
 	/**
-	 * Constructor para o Ebean
+	 * Construtor para o Ebean
 	 * Inicializa as variaveis e reseta o sistema (aloca primeiro periodo)
 	 * @throws InvalidOperationException 
 	 */
 	public Grade() {
 		setPeriodos(new ArrayList<Periodo>());
 		this.disciplinas = new ArrayList<Disciplina>();
-		//this.disciplinas = CarregadorDeDisciplinas.carregaDisciplinas(tipoDeGrade);
 		periodoCursando = 1;
 
 		for (int i = 0; i < MAXIMO_DE_PERIODOS; i++) {
@@ -59,22 +55,12 @@ public class Grade extends Model {
 	}
 
 	/**
-	 * Constructor
-	 * Inicializa as variaveis e reseta o sistema (aloca primeiro periodo)
-	 * @throws InvalidOperationException 
+	 * Carrega as disciplinas para a grade de acordo com seu tipo.
 	 */
-	// TODO: refatorar (dois construtores quase idênticos)
-	public Grade(List<Disciplina> disciplinas) {
-		setPeriodos(new ArrayList<Periodo>());
-		this.disciplinas = disciplinas;
-		periodoCursando = 1;
-
-		for (int i = 0; i < MAXIMO_DE_PERIODOS; i++) {
-			periodos.add(new Periodo());
-		}
-		resetar();
+	public void carregarDisciplinas() {
+		this.disciplinas = CarregadorDeDisciplinas.carregaDisciplinas(tipoDeGrade);
 	}
-	
+
 	/**
 	 * Gera um plano (grade) aleatório.
 	 */
@@ -484,5 +470,13 @@ public class Grade extends Model {
 	 */
 	public void setPeriodos(List<Periodo> periodos) {
 		this.periodos = periodos;
+	}
+
+	public TipoDeGrade getTipoDeGrade() {
+		return tipoDeGrade;
+	}
+
+	public void setTipoDeGrade(TipoDeGrade tipoDeGrade) {
+		this.tipoDeGrade = tipoDeGrade;
 	}
 }
