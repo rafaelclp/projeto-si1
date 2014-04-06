@@ -432,7 +432,7 @@ public class Grade extends Model {
 
 	/**
 	 * Atribui um novo tipo à grade; se for diferente do anterior,
-	 * atualiza a lista de disciplinas.
+	 * atualiza a lista de disciplinas e reseta a grade.
 	 * 
 	 * @param tipoDeGrade Novo tipo da grade.
 	 */
@@ -440,6 +440,7 @@ public class Grade extends Model {
 		if (this.tipoDeGrade != tipoDeGrade) {
 			this.tipoDeGrade = tipoDeGrade;
 			carregarDisciplinas();
+			resetar();
 		}
 	}
 
