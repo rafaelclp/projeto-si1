@@ -42,7 +42,8 @@ public class CarregadorDeDisciplinas {
      */
     public static List<Disciplina> carregaDisciplinas(TipoDeGrade tipoDeGrade) {
     	String arquivo = obterArquivoCorrespondente(tipoDeGrade);
-    	return carregaDisciplinas(arquivo);
+    	Long idBase = obterIdBase(tipoDeGrade);
+    	return carregaDisciplinas(arquivo, idBase);
     }
 
 	/**
@@ -64,16 +65,43 @@ public class CarregadorDeDisciplinas {
      * disciplinas contidas no arquivo XML. Se já tiverem sido
      * carregadas anteriormente, apenas as retorna da memória.
      * 
-	 * @param arquivo
-	 * 			XML de onde serão lidas as disciplinas
+	 * @param arquivo XML de onde serão lidas as disciplinas.
+	 * @param idBase Valor numérico a ser usado como o 0 para os IDs, sendo
+	 * 			somado ao id de cada disciplina.
 	 * @return Lista das disciplinas contidas no arquivo XML
 	 */
-    private static List<Disciplina> carregaDisciplinas(String arquivo) {
+    private static List<Disciplina> carregaDisciplinas(String arquivo, Long idBase) {
     	if (!cache.containsKey(arquivo)) {
-    		 cache.put(arquivo, carregaDisciplinasDoArquivo(arquivo));
-    		 carregaNoBancoDeDados(cache.get(arquivo), false);
+    		List<Disciplina> disciplinas = carregaDisciplinasDoArquivo(arquivo);
+    		for (Disciplina d : disciplinas) {
+    			d.setId(d.getId() + idBase);
+    		}
+    		cache.put(arquivo, disciplinas);
+    		carregaNoBancoDeDados(disciplinas, false);
     	}
     	return cache.get(arquivo);
+    }
+
+    /**
+     * Obtém a base(0) dos ids de certo fluxograma. Este id deve ser somado
+     * ao id de cada disciplina lida do arquivo para obter o id final.
+     * 
+     * A finalidade é não ter que se preocupar com isso no XML (disciplinas de
+     * diferentes fluxogramas em conflito por id repetido).
+     * 
+     * @param tipoDeGrade Tipo de grade para o qual se quer o idBase.
+     * @return O idBase.
+     */
+    private static Long obterIdBase(TipoDeGrade tipoDeGrade) {
+    	Long idBase = null;
+    	if (tipoDeGrade == TipoDeGrade.FLUXOGRAMA_OFICIAL) {
+    		idBase = 0L;
+    	} else if (tipoDeGrade == TipoDeGrade.FLUXOGRAMA_MAIS_COMUMENTE_PAGO) {
+    		idBase = 200L;
+    	} else if (tipoDeGrade == TipoDeGrade.FLUXOGRAMA_VIGENTE_APOS_REFORMA) {
+    		idBase = 400L;
+    	}
+    	return idBase;
     }
 
     /**
