@@ -2,7 +2,9 @@ package controllers;
 
 import java.util.List;
 
+import models.CadastroDeUsuario;
 import models.CarregadorDeDisciplinas;
+import models.DataNotFoundException;
 import models.Disciplina;
 import models.Grade;
 import models.InvalidOperationException;
@@ -224,7 +226,7 @@ public class Control {
     	Control.usuario = usuario;
     	if (usuario != null) {
     		Control.grade = Control.usuario.getGrade();
-    		Control.usuario.getGrade().setDisciplinas(CarregadorDeDisciplinas.carregaDisciplinas(TipoDeGrade.FLUXOGRAMA_OFICIAL));
+    		Control.usuario.getGrade().carregarDisciplinas();
     	}
     }
     
@@ -256,10 +258,12 @@ public class Control {
     public static String logar(String usuario, String senha) {
     	try {
     		setUsuario(null);
-    		setUsuario(Usuario.logar(usuario, senha));
+    		setUsuario((new CadastroDeUsuario()).logar(usuario, senha));
     	} catch (InvalidOperationException e) {
     		return montarResposta("erro", e.getMessage());
-    	}
+    	} catch (DataNotFoundException e) {
+    		return montarResposta("erro", e.getMessage());
+		}
     	return montarResposta("sucesso");
     }
     
@@ -274,7 +278,7 @@ public class Control {
     public static String registrar(String nome, String usuario, String senha) {
     	try {
     		setUsuario(null);
-    		setUsuario(Usuario.registrar(nome, usuario, senha));
+    		setUsuario((new CadastroDeUsuario()).registrar(nome, usuario, senha));
     	} catch (InvalidOperationException e) {
     		return montarResposta("erro", e.getMessage());
     	}

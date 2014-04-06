@@ -1,5 +1,6 @@
 package controllers;
 
+import models.CadastroDeUsuario;
 import models.CarregadorDeDisciplinas;
 import models.InvalidOperationException;
 import models.TipoDeGrade;
@@ -116,8 +117,8 @@ public class Application extends Controller {
     
     private static void registrarUsuario(String nome, String usuario, String senha) {
     	try {
-			Usuario u = Usuario.registrar(nome, usuario, senha);
-			u.getGrade().setDisciplinas(CarregadorDeDisciplinas.carregaDisciplinas(TipoDeGrade.FLUXOGRAMA_OFICIAL));
+			Usuario u = (new CadastroDeUsuario()).registrar(nome, usuario, senha);
+			u.getGrade().carregarDisciplinas();
 			u.getGrade().gerarPlanoAleatorio();
 			u.getGrade().save();
 		} catch (InvalidOperationException e) {
@@ -126,7 +127,7 @@ public class Application extends Controller {
     }
     
     public static Result inicializarUsuarios() {
-    	if (!Usuario.existeUsuario("usuario")) {
+    	if (!(new CadastroDeUsuario()).existeUsuario("usuario")) {
     		registrarUsuario("Usuario", "usuario", "usuario");
     		registrarUsuario("Rafael Perrella", "rafaelclp", "rafael");
     		registrarUsuario("Remy De Fru", "dfremy", "remydf");
