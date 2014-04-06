@@ -11,8 +11,9 @@ import javax.persistence.ManyToMany;
 import play.db.ebean.Model;
 
 /**
- * Classe que representa um periodo de um aluno
- * 
+ * Entidade responsável por armazenar os dados de um período,
+ * geralmente pertencente a uma grade, e realizar operações
+ * básicas sobre ele, como alocar/desalocar disciplina.
  */
 @Entity
 public class Periodo extends Model {
@@ -27,49 +28,25 @@ public class Periodo extends Model {
 	private static final int CREDITOS_MAXIMO = 28;
 	
 	/**
-	 * Cria um novo periodo
+	 * Construtor genérico.
 	 */
 	public Periodo() {
+		resetar();
+	}
+
+	/**
+	 * Reseta o periodo.
+	 */
+	public void resetar() {
 		disciplinas = new ArrayList<Disciplina>();
 	}
 
 	/**
-	 * Retorna id do periodo
+	 * Aloca disciplina no período.
 	 * 
-	 * @return int do id do periodo
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * Atribui um id ao periodo
-	 * 
-	 * @param id
-	 * 			do periodo
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	/**
-	 * Retorna todas as disciplinas do periodo
-	 * 
-	 * @return List com todas as disciplinas do periodo
-	 */
-	public List<Disciplina> getDisciplinas() {
-		return disciplinas;
-	}
-
-	/**
-	 * Aloca disciplina no periodo
-	 * 
-	 * @param disciplina
-	 * 			a ser inserida
-	 * @param ignorarCreditos
-	 * 			se deve ser considerado o limite de credito para esta alocacao
-	 * 
-	 * @throws InvalidOperationException se não puder alocar
+	 * @param disciplina Disciplina a ser inserida.
+	 * @param ignorarCreditos Se deve ser considerado o limite de créditos para esta alocação.
+	 * @throws InvalidOperationException Se não for válido alocar tal disciplina neste período.
 	 */
 	public void alocarDisciplina(Disciplina disciplina, boolean ignorarCreditos) throws InvalidOperationException {
 		if (!podeAlocar(disciplina, ignorarCreditos)) {
@@ -79,36 +56,55 @@ public class Periodo extends Model {
 	}
 
 	/**
-	 * Desaloca disciplina solicitada, se possivel
+	 * Desaloca disciplina do período.
 	 * 
-	 * @param disciplina
-	 *            a ser removida
-	 * @param ignorarCreditos
-	 * 			se deve ser considerado o limite de credito para esta desalocacao
-	 * 
-	 * @throws InvalidOperationException se não puder desalocar
+	 * @param disciplina Disciplina a ser removida.
+	 * @throws InvalidOperationException Se não for válido desalocar (disciplina não alocada).
 	 */
 	public void desalocarDisciplina(Disciplina disciplina) throws InvalidOperationException {
 		if (!disciplinas.remove(disciplina)) {
 			throw new InvalidOperationException("Disciplina não existente neste período.");
 		}
 	}
-	
+
 	/**
-	 * Retorna true caso o periodo possua a disciplina especificada
+	 * Informa se o período contém a disciplina.
 	 * 
-	 * @param disciplina
-	 *            a qual presenca sera testada no periodo
-	 * @return se a lista possui a disciplina especificada
+	 * @param disciplina Disciplina que se quer verificar se está alocada.
+	 * @return Se o período possui ou não tal disciplina.
 	 */
 	public boolean contains(Disciplina disciplina) {
 		return this.disciplinas.contains(disciplina);
 	}
 	
 	/**
-	 * Calcula total de creditos do periodo
+	 * Verifica se a disciplina pode ser alocada neste periodo.
 	 * 
-	 * @return total de creditos do periodo
+	 * @param disciplina Disciplina a ser alocada.
+	 * @param ignorarCreditos Se deve ser considerado o limite de créditos para esta alocação.
+	 * 
+	 * @return Se é possível ou não alocar.
+	 */
+	public boolean podeAlocar(Disciplina disciplina, boolean ignorarCreditos) {
+		if (!ignorarCreditos && totalDeCreditos() + disciplina.getCreditos() > CREDITOS_MAXIMO) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Verifica se o periodo tem mais créditos do que o máximo permitido.
+	 * 
+	 * @return Se o período tem mais créditos do que o máximo ou não.
+	 */
+	public boolean passouDoLimiteDeCreditos() {
+		return CREDITOS_MAXIMO < totalDeCreditos();
+	}
+	
+	/**
+	 * Calcula total de creditos cursados no período.
+	 * 
+	 * @return Total de creditos do período.
 	 */
 	public int totalDeCreditos() {
 		int creditos = 0;
@@ -121,36 +117,29 @@ public class Periodo extends Model {
 	}
 	
 	/**
-	 * Verifica se a disciplina pode ser alocada neste periodo
-	 * @param disciplina 
-	 * 			a ser alocada
-	 * @param ignorarCreditos
-	 * 			se deve ser considerado o limite de credito para esta alocacao
+	 * Obtém o id do período no bd.
 	 * 
-	 * @return boolean informado se pode ou nao alocar a disciplina
+	 * @return Identificador do período no bd.
 	 */
-	public boolean podeAlocar(Disciplina disciplina, boolean ignorarCreditos) {
-		if (!ignorarCreditos && totalDeCreditos() + disciplina.getCreditos() > CREDITOS_MAXIMO) {
-			return false;
-		}
-		return true;
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * Atribui um id ao período.
+	 * 
+	 * @param id Novo identificador do período.
+	 */
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	/**
-	 * Verifica se o periodo tem mais creditos do que o maximo permitido
+	 * Obtém uma lista com as disciplinas alocadas no período.
 	 * 
-	 * @return boolean informando se o periodo tem mais credito que o maximo
+	 * @return Lista com as disciplinas alocadas.
 	 */
-	public boolean passouDoLimiteDeCreditos() {
-		return CREDITOS_MAXIMO < totalDeCreditos();
+	public List<Disciplina> getDisciplinas() {
+		return disciplinas;
 	}
-
-	/**
-	 * Reseta o periodo
-	 * 
-	 */
-	public void resetar() {
-		disciplinas = new ArrayList<Disciplina>();
-	}
-
 }
