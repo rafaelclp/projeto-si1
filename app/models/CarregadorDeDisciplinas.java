@@ -19,8 +19,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * Classe que carrega lista de disciplinas de um arquivo
- * 
+ * Responsável por carregar as disciplinas dos arquivos, armazená-las no bd
+ * e manter um cache para o caso de múltiplas requisições da lista.
  */
 public class CarregadorDeDisciplinas {
 
@@ -32,7 +32,33 @@ public class CarregadorDeDisciplinas {
 	public static void limparCache() {
 		cache = new TreeMap<String, List<Disciplina>>();
 	}
-	
+    
+    /**
+     * Carrega disciplinas do arquivo a partir do tipo de grade
+     * 
+     * @param tipoDeGrade
+     * 			Tipo de grade do qual serão carregadas as disciplinas
+     * @return Lista das disciplinas contidas no arquivo XML
+     */
+    public static List<Disciplina> carregaDisciplinas(TipoDeGrade tipoDeGrade) {
+    	String arquivo = obterArquivoCorrespondente(tipoDeGrade);
+    	return carregaDisciplinas(arquivo);
+    }
+
+	/**
+	 * Atualiza as disciplinas no banco de dados.
+     * 
+	 * @param tipoDeGrade
+	 * 			Tipo de grade para o qual se quer atualizar a grade.
+	 */
+    public static void atualizarDisciplinas(TipoDeGrade tipoDeGrade) {
+    	String arquivo = obterArquivoCorrespondente(tipoDeGrade);
+
+    	cache.remove(arquivo);
+    	cache.put(arquivo, carregaDisciplinasDoArquivo(arquivo));
+    	carregaNoBancoDeDados(cache.get(arquivo), true);
+    }
+
 	/**
 	 * Carrega disciplinas e retorna lista com todas as
      * disciplinas contidas no arquivo XML. Se já tiverem sido
@@ -42,50 +68,62 @@ public class CarregadorDeDisciplinas {
 	 * 			XML de onde serão lidas as disciplinas
 	 * @return Lista das disciplinas contidas no arquivo XML
 	 */
-    public static List<Disciplina> carregaDisciplinas(String arquivo) {
+    private static List<Disciplina> carregaDisciplinas(String arquivo) {
     	if (!cache.containsKey(arquivo)) {
     		 cache.put(arquivo, carregaDisciplinasDoArquivo(arquivo));
-    		 carregaNoBancoDeDados(cache.get(arquivo));
+    		 carregaNoBancoDeDados(cache.get(arquivo), false);
     	}
     	return cache.get(arquivo);
     }
 
     /**
-     * Carrega disciplinas do arquivo a partir do tipo de grade
+     * Obtém o diretório/nome do arquivo correspondente ao tipoDeGrade.
      * 
-     * @param tipoDeGrade
-     * 			Tipo de grade do qual serão carregadas as disciplinas
-     * @return Lista das disciplinas contidas no arquivo XML
+     * @param tipoDeGrade Tipo de grade para o qual se quer o arquivo.
+     * @return Diretório/nome do arquivo.
      */
-    public static List<Disciplina> carregaDisciplinas(TipoDeGrade tipoDeGrade) {
+    private static String obterArquivoCorrespondente(TipoDeGrade tipoDeGrade) {
     	String arquivo = null;
     	if (tipoDeGrade == TipoDeGrade.FLUXOGRAMA_OFICIAL) {
-    		arquivo = "conf/res/cadeiras.xml";
+    		arquivo = "conf/res/fluxogramaOficial.xml";
+    	} else if (tipoDeGrade == TipoDeGrade.FLUXOGRAMA_MAIS_COMUMENTE_PAGO) {
+    		arquivo = "conf/res/fluxogramaMaisComumentePago.xml";
+    	} else if (tipoDeGrade == TipoDeGrade.FLUXOGRAMA_VIGENTE_APOS_REFORMA) {
+    		arquivo = "conf/res/fluxogramaAposReforma.xml";
     	}
-
-    	return carregaDisciplinas(arquivo);
+    	return arquivo;
     }
-    
-	/**
+
+    /**
 	 * Carrega disciplinas no banco de dados.
      * 
 	 * @param disciplinas Lista de disciplinas a serem carregadas.
+	 * @param forcarUpdate Forçar o update caso as disciplinas já estejam no BD?
 	 */
-    private static void carregaNoBancoDeDados(List<Disciplina> disciplinas) {
+    private static void carregaNoBancoDeDados(List<Disciplina> disciplinas, boolean forcarUpdate) {
+    	boolean atualizarRequisitos = true;
+
     	for (Disciplina d : disciplinas) {
     		Disciplina tmp = new Disciplina(d.getNome(), d.getCreditos(), d.getDificuldade(), d.getPeriodoPrevisto(), d.getId());
+
     		try {
     			// salva os atributos diretos (da tabela disciplina)
     			tmp.save();
     		} catch (PersistenceException e) {
     			// disciplina já no banco de dados, atualiza
+    			if (!forcarUpdate) {
+    				atualizarRequisitos = false;
+    				break;
+    			}
     			tmp.update();
     		}
     	}
 
-    	for (Disciplina d : disciplinas) {
-    		// salva as relações Disciplina -> Disciplina (pre/pos-requisitos)
-    		d.update();
+    	if (atualizarRequisitos) {
+	    	for (Disciplina d : disciplinas) {
+	    		// salva as relações Disciplina -> Disciplina (pre/pos-requisitos)
+	    		d.update();
+	    	}
     	}
     }
     
