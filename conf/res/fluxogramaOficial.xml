@@ -130,7 +130,7 @@
 		<dificuldade>7</dificuldade>
 		<creditos>4</creditos>
 		<periodo>3</periodo>
-		<requisitos>
+		<requisitos quantidade="3">
 			<id>7</id>
 			<id>8</id>
 			<id>11</id>
@@ -311,7 +311,7 @@
 		<dificuldade>5</dificuldade>
 		<creditos>4</creditos>
 		<periodo>5</periodo>
-		<requisitos quantidade="0">
+		<requisitos quantidade="1">
 			<id>27</id>
 		</requisitos>
 	</cadeira>

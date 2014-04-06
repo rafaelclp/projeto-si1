@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plano>
+	<cadeira nome="Programação I" id="1">
+		<dificuldade>4</dificuldade>
+		<creditos>4</creditos>
+		<periodo>1</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Leitura e Prod. de Textos" id="2">
+		<dificuldade>2</dificuldade>
+		<creditos>4</creditos>
+		<periodo>1</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+
+	<cadeira nome="Cálculo I" id="3">
+		<dificuldade>7</dificuldade>
+		<creditos>4</creditos>
+		<periodo>1</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Álgebra Vetorial" id="4">
+		<dificuldade>3</dificuldade>
+		<creditos>4</creditos>
+		<periodo>1</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+
+	<cadeira nome="Int. a Computação" id="5">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>1</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+
+	<cadeira nome="Lab. de Programação I" id="6">
+		<dificuldade>4</dificuldade>
+		<creditos>4</creditos>
+		<periodo>1</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+
+	<cadeira nome="Programação II" id="7">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>2</periodo>
+		<requisitos quantidade="3">
+			<id>1</id>
+			<id>5</id>
+			<id>6</id>
+		</requisitos>
+	</cadeira>
+
+	<cadeira nome="Lab. de Programação II" id="8">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>2</periodo>
+		<requisitos quantidade="3">
+			<id>1</id>
+			<id>5</id>
+			<id>6</id>
+		</requisitos>
+	</cadeira>
+
+	<cadeira nome="Matemática Discreta" id="9">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>2</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+
+	<cadeira nome="Metodologia Científica" id="10">
+		<dificuldade>4</dificuldade>
+		<creditos>4</creditos>
+		<periodo>6</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+
+	<cadeira nome="Teoria dos Grafos" id="11">
+		<dificuldade>3</dificuldade>
+		<creditos>2</creditos>
+		<periodo>2</periodo>
+		<requisitos quantidade="2">
+			<id>1</id>
+			<id>6</id>
+		</requisitos>
+	</cadeira>
+
+	<cadeira nome="Fund. de Física Clássica" id="12">
+		<dificuldade>8</dificuldade>
+		<creditos>4</creditos>
+		<periodo>2</periodo>
+		<requisitos quantidade="2">
+			<id>3</id>
+			<id>4</id>
+		</requisitos>
+	</cadeira>
+
+	<cadeira nome="Cálculo II" id="13">
+		<dificuldade>7</dificuldade>
+		<creditos>4</creditos>
+		<periodo>2</periodo>
+		<requisitos quantidade="1">
+			<id>3</id>
+		</requisitos>
+	</cadeira>
+
+	<cadeira nome="Estruturas de Dados" id="14">
+		<dificuldade>7</dificuldade>
+		<creditos>4</creditos>
+		<periodo>3</periodo>
+		<requisitos quantidade="3">
+			<id>7</id>
+			<id>8</id>
+			<id>11</id>
+		</requisitos>
+	</cadeira>
+
+	<cadeira nome="Lab. de Estruturas de Dados" id="15">
+		<dificuldade>7</dificuldade>
+		<creditos>4</creditos>
+		<periodo>3</periodo>
+		<requisitos>
+			<id>7</id>
+			<id>8</id>
+			<id>11</id>
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Álgebra Linear" id="16">
+		<dificuldade>9</dificuldade>
+		<creditos>4</creditos>
+		<periodo>3</periodo>
+		<requisitos quantidade="1">
+			<id>4</id>
+		</requisitos>
+	</cadeira>
+		
+	<cadeira nome="Probabilidade e Estatística" id="17">
+		<dificuldade>9</dificuldade>
+		<creditos>4</creditos>
+		<periodo>3</periodo>
+		<requisitos quantidade="1">
+			<id>13</id>
+		</requisitos>
+	</cadeira>
+		
+	<cadeira nome="Teoria da Computação" id="18">
+		<dificuldade>6</dificuldade>
+		<creditos>4</creditos>
+		<periodo>3</periodo>
+		<requisitos quantidade="3">
+			<id>5</id>
+			<id>9</id>
+			<id>11</id>
+		</requisitos>
+	</cadeira>
+		
+	<cadeira nome="Fund. de Física Moderna" id="19">
+		<dificuldade>7</dificuldade>
+		<creditos>4</creditos>
+		<periodo>3</periodo>
+		<requisitos quantidade="2">
+			<id>12</id>
+			<id>13</id>
+		</requisitos>
+	</cadeira>
+		
+	<cadeira nome="Gerência da Informação" id="20">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>3</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+		
+	<cadeira nome="Métodos Estatísticos" id="21">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>5</periodo>
+		<requisitos quantidade="2">
+			<id>16</id>
+			<id>17</id>
+		</requisitos>
+	</cadeira>
+		
+	<cadeira nome="Paradigmas de Linguagens de Programação" id="22">
+		<dificuldade>5</dificuldade>
+		<creditos>2</creditos>
+		<periodo>4</periodo>
+		<requisitos quantidade="3">
+			<id>18</id>
+			<id>14</id>
+			<id>15</id>
+		</requisitos>
+	</cadeira>
+		
+	<cadeira nome="Org. e Arquitetura de Computadores I" id="23">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>4</periodo>
+		<requisitos quantidade="3">
+			<id>14</id>
+			<id>15</id>
+			<id>19</id>
+		</requisitos>
+	</cadeira>
+		
+	<cadeira nome="Lab. de Org. e Arquitetura de Computadores" id="24">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>4</periodo>
+		<requisitos quantidade="3">
+			<id>14</id>
+			<id>15</id>
+			<id>19</id>
+		</requisitos>
+	</cadeira>
+		
+	<cadeira nome="Lógica Matemática" id="25">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>4</periodo>
+		<requisitos quantidade="1">
+			<id>18</id>
+		</requisitos>
+	</cadeira>
+		
+	<cadeira nome="Sistemas de Informação I" id="26">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>4</periodo>
+		<requisitos quantidade="1">
+			<id>20</id>
+		</requisitos>
+	</cadeira>
+		
+	<cadeira nome="Engenharia de Software I" id="27">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>5</periodo>
+		<requisitos quantidade="3">
+			<id>17</id>
+			<id>7</id>
+			<id>8</id>
+		</requisitos>
+	</cadeira>
+		
+	<cadeira nome="Análise e Tecnicas de Algoritmos" id="28">
+		<dificuldade>9</dificuldade>
+		<creditos>4</creditos>
+		<periodo>5</periodo>
+		<requisitos quantidade="4">
+			<id>13</id>
+			<id>14</id>
+			<id>15</id>
+			<id>25</id>
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Redes de Computadores" id="29">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>6</periodo>
+		<requisitos quantidade="2">
+			<id>23</id>
+			<id>24</id>
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Compiladores" id="30">
+		<dificuldade>9</dificuldade>
+		<creditos>4</creditos>
+		<periodo>8</periodo>
+		<requisitos quantidade="3">
+			<id>22</id>
+			<id>23</id>
+			<id>24</id>
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Banco de Dados I" id="31">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>5</periodo>
+		<requisitos quantidade="1">
+			<id>26</id>
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Sistemas de Informação II" id="32">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>6</periodo>
+		<requisitos quantidade="1">
+			<id>26</id>
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Laboratório de Engenharia de Software" id="33">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>6</periodo>
+		<requisitos quantidade="0">
+			<id>27</id>
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Informática e Sociedade" id="34">
+		<dificuldade>5</dificuldade>
+		<creditos>2</creditos>
+		<periodo>2</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Sistemas Operacionais" id="35">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>7</periodo>
+		<requisitos quantidade="2">
+			<id>23</id>
+			<id>24</id>
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Interconexão de Redes de Computadores" id="36">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>7</periodo>
+		<requisitos quantidade="1">
+			<id>29</id>
+		</requisitos>
+	</cadeira>
+		
+	<cadeira nome="Lab. de Interconexão de Redes de Computadores" id="37">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>7</periodo>
+		<requisitos quantidade="1">
+			<id>29</id>
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Inteligência Artificial I" id="38">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>8</periodo>
+		<requisitos quantidade="3">
+			<id>21</id>
+			<id>22</id>
+			<id>28</id>
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Banco de Dados II" id="39">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>7</periodo>
+		<requisitos quantidade="2">
+			<id>31</id>
+			<id>32</id>
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Direito e Cidadania" id="40">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>4</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Optativa 1" id="41">
+		<dificuldade>3</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Optativa 2" id="42">
+		<dificuldade>3</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Métodos e Software Numéricos" id="43">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>8</periodo>
+		<requisitos quantidade="2">
+			<id>16</id>
+			<id>28</id>
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Aval. de Desempenho de Sist. Discretos" id="44">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>8</periodo>
+		<requisitos quantidade="1">
+			<id>17</id>
+		</requisitos>
+	</cadeira>
+		
+	<cadeira nome="Projeto em Computação I" id="45">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>8</periodo>
+		<requisitos quantidade="2">
+			<id>10</id>
+			<id>33</id>
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Optativa 3" id="46">
+		<dificuldade>3</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Optativa 4" id="47">
+		<dificuldade>3</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Optativa 5" id="48">
+		<dificuldade>3</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Optativa 6" id="49">
+		<dificuldade>3</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Projeto em Computação II" id="50">
+		<dificuldade>5</dificuldade>
+		<creditos>6</creditos>
+		<periodo>9</periodo>
+		<requisitos quantidade="1">
+			<id>45</id>
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Optativa 7" id="51">
+		<dificuldade>3</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Optativa 8" id="52">
+		<dificuldade>3</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Optativa 9" id="53">
+		<dificuldade>3</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Optativa 10" id="54">
+		<dificuldade>3</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Optativa 11" id="55">
+		<dificuldade>3</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Administração" id="56">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Sociologia Industrial" id="57">
+		<dificuldade>5</dificuldade>
+		<creditos>3</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Economia" id="58">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0"/>
+	</cadeira>
+	
+	<cadeira nome="Futsal" id="59">
+		<dificuldade>5</dificuldade>
+		<creditos>2</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Basquete" id="60">
+		<dificuldade>5</dificuldade>
+		<creditos>2</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Cálculo III" id="61">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="2">
+			<id>13</id>
+			<id>4</id>
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Equações Diferenciais" id="62">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="1">
+			<id>16</id>
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Inglẽs" id="63">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Expressão Gráfica" id="64">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Realidade Virtual" id="65">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Empreendedorismo I" id="66">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Administração Financeira" id="67">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Administração de Sistemas" id="68">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Análise de dados I" id="69">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="0">
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Arquitetura de Software" id="70">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="2">
+			<id>26</id>
+			<id>27</id>
+		</requisitos>
+	</cadeira>
+	
+	<cadeira nome="Desenvolvimento Dirigido a Modelos" id="71">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="1">
+			<id>27</id>
+		</requisitos>
+	</cadeira>
+
+	<cadeira nome="Desenvolvimento de Aplicações Corporativas Avançadas" id="72">
+		<dificuldade>5</dificuldade>
+		<creditos>4</creditos>
+		<periodo>0</periodo>
+		<requisitos quantidade="1">
+			<id>31</id>
+		</requisitos>
+	</cadeira>
+</plano>
