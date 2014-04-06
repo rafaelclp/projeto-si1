@@ -36,18 +36,15 @@ public class Disciplina extends Model {
 	@JoinTable(name="disciplinas_posRequisitos", joinColumns=@JoinColumn(name="disciplina_id", referencedColumnName="id"),
 			inverseJoinColumns=@JoinColumn(name="posrequisito_id", referencedColumnName="id"))
 	private List<Disciplina> posRequisitos;
-	
-	private static Finder<Long, Disciplina> find = new Finder<Long, Disciplina>(Long.class,
-			Disciplina.class);
 
 	/**
-	 * Cria uma nova disciplina com o nome e creditos dados
+	 * Cria uma nova disciplina
 	 * 
-	 * @param nome da disciplina a ser criada
-	 * @param creditos que a disciplina possui
-	 * @param dificuldade da disciplina
-	 * @param periodoPrevisto para disciplina ser cursada
-	 * @param id numero unico para cada disciplina
+	 * @param nome Nome da disciplina a ser criada.
+	 * @param creditos Créditos que a disciplina vale.
+	 * @param dificuldade Dificuldade (especulada) da disciplina.
+	 * @param periodoPrevisto Período em que a disciplina deveria ser cursada.
+	 * @param id Id numérico da disciplina (deve ser único para cada disciplina).
 	 */
 	public Disciplina(String nome, int creditos, int dificuldade, int periodoPrevisto, Long id) {
 		setNome(nome);
@@ -61,146 +58,126 @@ public class Disciplina extends Model {
 	}
 
 	/**
-	 * Obtém uma lista de todas as disciplinas no banco de dados.
+	 * Obtém o nome da disciplina.
 	 * 
-	 * @return Lista das disciplinas
-	 */
-	public static List<Disciplina> obterTodas() {
-		return find.all();
-	}
-
-	/**
-	 * Retorna nome da disciplina
-	 * 
-	 * @return String do nome da disciplina
+	 * @return Nome da disciplina
 	 */
 	public String getNome() {
 		return this.nome;
 	}
 	
 	/**
-	 * Atribui um nome a Disciplina
+	 * Atribui um nome à disciplina.
 	 * 
-	 * @param nome
-	 * 			Nome da disciplina
+	 * @param nome Nome da disciplina
 	 */
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
 	
 	/**
-	 * Retorna ID da disciplina
+	 * Obtém o ID da disciplina.
 	 * 
-	 * @return int do codigo da disciplina
+	 * @return Identificador numérico da disciplina.
 	 */
 	public Long getId(){
 		return this.id;
 	}
 	
 	/**
-	 * Atribui um id a Disciplina
+	 * Atribui um id à disciplina.
 	 * 
-	 * @param id
-	 * 			Id da disciplina
+	 * @param id Identificador numérico da disciplina.
 	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 	
 	/**
-	 * Retorna dificuldade da disciplina
+	 * Obtém a dificuldade da disciplina.
 	 * 
-	 * @return int com dificuldade da disciplina
+	 * @return Dificuldade da disciplina
 	 */
 	public int getDificuldade(){
 		return this.dificuldade;
 	}
 	
 	/**
-	 * Atribui uma dificuldade a Disciplina
+	 * Atribui uma dificuldade à disciplina.
 	 * 
-	 * @param dificuldade
-	 * 			Dificuldade da disciplina
+	 * @param dificuldade Dificuldade da disciplina.
 	 */
 	public void setDificuldade(int dificuldade) {
 		this.dificuldade = dificuldade;
 	}
 
 	/**
-	 * Retorna quantidade de creditos da disciplina
+	 * Obtém a quantidade de créditos da disciplina.
 	 * 
-	 * @return int com valor de creditos da disciplina
+	 * @return Quantidade de créditos da disciplina.
 	 */
 	public int getCreditos() {
 		return this.creditos;
 	}
 	
 	/**
-	 * Atribui os creditos da Disciplina
+	 * Atribui os créditos da disciplina
 	 * 
-	 * @param creditos
-	 * 			Creditos da disciplina
+	 * @param creditos Créditos da disciplina.
 	 */
 	public void setCreditos(int creditos) {
 		this.creditos = creditos;
 	}
 	
 	/**
-	 * periodo previsto para disciplina ser cursada
+	 * Obtém o período previsto para disciplina ser cursada.
 	 * 
-	 * @return o periodo previsto para disciplina ser cursada
+	 * @return Período previsto para disciplina ser cursada.
 	 */
 	public int getPeriodoPrevisto() {
 		return periodoPrevisto;
 	}
 	
 	/**
-	 * Atribui o periodo previsto da Disciplina
+	 * Atribui o periodo previsto da disciplina.
 	 * 
-	 * @param periodoPrevisto
-	 * 			Periodo previsto da disciplina
+	 * @param periodoPrevisto Período previsto da disciplina.
 	 */
 	public void setPeriodoPrevisto(int periodoPrevisto) {
 		this.periodoPrevisto = periodoPrevisto;
 	}
 	
 	/**
-	 * Retorna Set com todas as disciplinas  que sao pre-requisitos
-	 * para a disciplina
+	 * Obtém a lista dos pré-requisitos da disciplina.
 	 * 
-	 * @return List com disciplinas
+	 * @return Lista com os pré-requisitos.
 	 */
 	public List<Disciplina> getPreRequisitos() {
 		return preRequisitos;
 	}
 
 	/**
-	 * Adiciona disciplina passada como parametro a lista de requisitos
-	 * da disciplina(this)
+	 * Adiciona uma disciplina à lista de pré-requisitos desta disciplina.
 	 * 
-	 * @param disciplina 
-	 * 			a ser adicionada a lista de requisitos
+	 * @param disciplina Disciplina a ser adicionada à lista de requisitos.
 	 */
 	public void addPreRequisito(Disciplina disciplina) {
 		this.preRequisitos.add(disciplina);
 	}
 
 	/**
-	 * Retorna Set com todas as disciplinas  que sao pos-requisitos
-	 * para a disciplina
+	 * Obtém a lista dos pos-requisitos da disciplina.
 	 * 
-	 * @return List com disciplinas
+	 * @return Lista com os pos-requisitos.
 	 */
 	public List<Disciplina> getPosRequisitos() {
 		return posRequisitos;
 	}
 	
 	/**
-	 * Adiciona disciplina passada como parametro a lista de pos-requisitos
-	 * da disciplina(this), disciplinas as quais essa é pre-requisito
+	 * Adiciona uma disciplina à lista de pos-requisitos desta disciplina.
 	 * 
-	 * @param disciplina 
-	 * 			a ser adicionada a lista de requisitos
+	 * @param disciplina Disciplina a ser adicionada à lista de requisitos.
 	 */
 	public void addPosRequisito(Disciplina disciplina) {
 		this.posRequisitos.add(disciplina);
