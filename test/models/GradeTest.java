@@ -269,6 +269,8 @@ public class GradeTest {
     	Grade grade = new Grade();
     	grade.setDisciplinas(CarregadorDeDisciplinas.carregaDisciplinas(TipoDeGrade.FLUXOGRAMA_OFICIAL));
     	
+    	// Verifica se conseguiu alterar o periodo cursando e se leu
+    	// corretamente a grade do banco de dados.
     	grade.setPeriodoCursando(2);
     	grade.save();
     	
@@ -279,6 +281,7 @@ public class GradeTest {
 		assertEquals(2, grade.getPeriodoCursando());
 		assertEquals(0, grade.getPeriodo(1).getDisciplinas().size());
 
+		// Tenta carregar as disciplinas do fluxograma oficial
 		Disciplina d = null, d2 = null;
 		try {
 			boolean associou = false;
@@ -302,6 +305,7 @@ public class GradeTest {
 		}
 		grade.save();
 
+		// Verifica se as disciplinas carregadas foram salvas no bd
 		Long periodo_id = grade.getPeriodo(1).getId();
 		Finder<Long, Periodo> findp = new Finder<Long, Periodo>(Long.class,
 				Periodo.class);
@@ -310,6 +314,7 @@ public class GradeTest {
 		assertEquals(1, p.getDisciplinas().size());
 		assertEquals(d, p.getDisciplinas().get(0));
 
+		// Tenta alocar uma disciplina e verificar se salva corretamente
 		try {
 			p.alocarDisciplina(d2, false);
 		} catch (InvalidOperationException e) {
@@ -321,11 +326,13 @@ public class GradeTest {
 		assertEquals(d, p.getDisciplinas().get(1));
 		assertEquals(d2, p.getDisciplinas().get(0));
 
+		// Tenta obter uma grade por id e verificar se os dados foram carregados
 		grade = find.byId(grade.getId());
 		assertNotNull(grade.getPeriodos());
 		assertEquals(12, grade.getPeriodos().size());
 		assertEquals(2, grade.getPeriodo(1).getDisciplinas().size());
 
+		// Verifica se as disciplinas no periodo foram carregadas na sequência correta
 		List<Disciplina> l = grade.getPeriodo(1).getDisciplinas();
 		d2 = l.get(1);
 		assertEquals(d.getId(), d2.getId());

@@ -3,7 +3,6 @@ package controllers;
 import java.util.List;
 
 import models.Grade;
-import models.InvalidOperationException;
 import models.Usuario;
 import play.mvc.Controller;
 import play.mvc.Result;
