@@ -379,7 +379,7 @@ public class Grade extends Model {
 	/**
 	 * Atribui um id à grade.
 	 *
-	 * @param Identificador a ser atribuído.
+	 * @param id Identificador a ser atribuído.
 	 */
 	public void setId(Long id) {
 		this.id = id;
@@ -388,7 +388,7 @@ public class Grade extends Model {
 	/**
 	 * Obtém o periodo que está sendo cursado.
 	 * 
-	 * @return Período sendo cursado.
+	 * @return Número do período sendo cursado.
 	 */
 	public int getPeriodoCursando() {
 		return periodoCursando;
@@ -397,7 +397,7 @@ public class Grade extends Model {
 	/**
 	 * Altera o período que está sendo cursado.
 	 * 
-	 * @param periodoCursando Período que está sendo cursado.
+	 * @param periodoCursando Número do período que está sendo cursado.
 	 */
 	public void setPeriodoCursando(int periodoCursando) {
 		this.periodoCursando = periodoCursando;
