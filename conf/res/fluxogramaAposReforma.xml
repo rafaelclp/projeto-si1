@@ -153,7 +153,7 @@
 	<cadeira nome="Bancos de Dados I" id="18">
 		<dificuldade>9</dificuldade>
 		<creditos>4</creditos>
-		<periodo>3</periodo>
+		<periodo>4</periodo>
 		<requisitos quantidade="1">
 			<id>12</id>
 		</requisitos>
@@ -170,7 +170,7 @@
 	<cadeira nome="Lab. de Org. e Arquitetura de Computadores" id="20">
 		<dificuldade>7</dificuldade>
 		<creditos>4</creditos>
-		<periodo>3</periodo>
+		<periodo>4</periodo>
 		<requisitos quantidade="0">
 		</requisitos>
 	</cadeira>
@@ -219,7 +219,7 @@
 	<cadeira nome="Teoria da Computação" id="26">
 		<dificuldade>5</dificuldade>
 		<creditos>4</creditos>
-		<periodo>4</periodo>
+		<periodo>5</periodo>
 		<requisitos quantidade="1">
 			<id>17</id>
 		</requisitos>
@@ -287,7 +287,7 @@
 	<cadeira nome="Projeto em Computação II" id="34">
 		<dificuldade>5</dificuldade>
 		<creditos>4</creditos>
-		<periodo>8</periodo>
+		<periodo>9</periodo>
 		<requisitos quantidade="1">
 			<id>32</id>
 		</requisitos>
@@ -296,7 +296,7 @@
 	<cadeira nome="Trabalho de Conclusão de Curso II" id="35">
 		<dificuldade>5</dificuldade>
 		<creditos>4</creditos>
-		<periodo>8</periodo>
+		<periodo>9</periodo>
 		<requisitos quantidade="1">
 			<id>33</id>
 		</requisitos>

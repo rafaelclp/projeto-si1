@@ -81,7 +81,7 @@
 	<cadeira nome="Metodologia Científica" id="10">
 		<dificuldade>4</dificuldade>
 		<creditos>4</creditos>
-		<periodo>6</periodo>
+		<periodo>2</periodo>
 		<requisitos quantidade="0">
 		</requisitos>
 	</cadeira>
@@ -130,7 +130,7 @@
 		<dificuldade>7</dificuldade>
 		<creditos>4</creditos>
 		<periodo>3</periodo>
-		<requisitos>
+		<requisitos quantidade="3">
 			<id>7</id>
 			<id>8</id>
 			<id>11</id>
@@ -259,7 +259,7 @@
 	<cadeira nome="Análise e Tecnicas de Algoritmos" id="28">
 		<dificuldade>9</dificuldade>
 		<creditos>4</creditos>
-		<periodo>5</periodo>
+		<periodo>6</periodo>
 		<requisitos quantidade="4">
 			<id>13</id>
 			<id>14</id>
@@ -281,7 +281,7 @@
 	<cadeira nome="Compiladores" id="30">
 		<dificuldade>9</dificuldade>
 		<creditos>4</creditos>
-		<periodo>8</periodo>
+		<periodo>7</periodo>
 		<requisitos quantidade="3">
 			<id>22</id>
 			<id>23</id>
@@ -301,7 +301,7 @@
 	<cadeira nome="Sistemas de Informação II" id="32">
 		<dificuldade>5</dificuldade>
 		<creditos>4</creditos>
-		<periodo>6</periodo>
+		<periodo>5</periodo>
 		<requisitos quantidade="1">
 			<id>26</id>
 		</requisitos>
@@ -311,7 +311,7 @@
 		<dificuldade>5</dificuldade>
 		<creditos>4</creditos>
 		<periodo>6</periodo>
-		<requisitos quantidade="0">
+		<requisitos quantidade="1">
 			<id>27</id>
 		</requisitos>
 	</cadeira>
@@ -319,7 +319,7 @@
 	<cadeira nome="Informática e Sociedade" id="34">
 		<dificuldade>5</dificuldade>
 		<creditos>2</creditos>
-		<periodo>2</periodo>
+		<periodo>5</periodo>
 		<requisitos quantidade="0">
 		</requisitos>
 	</cadeira>
@@ -355,7 +355,7 @@
 	<cadeira nome="Inteligência Artificial I" id="38">
 		<dificuldade>5</dificuldade>
 		<creditos>4</creditos>
-		<periodo>8</periodo>
+		<periodo>9</periodo>
 		<requisitos quantidade="3">
 			<id>21</id>
 			<id>22</id>
@@ -376,7 +376,7 @@
 	<cadeira nome="Direito e Cidadania" id="40">
 		<dificuldade>5</dificuldade>
 		<creditos>4</creditos>
-		<periodo>4</periodo>
+		<periodo>7</periodo>
 		<requisitos quantidade="0">
 		</requisitos>
 	</cadeira>
