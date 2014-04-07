@@ -15,11 +15,20 @@ public class ControladorDeCadastro extends Controller {
 	private Usuario usuarioLogado;
 
 	/**
+	 * Obtém o usuário logado.
+	 * 
+	 * @return Referência para o usuário logado.
+	 */
+	public Usuario getUsuarioLogado() {
+		return usuarioLogado;
+	}
+
+	/**
 	 * Altera o usuário logado e salva na sessão.
 	 * 
 	 * @param usuarioLogado Usuário logado.
 	 */
-	private void setUsuarioLogado(Usuario usuarioLogado) {
+	public void setUsuarioLogado(Usuario usuarioLogado) {
 		this.usuarioLogado = usuarioLogado;
 		session("usuario", usuarioLogado.getUsuario());
 		this.usuarioLogado.getGrade().carregarDisciplinas();
