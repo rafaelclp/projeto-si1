@@ -240,7 +240,8 @@ public class Grade extends Model {
 				
 				boolean disciplinaRegular = true;
 				for (Disciplina preRequisito : preRequisitos) {
-					if (!estaAlocado(preRequisito) || getPeriodoDaDisciplina(preRequisito) >= periodo || disciplinasIrregulares.contains(preRequisito)) {
+					if (!estaAlocado(preRequisito) || getPeriodoDaDisciplina(preRequisito) >= periodo) {
+						//|| disciplinasIrregulares.contains(preRequisito)) {
 						disciplinaRegular = false;
 						break;
 					}
