@@ -18,8 +18,8 @@
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="/">Principal</a></li>
+					<li><a href="/listarUsuarios">Usuários</a></li>
 					@if(usuario != null) {
-					<li><a href="@routes.Assets.at("images/grade.png")" target="_blank">Grade</a></li>
 					<li id="resetButton" class="dropdown" style="display:none">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Resetar <b class="caret"></b></a>
 						<ul class="dropdown-menu">
@@ -30,7 +30,47 @@
 					</li>
 					<li><a href="/deslogar">Deslogar</a></li>
 					}
+					<li>
+						
+						<input type="text" id="querySearch" />
+					</li>
 				</ul>
 			</div><!--/.nav-collapse -->
 		</div>
 	</div>
+
+	<script type="text/javascript">
+		var defaultSearchQuery = "Digite um nome para buscar...";
+
+		function searchQuery() {
+			query = $("#querySearch").val().trim();
+			if (query.length == 0)
+				location.href = "/listarUsuarios";
+			else
+				location.href = "/pesquisar/" + escape(query);
+		}
+
+		$("#querySearch").keydown(function(event) {
+			if (event.which == 13 && !$("#querySearch").hasClass("emptySearch")) {
+				searchQuery();
+			}
+		});
+
+		$("#querySearch").focus(function() {
+			var queryObj = $("#querySearch");
+			if (queryObj.hasClass("emptySearch")) {
+				queryObj.removeClass("emptySearch");
+				queryObj.val("");
+			}
+		});
+
+		$("#querySearch").focusout(function() {
+			var queryObj = $("#querySearch");
+			if (queryObj.val() == "") {
+				queryObj.addClass("emptySearch");
+				queryObj.val(defaultSearchQuery);
+			}
+		});
+
+		$("#querySearch").focusout();
+	</script>

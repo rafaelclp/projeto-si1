@@ -168,3 +168,19 @@ button.loginInput {
 	color: white;
 	text-decoration: none;
 }
+
+#querySearch {
+	border: 1px solid #909090;
+	border-radius: 5px;
+	margin-top: 12px;
+	margin-left: 15px;
+	padding-left: 8px;
+	padding-right: 8px;
+	width: 210px;
+	height: 28px;
+	min-width: 100px;
+}
+
+#querySearch.emptySearch {
+	color: #AAA;
+}
