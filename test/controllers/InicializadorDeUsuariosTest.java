@@ -3,7 +3,11 @@ import static org.junit.Assert.*;
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.inMemoryDatabase;
 import static play.test.Helpers.start;
+
+import javax.persistence.PersistenceException;
+
 import models.CadastroDeUsuario;
+import models.CarregadorDeDisciplinas;
 import models.Usuario;
 
 import org.junit.Before;
@@ -21,6 +25,8 @@ public class InicializadorDeUsuariosTest {
     public void setUp() {
 		FakeApplication app = fakeApplication(inMemoryDatabase());
 		start(app);
+		
+		CarregadorDeDisciplinas.limparCache();
     }
 
     /**
@@ -35,12 +41,12 @@ public class InicializadorDeUsuariosTest {
 		// Confirma que não há usuários cadastrados
 		Finder<Long, Usuario> find = new Finder<Long, Usuario>(Long.class, Usuario.class);
 		assertTrue(find.all() == null || find.all().size() == 0);
-		
+
 		// Inicializa, e confirma que 'usuario' foi cadastrado
 		InicializadorDeUsuarios i = new InicializadorDeUsuarios();
 		i.inicializarUsuarios();
 		assertTrue(c.existeUsuario("usuario"));
-
+	
 		// Confirma que há 30 ou mais usuários cadastrados
 		assertTrue(find.all().size() >= 30);
 	}
