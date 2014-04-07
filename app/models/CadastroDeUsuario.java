@@ -55,11 +55,11 @@ public class CadastroDeUsuario {
 	}
 
 	/**
-	 * Pesquisa um usuário por seu nome real.
+	 * Pesquisa uma lista de usuários por seu nome real.
 	 * 
 	 * @param query Nome (parcial) real do usuário que se quer obter.
 	 * @return Lista de usuários cujo nome se parece com o especificado.
-	 * @throws DataNotFoundException se não for possível obter o usuário.
+	 * @throws DataNotFoundException se não for possível obter um usuário.
 	 */
 	public List<Usuario> pesquisarUsuarioPorNome(String query) throws DataNotFoundException {
 		/* Montamos uma query no formato "%<nome1>%<nome2>%...%<nomeN>%"
