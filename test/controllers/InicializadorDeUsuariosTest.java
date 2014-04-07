@@ -1,11 +1,9 @@
 package controllers;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.inMemoryDatabase;
 import static play.test.Helpers.start;
-
-import javax.persistence.PersistenceException;
-
 import models.CadastroDeUsuario;
 import models.CarregadorDeDisciplinas;
 import models.Usuario;
@@ -13,7 +11,6 @@ import models.Usuario;
 import org.junit.Before;
 import org.junit.Test;
 
-import controllers.InicializadorDeUsuarios;
 import play.db.ebean.Model.Finder;
 import play.test.FakeApplication;
 
