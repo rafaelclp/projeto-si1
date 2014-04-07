@@ -44,6 +44,7 @@ public class ControladorDeCadastro extends Controller {
 	 */
 	public void deslogar() {
 		session().clear();
+		usuarioLogado = null;
 	}
 
 	/**
