@@ -40,22 +40,29 @@ public class GradeTest {
 		FakeApplication app = fakeApplication(inMemoryDatabase());
 		start(app);
 		CarregadorDeDisciplinas.limparCache();
-    	gradeTeste = new Grade(CarregadorDeDisciplinas.carregaDisciplinas(TipoDeGrade.FLUXOGRAMA_OFICIAL));
+    	gradeTeste = new Grade();
+    	gradeTeste.setTipoDeGrade(TipoDeGrade.FLUXOGRAMA_OFICIAL);
+    	gradeTeste.carregarDisciplinas();
         periodoTeste = new Periodo();
 
         // nome , creditos, dificuldade, periodo, id
         try {
-	        calculoI = gradeTeste.getDisciplinaPorID(3);
+	        calculoI = gradeTeste.getDisciplinaPorID(3L);
 	        periodoTeste.alocarDisciplina(calculoI, false);
-	        vetorial = gradeTeste.getDisciplinaPorID(4);
+	        
+	        vetorial = gradeTeste.getDisciplinaPorID(4L);
 	        periodoTeste.alocarDisciplina(vetorial, false);
-	        lpt = gradeTeste.getDisciplinaPorID(2);
+	        
+	        lpt = gradeTeste.getDisciplinaPorID(2L);
 	        periodoTeste.alocarDisciplina(lpt, false);
-	        p1 = gradeTeste.getDisciplinaPorID(1);
+	        
+	        p1 = gradeTeste.getDisciplinaPorID(1L);
 	        periodoTeste.alocarDisciplina(p1, false);
-	        ic = gradeTeste.getDisciplinaPorID(5);
+	        
+	        ic = gradeTeste.getDisciplinaPorID(5L);
 	        periodoTeste.alocarDisciplina(ic, false);
-	        lp1 = gradeTeste.getDisciplinaPorID(6);
+	        
+	        lp1 = gradeTeste.getDisciplinaPorID(6L);
 	        periodoTeste.alocarDisciplina(lp1, false);
         } catch(InvalidOperationException e) {
         	fail("Não deveria lançar excessão");
@@ -68,10 +75,10 @@ public class GradeTest {
         List<Disciplina> DisciplinasNoPrimPeriodo = periodoTeste.getDisciplinas();
 
         assertEquals(DisciplinasNaGrade.size(), 64);
-        
+
         for (Disciplina i : DisciplinasNoPrimPeriodo) {
             if (!(DisciplinasNaGrade.contains(i))) {
-                fail("Grade não possui todas disciplinas primeiro período");
+                fail("Grade não possui todas as disciplinas do primeiro período");
             }
         }
     }
@@ -80,11 +87,27 @@ public class GradeTest {
     public void ConsegueConverterTodasAsDisciplinasParaString() {
     	String disciplinasParaString = gradeTeste.toString();
     	String disciplinasParaStringSemEspacos = disciplinasParaString.replace(" ", "");
-        assertTrue(disciplinasParaStringSemEspacos.contains("[26,\"SistemasdeInformaçãoI\",4,5,4,4,0]"));
-        assertTrue(disciplinasParaStringSemEspacos.contains("[2,\"LeituraeProd.deTextos\",4,2,1,1,0]"));
+    	
+        assertTrue(disciplinasParaStringSemEspacos.contains("[26,\"SistemasdeInformaçãoI\",4,5,4,0,0]"));
+        assertTrue(disciplinasParaStringSemEspacos.contains("[2,\"LeituraeProd.deTextos\",4,2,1,0,0]"));
         
         try {
-        	Disciplina si1 = gradeTeste.getDisciplinaPorID(26);
+        	Disciplina gi = gradeTeste.getDisciplinaPorID(20L);
+        	Disciplina si1 = gradeTeste.getDisciplinaPorID(26L);
+			gradeTeste.associarDisciplinaAoPeriodo(gi, 2);		
+			gradeTeste.associarDisciplinaAoPeriodo(si1, 3);			
+		} catch (InvalidOperationException e) {
+			fail("Nao deveria lançar exceção");
+		}
+
+    	disciplinasParaString = gradeTeste.toString();
+    	disciplinasParaStringSemEspacos = disciplinasParaString.replace(" ", "");
+        
+        assertTrue(disciplinasParaStringSemEspacos.contains("[26,\"SistemasdeInformaçãoI\",4,5,4,3,0]"));
+        assertTrue(disciplinasParaStringSemEspacos.contains("[2,\"LeituraeProd.deTextos\",4,2,1,0,0]"));
+        
+        try {
+        	Disciplina si1 = gradeTeste.getDisciplinaPorID(26L);	
 			gradeTeste.associarDisciplinaAoPeriodo(si1, 1);			
 		} catch (InvalidOperationException e) {
 			fail("Nao deveria lançar exceção");
@@ -94,23 +117,24 @@ public class GradeTest {
     	disciplinasParaStringSemEspacos = disciplinasParaString.replace(" ", "");
         
         assertTrue(disciplinasParaStringSemEspacos.contains("[26,\"SistemasdeInformaçãoI\",4,5,4,1,1]"));
-        assertTrue(disciplinasParaStringSemEspacos.contains("[2,\"LeituraeProd.deTextos\",4,2,1,1,0]"));
+        assertTrue(disciplinasParaStringSemEspacos.contains("[2,\"LeituraeProd.deTextos\",4,2,1,0,0]"));
     }
     
     @Test
     public void associaDisciplinaAoPeriodo() {
     	try {
-    		calculoII = gradeTeste.getDisciplinaPorID(13);
+    		calculoII = gradeTeste.getDisciplinaPorID(13L);
     	} catch (InvalidOperationException e) {
     		fail("Não deveria falhar");
     	}
+    	
     	try {
-    		gradeTeste.associarDisciplinaAoPeriodo(calculoI, 6);
+    		gradeTeste.associarDisciplinaAoPeriodo(calculoI, 1);
     	} catch (InvalidOperationException e) {
     		fail("Deveria conseguir associar.");
     	}
     	
-    	assertEquals(6, gradeTeste.getPeriodoDaDisciplina(calculoI));
+    	assertEquals(1, gradeTeste.getPeriodoDaDisciplina(calculoI));
 
     	try {
     		gradeTeste.associarDisciplinaAoPeriodo(calculoII, 0);
@@ -127,9 +151,47 @@ public class GradeTest {
     	}
     	
     	try {
-    		Disciplina DireitoCidadania = gradeTeste.getDisciplinaPorID(40);
+			gradeTeste.desalocarDisciplina(calculoI);
+		} catch (InvalidOperationException e1) {
+    		fail("Deveria conseguir desalocar.");
+		}
+    	
+    	try {
+			gradeTeste.associarDisciplinaAoPeriodo(calculoII, 2);
+			fail("Falta pré-requisito.");
+		} catch (InvalidOperationException e) {
+    		assertEquals(e.getMessage(), "Essa disciplina tem pré-requisitos faltando.");
+		}
+    	
+    	try {
+        	Disciplina gi = gradeTeste.getDisciplinaPorID(20L);
+        	Disciplina discreta = gradeTeste.getDisciplinaPorID(9L);
+    		gradeTeste.associarDisciplinaAoPeriodo(calculoI, 1);
+    		gradeTeste.associarDisciplinaAoPeriodo(lp1, 1);
+    		gradeTeste.associarDisciplinaAoPeriodo(lpt, 1);
+    		gradeTeste.associarDisciplinaAoPeriodo(p1, 1);
+    		gradeTeste.associarDisciplinaAoPeriodo(ic, 1);
+    		gradeTeste.associarDisciplinaAoPeriodo(vetorial, 1);
+    		gradeTeste.associarDisciplinaAoPeriodo(gi, 1);
+    		gradeTeste.associarDisciplinaAoPeriodo(discreta, 1);
+			gradeTeste.associarDisciplinaAoPeriodo(calculoII, 2);
+			fail("Período 1 fica irregular.");
+		} catch (InvalidOperationException e) {
+    		assertEquals(e.getMessage(), "O período 1 não pode ficar irregular.");
+		}
+
+		try {
+	    	Disciplina discreta = gradeTeste.getDisciplinaPorID(9L);
+	    	gradeTeste.desalocarDisciplina(discreta);
+			gradeTeste.associarDisciplinaAoPeriodo(calculoII, 2);
+		} catch (InvalidOperationException e1) {
+			fail("Não deveria lançar excessão.");
+		}
+    	
+    	try {
+    		Disciplina DireitoCidadania = gradeTeste.getDisciplinaPorID(40L);
     		
-    		gradeTeste.associarDisciplinaAoPeriodo(DireitoCidadania, 3);
+    		gradeTeste.associarDisciplinaAoPeriodo(DireitoCidadania, 1);
     		
     		fail("Não deveria conseguir alocar mais de 28 créditos.");
     	} catch (InvalidOperationException e) {
@@ -140,15 +202,21 @@ public class GradeTest {
     @Test
     public void desalocaDisciplina() {
     	try {
-			calculoII = gradeTeste.getDisciplinaPorID(13);
-			ffc = gradeTeste.getDisciplinaPorID(12);
+			calculoII = gradeTeste.getDisciplinaPorID(13L);
+			ffc = gradeTeste.getDisciplinaPorID(12L);
 		} catch (InvalidOperationException e) {
 			fail("Deveria ser possível obter pelo id.");
 		}
 
     	try {
+			gradeTeste.associarDisciplinaAoPeriodo(calculoI, 1);;
+		} catch (InvalidOperationException e) {
+			fail("Não deveria lançar excessão");
+		}
+
+    	try {
 			gradeTeste.desalocarDisciplina(calculoI);
-		} catch (InvalidOperationException e1) {
+		} catch (InvalidOperationException e) {
 			fail("Não deveria lançar excessão");
 		}
 
@@ -272,9 +340,6 @@ public class GradeTest {
     	assertEquals(6, grade.getPeriodo(1).getDisciplinas().size());
     	
     	grade.save();
-    	Finder<Long, Grade> find = new Finder<Long, Grade>(Long.class,
-    			Grade.class);
-    	Grade g = find.byId(grade.getId());
     	assertEquals(6, grade.getPeriodo(1).getDisciplinas().size());
     }
 }
