@@ -71,6 +71,7 @@ public class Application extends Controller {
 	 */
 	public static Result perfil(Long id) {
 		Usuario usuario = controladorDeCadastro.obterUsuario(id);
+		usuario.getGrade().carregarDisciplinas();
 		return ok(views.html.perfil.render(usuario, controladorDeCadastro.getUsuarioLogado()));
 	}
 
@@ -83,6 +84,14 @@ public class Application extends Controller {
 	public static Result pesquisar(String query) {
 		List<Usuario> usuarios = controladorDeCadastro.pesquisarUsuarios(query);
 		return ok(views.html.pesquisa.render(usuarios, controladorDeCadastro.getUsuarioLogado()));
+	}
+
+	/**
+	 * Página com uma lista de todos os usuários cadastrados.
+	 */
+	public static Result listarUsuarios() {
+		List<Usuario> usuarios = controladorDeCadastro.obterTodosOsUsuarios();
+		return ok(views.html.listaDeUsuarios.render(usuarios, controladorDeCadastro.getUsuarioLogado()));
 	}
 
 	/**

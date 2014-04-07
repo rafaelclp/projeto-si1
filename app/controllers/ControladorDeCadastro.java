@@ -8,6 +8,7 @@ import models.DataNotFoundException;
 import models.InvalidOperationException;
 import models.TipoDeGrade;
 import models.Usuario;
+import play.db.ebean.Model.Finder;
 import play.mvc.Controller;
 
 public class ControladorDeCadastro extends Controller {
@@ -110,6 +111,7 @@ public class ControladorDeCadastro extends Controller {
     	try {
     		Usuario u = cadastroDeUsuario.registrar(nome, usuario, senha);
     		u.getGrade().setTipoDeGrade(tipoDeGrade);
+    		u.getGrade().resetar();
     		setUsuarioLogado(u);
     		flash("sucesso", "Cadastrado com sucesso.");
     	} catch (InvalidOperationException e) {
@@ -147,5 +149,15 @@ public class ControladorDeCadastro extends Controller {
 			flash("erro", "A busca não retornou nenhum resultado.");
 		}
 		return l;
+	}
+	
+	/**
+	 * Obtém uma lista com todos os usuários cadastrados.
+	 * 
+	 * @return Lista com todos os usuários cadastrados.
+	 */
+	public List<Usuario> obterTodosOsUsuarios() {
+		Finder<Long, Usuario> find = new Finder<Long, Usuario>(Long.class, Usuario.class);
+		return find.all();
 	}
 }
