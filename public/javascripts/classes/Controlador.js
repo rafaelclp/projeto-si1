@@ -1,4 +1,4 @@
-/*
+﻿/*
 	Classe Controlador
 		Controla as ações do usuário referentes a requisições:
 		alocar, desalocar e resetar disciplinas.
@@ -11,6 +11,45 @@ var Controlador = {
 	inicializar: function() {
 		ControladorHTML.inicializar();
 		ControladorHTML.desenharPaineis();
+	},
+
+	/**
+	 * Carrega o tooltip de uma disciplina.
+	 * @param id Id da disciplina.
+	 */
+	exibirTooltip: function(id) {
+		var disciplina = Grade.procurarDisciplina(id);
+		var periodo = disciplina.periodo;
+		var id = disciplina.id;
+
+		var obj = document.getElementById("tooltip" + id);
+		if (obj.title != "Carregando...")
+			return;
+
+		obj.title = "Carregando, aguarde...";
+
+		var jqxhr = $.get("../../../../obterPreRequisitosNaoAlocados/" + id + "/" + periodo)
+			.done(this.__tratarRequisicao)
+			.fail(this.__aoFalharRequisicao);
+
+		jqxhr.aoTratarRequisicao = function(data, textStatus) {
+			console.log(data.trim());
+			var parts = data.trim().split(":");
+			if (parts[0] == "ids") {
+				var ids = parts[1].split(",");
+				var nomes = "";
+				for (var i = 0; i < ids.length; i++) {
+					var disciplina = Grade.procurarDisciplina(parseInt(ids[i]));
+					if (disciplina != null)
+						nomes += "\n    " + disciplina.nome;
+				}
+				console.log("For id " + id + ": " + nomes);
+				var obj = document.getElementById("tooltip" + id);
+				obj.title = "Faltam as disciplinas:" + nomes;
+				return true;
+			}
+			return false;
+		};
 	},
 
 	/**

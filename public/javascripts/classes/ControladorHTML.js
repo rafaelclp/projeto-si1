@@ -245,6 +245,10 @@ var ControladorHTML = {
 	**/
 	__gerarBotaoDeDisciplinaPorIndex: function(index) {
 		var obj = Grade.disciplinas[index];
-		return this.__gerarBotaoDeDisciplina(obj.creditos + ' <span style="color:#bbb">|</span> ' + obj.nome, obj.irregular ? "btn-danger" : "btn-default");
+
+		if (!obj.irregular)
+			return this.__gerarBotaoDeDisciplina(obj.creditos + ' <span style="color:#bbb">|</span> ' + obj.nome, "btn-default");
+
+		return this.__gerarBotaoDeDisciplina('<span onmouseover="Controlador.exibirTooltip(' + obj.id + ')" id="tooltip' + obj.id + '" title="Carregando...">' + obj.creditos + ' <span style="color:#bbb">|</span> ' + obj.nome + '</span>', "btn-danger");
 	}
 };
