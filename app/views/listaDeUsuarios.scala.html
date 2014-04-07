@@ -5,9 +5,10 @@
 	@dialogs()
 
 	<div class="container theme-showcase" role="main">
-		<div id="main-container">
+		<div id="main-container" class="main-container">
+			<div class="usuarios-list">Usuários [@usuarios.size()]</div><br />
 			@for(usuario <- usuarios) {
-			<a href="/perfil/@usuario.getId()">@usuario.getNome()</a><br />
+			<div class="usuarios"><a href="/perfil/@usuario.getId()">@usuario.getNome()</a></div>
 			}
 		</div>
 	</div> <!-- /container -->
