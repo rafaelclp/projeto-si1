@@ -262,7 +262,7 @@ public class Grade extends Model {
 	 * @return Disciplina cujo ID e o passado como argumento
 	 * @throws InvalidOperationException Se a disciplina não existe.
 	 */
-	public Disciplina getDisciplinaPorID(int id) throws InvalidOperationException {
+	public Disciplina getDisciplinaPorID(Long id) throws InvalidOperationException {
 		Disciplina disciplina = null;
 
 		for (Disciplina d : disciplinas) {
