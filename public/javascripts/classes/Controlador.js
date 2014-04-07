@@ -28,7 +28,7 @@ var Controlador = {
 
 		obj.title = "Carregando, aguarde...";
 
-		var jqxhr = $.get("../../../../obterPreRequisitosNaoAlocados/" + id + "/" + periodo + (this.usuario_id ? "/" + this.usuario_id : ""))
+		var jqxhr = $.get(Configuracoes.DIRETORIO_RAIZ + "/obterPreRequisitosNaoAlocados/" + id + "/" + periodo + (this.usuario_id ? "/" + this.usuario_id : ""))
 			.done(this.__tratarRequisicao)
 			.fail(this.__aoFalharRequisicao);
 
@@ -57,7 +57,7 @@ var Controlador = {
 	 * @param periodo Novo período.
 	 */
 	alterarPeriodoCursando: function(periodo) {
-		this.__requisitarPagina("/alterarPeriodoCursando/" + periodo);
+		this.__requisitarPagina(Configuracoes.DIRETORIO_RAIZ + "/alterarPeriodoCursando/" + periodo);
 	},
 
 	/**
@@ -79,7 +79,7 @@ var Controlador = {
 			"senha": senha
 		};
 
-		var jqxhr = this.__requisitarPagina("/logar", false, data);
+		var jqxhr = this.__requisitarPagina(Configuracoes.DIRETORIO_RAIZ + "/logar", false, data);
 
 		jqxhr.aoTratarRequisicao = function(data, textStatus) {
 			var parts = data.trim().split(":");
@@ -107,7 +107,7 @@ var Controlador = {
 		};
 
 
-		var jqxhr = this.__requisitarPagina("/registrar", false, data);
+		var jqxhr = this.__requisitarPagina(Configuracoes.DIRETORIO_RAIZ + "/registrar", false, data);
 
 		jqxhr.aoTratarRequisicao = function(data, textStatus) {
 			var parts = data.trim().split(":");
@@ -147,7 +147,7 @@ var Controlador = {
 	 * @periodo Período em que deve ser alocada.
 	**/
 	moverDisciplina: function(id, periodo) {
-		var jqxhr = this.__requisitarPagina("moverDisciplina/" + id + "/" + periodo);
+		var jqxhr = this.__requisitarPagina(Configuracoes.DIRETORIO_RAIZ + "/moverDisciplina/" + id + "/" + periodo);
 
 		jqxhr.aoTratarRequisicao = function(data, textStatus) {
 			var parts = data.trim().split(":", 2);
@@ -163,7 +163,7 @@ var Controlador = {
 	 * @periodo Período em que deve ser alocada.
 	**/
 	alocarDisciplina: function(id, periodo) {
-		var jqxhr = this.__requisitarPagina("obterPreRequisitosNaoAlocados/" + id + "/" + periodo, true);
+		var jqxhr = this.__requisitarPagina(Configuracoes.DIRETORIO_RAIZ + "/obterPreRequisitosNaoAlocados/" + id + "/" + periodo, true);
 
 		jqxhr.aoTratarRequisicao = function(data, textStatus) {
 			// parametros extra: id, periodo
@@ -171,7 +171,7 @@ var Controlador = {
 			if (parts[0] == "ids") {
 				var ids = parts[1].split(",");
 				if (ids.length == 1 && ids[0].trim() == "") {
-					Controlador.__requisitarPagina("alocarDisciplina/" + id + "/" + periodo);
+					Controlador.__requisitarPagina(Configuracoes.DIRETORIO_RAIZ + "/alocarDisciplina/" + id + "/" + periodo);
 					return true;
 				}
 				var nomes = [];
@@ -192,7 +192,7 @@ var Controlador = {
 	 * @id ID da disciplina a ser desalocada.
 	**/
 	desalocarDisciplina: function(id) {
-		var jqxhr = this.__requisitarPagina("obterPosRequisitosAlocados/" + id, true);
+		var jqxhr = this.__requisitarPagina(Configuracoes.DIRETORIO_RAIZ + "/obterPosRequisitosAlocados/" + id, true);
 
 		jqxhr.aoTratarRequisicao = function(data, textStatus) {
 			// parametros extra: id
@@ -200,7 +200,7 @@ var Controlador = {
 			if (parts[0] == "ids") {
 				var ids = parts[1].split(",");
 				if (ids.length == 1 && ids[0].trim() == "") {
-					Controlador.__requisitarPagina("desalocarDisciplina/" + id);
+					Controlador.__requisitarPagina(Configuracoes.DIRETORIO_RAIZ + "/desalocarDisciplina/" + id);
 					return true;
 				}
 				var nomes = [];
@@ -211,7 +211,7 @@ var Controlador = {
 				}
 				var mensagemConfirmacao = "Ao desalocar esta disciplina, serão desalocadas também estas outras:<br />";
 				mensagemConfirmacao += GeradorHTML.gerarLista(nomes);
-				Dialogos.confirmar.mostrar(mensagemConfirmacao, "desalocarDisciplina/" + id)
+				Dialogos.confirmar.mostrar(mensagemConfirmacao, Configuracoes.DIRETORIO_RAIZ + "/desalocarDisciplina/" + id)
 					.aoConfirmar(function(pagina) {
 						Controlador.__requisitarPagina(pagina);
 					});
