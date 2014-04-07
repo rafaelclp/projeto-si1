@@ -10,6 +10,7 @@
 
 	<script type="text/javascript">
 		var lista_de_disciplinas = @Html(usuario.getGrade().toString());
+		Controlador.usuario_id = @usuario.getId();
 		Controlador.setarDisciplinas(lista_de_disciplinas);
 		Controlador.setarPeriodoCursando(@usuario.getGrade().getPeriodoCursando());
 		ControladorHTML.desabilitarEditor();

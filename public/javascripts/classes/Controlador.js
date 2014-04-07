@@ -28,12 +28,12 @@ var Controlador = {
 
 		obj.title = "Carregando, aguarde...";
 
-		var jqxhr = $.get("../../../../obterPreRequisitosNaoAlocados/" + id + "/" + periodo)
+		var jqxhr = $.get("../../../../obterPreRequisitosNaoAlocados/" + id + "/" + periodo + (this.usuario_id ? "/" + this.usuario_id : ""))
 			.done(this.__tratarRequisicao)
 			.fail(this.__aoFalharRequisicao);
 
 		jqxhr.aoTratarRequisicao = function(data, textStatus) {
-			console.log(data.trim());
+			//console.log(data.trim());
 			var parts = data.trim().split(":");
 			if (parts[0] == "ids") {
 				var ids = parts[1].split(",");
@@ -43,7 +43,7 @@ var Controlador = {
 					if (disciplina != null)
 						nomes += "\n    " + disciplina.nome;
 				}
-				console.log("For id " + id + ": " + nomes);
+				//console.log("For id " + id + ": " + nomes);
 				var obj = document.getElementById("tooltip" + id);
 				obj.title = "Faltam as disciplinas:" + nomes;
 				return true;
@@ -246,7 +246,7 @@ var Controlador = {
 	__tratarRequisicao: function(data, textStatus, jqxhr) {
 		Dialogos.loading.esconder();
 
-		console.log(data.trim());
+		//console.log(data.trim());
 
 		if (jqxhr && jqxhr.aoTratarRequisicao)
 			if (jqxhr.aoTratarRequisicao(data, textStatus))

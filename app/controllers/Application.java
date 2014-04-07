@@ -3,6 +3,7 @@ package controllers;
 import java.util.List;
 
 import models.Grade;
+import models.InvalidOperationException;
 import models.Usuario;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -104,6 +105,25 @@ public class Application extends Controller {
 	@Security.Authenticated(Secured.class)
 	public static Result obterPreRequisitosNaoAlocados(Long id, Integer periodo) {
 		controladorDeGrade.obterPreRequisitosNaoAlocados(id, periodo);
+		return ok(views.html.ajaxResponse.render());
+	}
+
+	/**
+	 * [AJAX] Obtém uma lista de ids dos pré-requisitos não alocados de uma
+	 * disciplina, considerando que tal disciplina está no período informado.
+	 * 
+	 * @param id Identificador da disciplina.
+	 * @param periodo Número (1..12) do período.
+	 * @param usuarioId Id do usuário que contém a grade a ser acessada.
+	 */
+	public static Result obterPreRequisitosFaltando(Long id, Integer periodo, Long usuarioId) {
+		Usuario u = controladorDeCadastro.obterUsuario(usuarioId);
+		if (u != null) {
+			Grade g = u.getGrade();
+			g.carregarDisciplinas();
+			ControladorDeGrade c = new ControladorDeGrade(g, u);
+			c.obterPreRequisitosNaoAlocados(id, periodo);
+		}
 		return ok(views.html.ajaxResponse.render());
 	}
 
