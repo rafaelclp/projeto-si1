@@ -188,13 +188,14 @@ button.loginInput {
 .main-container {
 	text-align: center;
 	border-radius: 5px;
-	border: 2px solid black;
-	background-color: #cccccc;
+	border: 2px solid;
+	border-color: #3b84c3;
+	background-color: #ffffff;
 	padding-bottom: 10px;
 }
 
 .usuarios-list {
-	background: #252525;
+	background: #3b84c3;
 	text-align: center;
 	line-height: 30px;
 	font-weight: bold;
@@ -206,8 +207,8 @@ button.loginInput {
 
 .usuarios {
 	border-radius: 5px;
-	border: 2px solid black;
-	background-color: #efefef;
+	border: 2px solid #3b84c3;
+	background-color: #bbe4f3;
 	line-height:25px;
 	width: 200px;
 	height: 30px;
@@ -216,4 +217,14 @@ button.loginInput {
 	display: inline-block;
 	margin-bottom: 5px;
 	margin-left: 5px;
+}
+
+.usuarios  > a{
+	color: #000000;
+	text-decoration: none;
+}
+
+.usuarios  > a:hover{
+	color: #000000;
+	text-decoration: none;
 }

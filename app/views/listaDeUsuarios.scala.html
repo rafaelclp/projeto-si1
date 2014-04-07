@@ -8,7 +8,7 @@
 		<div id="main-container" class="main-container">
 			<div class="usuarios-list">Usuários [@usuarios.size()]</div><br />
 			@for(usuario <- usuarios) {
-			<div class="usuarios"><a href="/perfil/@usuario.getId()">@usuario.getNome()</a></div>
+			<div class="usuarios"><a href="/perfil/@usuario.getId()"><p>@usuario.getNome()</p></a></div>
 			}
 		</div>
 	</div> <!-- /container -->
