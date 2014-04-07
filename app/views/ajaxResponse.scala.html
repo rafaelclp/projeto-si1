@@ -4,7 +4,7 @@
 	erro:@flash.get("erro")
 }
 @if(!flash.containsKey("erro")) {
-	@for((key, value) <- flash.take(10)) {
+	@for((key, value) <- flash.take(1)) {
 		@key:@value
 	}
 }
