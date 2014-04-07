@@ -27,7 +27,7 @@ public class Grade extends Model {
 	
 	private int periodoCursando;
 	
-	private TipoDeGrade tipoDeGrade = TipoDeGrade.FLUXOGRAMA_OFICIAL;
+	private TipoDeGrade tipoDeGrade = null;
 
 	@Transient
 	private List<Disciplina> disciplinas;
@@ -178,19 +178,17 @@ public class Grade extends Model {
 		}
 
 		for (Disciplina disciplina : disciplinas) {
+			Periodo periodo = null;
 			if (disciplina.getPeriodoPrevisto() == 0) {
-				try {
-					associarDisciplinaAoPeriodo(disciplina, obterUltimoPeriodo());
-				} catch (InvalidOperationException e) {
-					e.printStackTrace();
-				}
+				periodo = getPeriodo(obterUltimoPeriodo());
+			} else {
+				periodo = getPeriodo(disciplina.getPeriodoPrevisto());
 			}
-			else {
-				try {
-					associarDisciplinaAoPeriodo(disciplina, disciplina.getPeriodoPrevisto());
-				} catch (InvalidOperationException e) {
-					e.printStackTrace();
-				}
+			try {
+				periodo.alocarDisciplina(disciplina, true);
+			} catch (InvalidOperationException e) {
+				// nunca vai entrar aqui...
+				e.printStackTrace();
 			}
 		}
 	}
@@ -266,14 +264,14 @@ public class Grade extends Model {
 		Disciplina disciplina = null;
 
 		for (Disciplina d : disciplinas) {
-			if (id == d.getId()) {
+			if ((long)id == (long)d.getId()) {
 				disciplina = d;
 				break;
 			}
 		}
 		
 		if (disciplina == null) {
-			throw new InvalidOperationException("Você não pode alocar disciplinas que não existem.");
+			throw new InvalidOperationException("A disciplina especificada não existe.");
 		}
 		
 		return disciplina;
@@ -432,16 +430,18 @@ public class Grade extends Model {
 
 	/**
 	 * Atribui um novo tipo à grade; se for diferente do anterior,
-	 * atualiza a lista de disciplinas e reseta a grade.
+	 * atualiza a lista de disciplinas e limpa a grade.
 	 * 
 	 * @param tipoDeGrade Novo tipo da grade.
 	 */
 	public void setTipoDeGrade(TipoDeGrade tipoDeGrade) {
 		if (this.tipoDeGrade != tipoDeGrade) {
 			this.tipoDeGrade = tipoDeGrade;
-			carregarDisciplinas();
-			resetar();
+			for (Periodo p : periodos) {
+				p.resetar();
+			}
 		}
+		carregarDisciplinas();
 	}
 
 	/**
