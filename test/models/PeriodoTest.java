@@ -47,8 +47,10 @@ public class PeriodoTest {
 			periodoTeste.alocarDisciplina(vetorial, false);
 			
 			assertFalse(periodoTeste.passouDoLimiteDeCreditos());
+			
 			assertTrue(periodoTeste.contains(calculoI));
 			assertTrue(periodoTeste.contains(vetorial));
+			
 			assertTrue(periodoTeste.getDisciplinas().contains(calculoI));
 			assertTrue(periodoTeste.getDisciplinas().contains(vetorial));
 			assertFalse(periodoTeste.getDisciplinas().contains(ffc));
@@ -91,15 +93,19 @@ public class PeriodoTest {
 			
 			periodoTeste.desalocarDisciplina(calculoI);
 			assertFalse(periodoTeste.contains(calculoI));
+			
 			assertTrue(periodoTeste.getDisciplinas().contains(vetorial));
 			assertFalse(periodoTeste.getDisciplinas().isEmpty());
 
 			periodoTeste.desalocarDisciplina(vetorial);
 			assertFalse(periodoTeste.getDisciplinas().contains(vetorial));
-			
+
 			assertTrue(periodoTeste.contains(p1));
 			periodoTeste.desalocarDisciplina(p1);
+			
+			assertTrue(periodoTeste.contains(ffc));
 			periodoTeste.desalocarDisciplina(ffc);
+			
 			assertTrue(periodoTeste.getDisciplinas().isEmpty());
 		
 		} catch (InvalidOperationException e) {
@@ -122,13 +128,15 @@ public class PeriodoTest {
 			periodoTeste.alocarDisciplina(calculoI, false);
 			assertEquals(periodoTeste.totalDeCreditos(), 4);
 
-			assertTrue(periodoTeste.podeAlocar(vetorial, true));
+			assertTrue(periodoTeste.podeAlocar(vetorial, false));
 			periodoTeste.alocarDisciplina(vetorial, false);
 			assertEquals(periodoTeste.totalDeCreditos(), 8);
 
+			assertTrue(periodoTeste.podeAlocar(ffc, false));
 			periodoTeste.alocarDisciplina(ffc, false);
 			assertEquals(periodoTeste.totalDeCreditos(), 12);
-			
+
+			assertTrue(periodoTeste.podeAlocar(p1, false));
 			periodoTeste.alocarDisciplina(p1, false);
 			assertEquals(periodoTeste.totalDeCreditos(), 16);
 			
@@ -137,7 +145,8 @@ public class PeriodoTest {
 			
 			periodoTeste.desalocarDisciplina(vetorial);
 			assertEquals(periodoTeste.totalDeCreditos(), 8);
-			
+
+			assertTrue(periodoTeste.podeAlocar(ffc, false));
 			periodoTeste.alocarDisciplina(ffc, false);
 			assertEquals(periodoTeste.totalDeCreditos(), 12);
 			
