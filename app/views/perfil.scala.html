@@ -1,13 +1,22 @@
 @(usuario: Usuario, usuarioLogado: Usuario)
 
-@if(flash.containsKey("erro")) {
-@flash.get("erro")
-}
+@main("Plano de curso") {
+	@navbar(usuarioLogado)
+	@dialogs()
 
-@if(usuario!=null) {
-@usuario.getNome()
-}
- - 
-@if(usuarioLogado!=null) {
-@usuarioLogado.getNome()
+	<div class="container theme-showcase" role="main">
+		<div id="main-container"></div>
+	</div> <!-- /container -->
+
+	<script type="text/javascript">
+		var lista_de_disciplinas = @Html(usuario.getGrade().toString());
+		Controlador.setarDisciplinas(lista_de_disciplinas);
+		Controlador.setarPeriodoCursando(@usuario.getGrade().getPeriodoCursando());
+		ControladorHTML.desabilitarEditor();
+		@if(usuarioLogado != null && usuario.getId() == usuarioLogado.getId()) {
+		ControladorHTML.habilitarEditor();
+		}
+		Controlador.inicializar();
+		document.title = "Plano de curso de @usuario.getNome()";
+	</script>
 }

@@ -34,3 +34,13 @@
 			</div>
 		</div>
 	</div>
+
+	<script type="text/javascript">
+		@if(flash.containsKey("erro")) {
+			Dialogos.erro.mostrar('@flash.get("erro")');
+		}
+		@if(flash.containsKey("sucesso")) {
+			//Dialogos.info.mostrar('@flash.get("sucesso")');
+		}
+		@flash.clear()
+	</script>

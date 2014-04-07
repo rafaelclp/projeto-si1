@@ -57,12 +57,14 @@ var Controlador = {
 	 * @param nome Nome do usuário.
 	 * @param usuario Nome de usuário a ser logado.
 	 * @param senha Senha do usuário.
+	 * @param tipoDeGrade Tipo da grade do usuário.
 	 */
-	registrar: function(nome, usuario, senha) {
+	registrar: function(nome, usuario, senha, tipoDeGrade) {
 		var data = {
 			"nome": nome,
 			"usuario": usuario,
-			"senha": senha
+			"senha": senha,
+			"tipoDeGrade": tipoDeGrade
 		};
 
 
@@ -91,11 +93,12 @@ var Controlador = {
 
 	/**
 	 * Requisita o reset da grade de disciplinas.
+	 * @tipoDeGrade Tipo da grade para a qual queremos resetar.
 	**/
-	resetarGrade: function() {
+	resetarGrade: function(tipoDeGrade) {
 		Dialogos.confirmar.mostrar("Deseja resetar toda a grade de disciplinas alocadas?<br />")
 			.aoConfirmar(function() {
-				location.href = "/resetar";
+				location.href = "/resetar/" + tipoDeGrade;
 			});
 	},
 

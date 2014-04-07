@@ -1,0 +1,14 @@
+@(usuarios: List[Usuario], usuarioLogado: Usuario)
+
+@main("Plano de curso") {
+	@navbar(usuarioLogado)
+	@dialogs()
+
+	<div class="container theme-showcase" role="main">
+		<div id="main-container">
+			@for(usuario <- usuarios) {
+			<a href="/perfil/@usuario.getId()">@usuario.getNome()</a><br />
+			}
+		</div>
+	</div> <!-- /container -->
+}

@@ -120,7 +120,7 @@ ul.scrollable {
 
 .userPanel {
 	width: 300px;
-	height: 270px;
+	height: 225px;
 }
 
 .registerDiv {
@@ -131,15 +131,16 @@ ul.scrollable {
 	margin-top: 4px;
 	float:left;
 }
-.usernameDiv, .passwordDiv, .nameDiv {
+.usernameDiv, .passwordDiv, .nameDiv, .gridTypeDiv {
 	text-align: right;
 	float: right;
 }
 
-.loginInput[type="text"], .loginInput[type="password"] {
+.loginInput[type="text"], .loginInput[type="password"], select.loginInput {
 	border: 2px solid #3b84c3;
 	border-radius: 8px;
 	width: 200px;
+	height: 26px;
 	padding-left: 7px;
 	padding-right: 7px;
 }

@@ -19,13 +19,23 @@
 
 					<div class="registerDiv">
 						<div class="attribDesc">Nome:</div>
-						<div class="nameDiv"><input type="text" name="name" maxlength="64" id="name" class="loginInput" /></div><br />
-						<br /><div style="text-align:left"><a href="#!" onclick="$('.registerDiv').hide(); $('.loginDiv').show()">Já tenho uma conta.</a></div><br />
+						<div class="nameDiv"><input type="text" name="name" maxlength="64" id="name" class="loginInput" /></div><br /><br />
+
+						<div class="attribDesc">Grade:</div>
+						<div class="gridTypeDiv">
+							<select name="gridType" id="gridType" class="loginInput">
+								<option value="0">Oficial</option>
+								<option value="1">Mais comumente pago</option>
+								<option value="2">Vigente após reforma</option>
+							</select>
+						</div><br />
+
+						<br /><div style="text-align:left"><a href="#!" onclick="exibirLogar()">Já tenho uma conta.</a></div><br />
 						<button onclick="registrar()" id="register-button" class="loginInput btn btn-info" />Registrar</button>
 					</div>
 
 					<div class="loginDiv">
-						<div style="text-align:left"><a href="#!" onclick="$('.loginDiv').hide(); $('.registerDiv').show()">Ainda não tenho uma conta.</a></div><br />
+						<div style="text-align:left"><a href="#!" onclick="exibirRegistrar()">Ainda não tenho uma conta.</a></div><br />
 						<button onclick="logar()" id="login-button" class="loginInput btn btn-info" />Logar</button>
 					</div>
 				</div>
@@ -34,12 +44,24 @@
 	</div> <!-- /container -->
 
 	<script type="text/javascript">
+		function exibirLogar() {
+			$('.registerDiv').hide();
+			$('.loginDiv').show();
+			$(".userPanel").css("height", "225px");
+		}
+
+		function exibirRegistrar() {
+			$('.loginDiv').hide();
+			$('.registerDiv').show();
+			$(".userPanel").css("height", "305px");
+		}
+
 		function logar() {
 			Controlador.logar($("#username").val(), $("#password").val());
 		}
 
 		function registrar() {
-			Controlador.registrar($("#name").val(), $("#username").val(), $("#password").val());
+			Controlador.registrar($("#name").val(), $("#username").val(), $("#password").val(), parseInt($("#gridType").val()));
 		}
 	</script>
 }

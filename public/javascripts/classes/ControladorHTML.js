@@ -1,9 +1,12 @@
 /*
 	Classe ControladorHTML
 		Controla o código HTML da página.
+		- editorHabilitado: o utilizador pode editar a grade? (false/true)
 */
 
 var ControladorHTML = {
+	"editorHabilitado": false,
+
 	/**
 	 * Inicializa o timer.
 	**/
@@ -12,6 +15,24 @@ var ControladorHTML = {
 			this.inicializado = true;
 			setInterval(function() { ControladorHTML.__atualizarInfo() }, 100);
 		}
+	},
+
+	/**
+	 * Habilita o editor da grade.
+	**/
+	habilitarEditor: function() {
+		this.editorHabilitado = true;
+		$("#resetButton").show();
+		this.desenharPaineis();
+	},
+
+	/**
+	 * Desabilita o editor da grade.
+	**/
+	desabilitarEditor: function() {
+		this.editorHabilitado = false;
+		$("#resetButton").hide();
+		this.desenharPaineis();
 	},
 
 	/**
@@ -40,9 +61,22 @@ var ControladorHTML = {
 			}
 		}
 
+		// Modela de acordo com o editor estar ou não habilitado
+		// -------------------------------------------------------
+		var gerarMenuAdicionarDisciplina = function(id) { return ""; }
+		var gerarBotaoDaDisciplina = function(id) { return ControladorHTML.__gerarBotaoDeDisciplinaPorIndex(id); }
+		var obterMarcarCursando = function(marcarCursando) { return ""; }
+
+		if (this.editorHabilitado) {
+			gerarMenuAdicionarDisciplina = function(id) { return ControladorHTML.__gerarMenuAdicionarDisciplina(id); };
+			gerarBotaoDaDisciplina = function(id) { return ControladorHTML.__obterMenuDropdownDeDisciplina(id); }
+			obterMarcarCursando = function(marcarCursando) { return marcarCursando; }
+		}
+		// -------------------------------------------------------
+
 		var html = "";
 		for (var i = 0; i < Configuracoes.NUMERO_DE_PERIODOS; i++) {
-			var conteudo = this.__gerarMenuAdicionarDisciplina(i+1);
+			var conteudo = gerarMenuAdicionarDisciplina(i+1);
 			var total_creditos = 0;
 			var total_dificuldade = 0;
 
@@ -50,7 +84,7 @@ var ControladorHTML = {
 				var index = periodos[i][j];
 				var obj = Grade.disciplinas[index];
 
-				conteudo += this.__obterMenuDropdownDeDisciplina(index);
+				conteudo += gerarBotaoDaDisciplina(index);
 				total_creditos += obj.creditos;
 				total_dificuldade += obj.dificuldade;
 			}
@@ -69,6 +103,7 @@ var ControladorHTML = {
 				marcarCursando = "";
 				classe = "panel-default";
 			}
+			marcarCursando = obterMarcarCursando(marcarCursando);
 
 			html += GeradorHTML.gerarPainel('Periodo ' + (i+1) + marcarCursando, conteudo,
 				(maximo_de_disciplinas[j] > 0 ? maximo_de_disciplinas[j] + 1 : 0) * altura_por_disciplina + altura_base,

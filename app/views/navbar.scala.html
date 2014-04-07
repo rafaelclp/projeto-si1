@@ -20,7 +20,14 @@
 					<li class="active"><a href="/">Principal</a></li>
 					@if(usuario != null) {
 					<li><a href="@routes.Assets.at("images/grade.png")" target="_blank">Grade</a></li>
-					<li id="resetButton"><a href="#" onclick="Controlador.resetarGrade()">Resetar</a></li>
+					<li id="resetButton" class="dropdown" style="display:none">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Resetar <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="#" onclick="Controlador.resetarGrade(0)">Fluxograma oficial</a></li>
+							<li><a href="#" onclick="Controlador.resetarGrade(1)">Fluxograma mais comumente pago</a></li>
+							<li><a href="#" onclick="Controlador.resetarGrade(2)">Fluxograma vigente após reforma</a></li>
+						</ul>
+					</li>
 					<li><a href="/deslogar">Deslogar</a></li>
 					}
 				</ul>

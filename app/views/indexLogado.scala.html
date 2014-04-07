@@ -1,7 +1,7 @@
-@(usuario: Usuario)
+@(usuarioLogado: Usuario)
 
 @main("Plano de curso") {
-	@navbar(usuario)
+	@navbar(usuarioLogado)
 	@dialogs()
 
 	<div class="container theme-showcase" role="main">
@@ -9,9 +9,10 @@
 	</div> <!-- /container -->
 
 	<script type="text/javascript">
-		var lista_de_disciplinas = @Html(usuario.getGrade().toString());
+		var lista_de_disciplinas = @Html(usuarioLogado.getGrade().toString());
 		Controlador.setarDisciplinas(lista_de_disciplinas);
-		Controlador.setarPeriodoCursando(@usuario.getGrade().getPeriodoCursando());
+		Controlador.setarPeriodoCursando(@usuarioLogado.getGrade().getPeriodoCursando());
+		ControladorHTML.habilitarEditor();
 		Controlador.inicializar();
 	</script>
 }
