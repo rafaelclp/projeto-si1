@@ -1,68 +1,17 @@
-@(message: String, periodoCursando: Integer, usuario: Usuario)
+@(message: String, usuario: Usuario)
 
 @main("Plano de curso") {
-	<!-- Fixed navbar -->
-	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-	<div class="container">
-		<div class="navbar-header">
-		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-			<span class="sr-only">Toggle navigation</span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-		</button>
-		<a class="navbar-brand" href="#">Plano de curso</a>
-		<a class="hellouser">Olá, <i>@usuario.getNome()</i>!</a>
-		</div>
-		<div class="navbar-collapse collapse">
-		<ul class="nav navbar-nav">
-			<li class="active"><a href="/">Principal</a></li>
-			<li><a href="@routes.Assets.at("images/grade.png")" target="_blank">Grade</a></li>
-			<li><a href="#" onclick="Controlador.resetarGrade()">Resetar</a></li>
-			<li><a href="/deslogar">Deslogar</a></li>
-		</ul>
-		</div><!--/.nav-collapse -->
-	</div>
-	</div>
+	@navbar(usuario)
+	@dialogs()
 
 	<div class="container theme-showcase" role="main">
-		<div align="center">
-			<div class="alert alert-info" id="infoDiv"></div>
-
-			<div class="alert alert-danger" id="errorDiv">
-				<div id="errorDivMsg"></div>
-				<div class="errorDivClose" style="position:relative">
-					<a href="#" onclick="Dialogos.erro.esconder()"><span class="glyphicon glyphicon-remove"></span></a>
-				</div>
-				<div style="clear: left"></div>
-			</div>
-		</div>
 		<div id="main-container"></div>
 	</div> <!-- /container -->
-
-	<div id="loadingDiv"><img src="@routes.Assets.at("images/loading.gif")" /></div>
-
-	<div id="confirmBoxDiv">
-		<div class="panel panel-primary confirmBoxContent">
-			<div class="panel-heading">
-				<h3 class="panel-title">Você tem certeza?</h3>
-			</div>
-			<div class="panel-body">
-				<div id="confirmBoxDivMsg"></div>
-				<div class="confirmBoxButtonLeft">
-					<p><a href="#" class="btn btn-success" role="button" id="confirmBoxDivButtonOk">Confirmar</a></p>
-				</div>
-				<div class="confirmBoxButtonRight">
-					<p><a href="#" class="btn btn-danger" role="button" id="confirmBoxDivButtonCancel">Cancelar</a></p>
-				</div>
-			</div>
-		</div>
-	</div>
 
 	<script type="text/javascript">
 		var lista_de_disciplinas = @Html(message);
 		Controlador.setarDisciplinas(lista_de_disciplinas);
-		Controlador.setarPeriodoCursando(@periodoCursando);
+		Controlador.setarPeriodoCursando(@usuario.getGrade().getPeriodoCursando());
 		Controlador.inicializar();
 	</script>
 }

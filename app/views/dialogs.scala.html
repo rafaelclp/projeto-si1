@@ -1,0 +1,36 @@
+@()
+
+	<div class="dialogsDiv" style="position: relative; z-index: 2147483647">
+		<div class="container theme-showcase" role="main">
+			<div align="center">
+				<div class="alert alert-info" id="infoDiv"></div>
+
+				<div class="alert alert-danger" id="errorDiv">
+					<div id="errorDivMsg"></div>
+					<div class="errorDivClose" style="position:relative">
+						<a href="#" onclick="Dialogos.erro.esconder()"><span class="glyphicon glyphicon-remove"></span></a>
+					</div>
+					<div style="clear: left"></div>
+				</div>
+			</div>
+		</div>
+
+		<div id="loadingDiv"><img src="@routes.Assets.at("images/loading.gif")" /></div>
+
+		<div id="confirmBoxDiv">
+			<div class="panel panel-primary confirmBoxContent">
+				<div class="panel-heading">
+					<h3 class="panel-title">Você tem certeza?</h3>
+				</div>
+				<div class="panel-body">
+					<div id="confirmBoxDivMsg"></div>
+					<div class="confirmBoxButtonLeft">
+						<p><a href="#" class="btn btn-success" role="button" id="confirmBoxDivButtonOk">Confirmar</a></p>
+					</div>
+					<div class="confirmBoxButtonRight">
+						<p><a href="#" class="btn btn-danger" role="button" id="confirmBoxDivButtonCancel">Cancelar</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
