@@ -1,6 +1,7 @@
 package models;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -71,6 +72,21 @@ public class GradeTest {
         } catch(InvalidOperationException e) {
         	fail("Não deveria lançar excessão");
         }
+    }
+
+    /**
+     * Confirma que as disciplinas são carregadas pra grade.
+     */
+    @Test
+    public void carregaDisciplinas() {        
+        Grade gradeT = new Grade();
+        
+        assertEquals(0, gradeT.getDisciplinas().size());
+        
+    	gradeT.setTipoDeGrade(TipoDeGrade.FLUXOGRAMA_OFICIAL);
+    	gradeT.carregarDisciplinas();
+    	
+        assertEquals(64, gradeT.getDisciplinas().size());
     }
 
     /**
@@ -177,6 +193,9 @@ public class GradeTest {
 		} catch (InvalidOperationException e) {
     		assertEquals(e.getMessage(), "Essa disciplina tem pré-requisitos faltando.");
 		}
+
+    	assertTrue(gradeTeste.preRequisitosFaltando(calculoII, gradeTeste.getPeriodoDaDisciplina(calculoII)).contains(calculoI));
+    	assertFalse(gradeTeste.preRequisitosFaltando(calculoII, gradeTeste.getPeriodoDaDisciplina(calculoII)).contains(vetorial));
     	
     	try {
         	Disciplina gi = gradeTeste.getDisciplinaPorID(20L);
@@ -202,7 +221,25 @@ public class GradeTest {
 		} catch (InvalidOperationException e1) {
 			fail("Não deveria lançar excessão.");
 		}
+
+		assertTrue(gradeTeste.posRequisitosAlocados(calculoI).contains(calculoII));
+		assertFalse(gradeTeste.posRequisitosAlocados(calculoI).contains(vetorial));
     	
+		try {
+			gradeTeste.associarDisciplinaAoPeriodo(calculoI, 3);
+		} catch (InvalidOperationException e) {
+			fail("Não deveria lançar excessão.");
+		}
+
+		assertTrue(gradeTeste.obterDisciplinasIrregulares().contains(calculoII));
+		assertFalse(gradeTeste.obterDisciplinasIrregulares().contains(calculoI));
+    	
+		try {
+			gradeTeste.associarDisciplinaAoPeriodo(calculoI, 1);
+		} catch (InvalidOperationException e) {
+			fail("Não deveria lançar excessão.");
+		}
+		
     	try {
     		Disciplina DireitoCidadania = gradeTeste.getDisciplinaPorID(40L);
     		
