@@ -63,5 +63,20 @@
 		function registrar() {
 			Controlador.registrar($("#name").val(), $("#username").val(), $("#password").val(), parseInt($("#gridType").val()));
 		}
+
+		function submitIfEnter(event) {
+			if (event.which == 13) {
+				if ($('.registerDiv').css("display") == "none")
+					logar();
+				else
+					registrar();
+			}
+		}
+
+		$("div.usernameDiv input#username").keydown(submitIfEnter);
+		$("div.passwordDiv input#password").keydown(submitIfEnter);
+		$("div.nameDiv input#name").keydown(submitIfEnter);
+		$("div.gridTypeDiv select#gridType").keydown(submitIfEnter);
+
 	</script>
 }
