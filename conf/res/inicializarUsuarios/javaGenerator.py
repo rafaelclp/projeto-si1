@@ -1,4 +1,4 @@
-import random, hashlib
+import random, hashlib, os
 
 ## Le o codigo java a ser usado como base
 with open("InicializadorDeUsuarios.java", "r+") as f:

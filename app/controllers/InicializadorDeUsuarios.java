@@ -17,7 +17,6 @@ import play.mvc.Controller;
  */
 public class InicializadorDeUsuarios extends Controller {
 	private final static CadastroDeUsuario cadastroDeUsuario = new CadastroDeUsuario();
-	private final static ControladorDeGrade controladorDeGrade = new ControladorDeGrade();
 	
 	/**
 	 * Cadastra um usuário com um plano de curso aleatório.
@@ -28,7 +27,7 @@ public class InicializadorDeUsuarios extends Controller {
 	 */
 	private void registrar(String nome, String usuario, String senha) {
 		int tipoDeGradeIndex = Math.abs((new Random()).nextInt()) % TipoDeGrade.values().length;
-		TipoDeGrade tipoDeGrade = controladorDeGrade.converterInteiroParaTipoDeGrade(tipoDeGradeIndex);
+		TipoDeGrade tipoDeGrade = TipoDeGrade.values()[tipoDeGradeIndex];
 
 		try {
 			Usuario u = cadastroDeUsuario.registrar(nome, usuario, senha);

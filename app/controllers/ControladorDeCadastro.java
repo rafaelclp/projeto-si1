@@ -11,7 +11,6 @@ import models.Usuario;
 import play.mvc.Controller;
 
 public class ControladorDeCadastro extends Controller {
-	private final static ControladorDeGrade controladorDeGrade = new ControladorDeGrade();
 	private final static CadastroDeUsuario cadastroDeUsuario = new CadastroDeUsuario();
 	private Usuario usuarioLogado;
 
@@ -76,11 +75,14 @@ public class ControladorDeCadastro extends Controller {
     		
     		if (nome != null && usuario != null && senha != null && tipoDeGrade != null) {
     			try {
-    				TipoDeGrade tipo = controladorDeGrade.converterInteiroParaTipoDeGrade(Integer.parseInt(tipoDeGrade[0]));
+    				TipoDeGrade tipo = TipoDeGrade.values()[Integer.parseInt(tipoDeGrade[0])];
     				registrar(nome[0], usuario[0], senha[0], tipo);
     			} catch (NumberFormatException e) {
     				// Só acontece se algum usuário tentar "hackear" o sistema;
     				// a interface em si não permite chegar aqui.
+    				flash("erro", "Deve ser especificado um número inteiro para o tipo de grade.");
+    			} catch (IndexOutOfBoundsException e) {
+    				// Mesma situação do catch acima.
     				flash("erro", "O tipo de grade informado não existe.");
     			}
     		}
