@@ -16,6 +16,10 @@ import org.junit.Test;
 import play.db.ebean.Model.Finder;
 import play.test.FakeApplication;
 
+/**
+ * Testes relacionados à grade, com operações
+ * de (des)alocação e reset, e integração com bd e javascript.
+ */
 public class GradeTest {
 
     private Periodo periodoTeste;
@@ -69,6 +73,10 @@ public class GradeTest {
         }
     }
 
+    /**
+     * Confirma que as disciplinas do primeiro periodo foram
+     * alocadas corretamente.
+     */
     @Test
     public void possuiDisciplinasPrimeiroPeriodo() {        
         List<Disciplina> DisciplinasNaGrade = gradeTeste.getDisciplinas();
@@ -83,6 +91,10 @@ public class GradeTest {
         }
     }
     
+    /**
+     * Testa a conversão de disciplina para string;
+     * importante para a integração entre java e javascript.
+     */
     @Test
     public void ConsegueConverterTodasAsDisciplinasParaString() {
     	String disciplinasParaString = gradeTeste.toString();
@@ -120,6 +132,9 @@ public class GradeTest {
         assertTrue(disciplinasParaStringSemEspacos.contains("[2,\"LeituraeProd.deTextos\",4,2,1,0,0]"));
     }
     
+    /**
+     * Testa a alocação de disciplinas.
+     */
     @Test
     public void associaDisciplinaAoPeriodo() {
     	try {
@@ -199,6 +214,9 @@ public class GradeTest {
     	}
     }
     
+    /**
+     * Testa a desalocação de disciplinas.
+     */
     @Test
     public void desalocaDisciplina() {
     	try {
@@ -242,6 +260,10 @@ public class GradeTest {
     	assertEquals(0, gradeTeste.getPeriodoDaDisciplina(ffc));
     }
 
+    /**
+     * Testa resetar (para um plano pré-definido) e gerarPlanoAleatorio
+     * (plano não pré-definido gerado aleatoriamente).
+     */
     @Test
     public void reseta() {
     	try {
@@ -264,6 +286,10 @@ public class GradeTest {
 		}
     }
 
+    /**
+     * Realiza testes diversos com o único intuito de garantir que
+     * o acesso ao banco de dados está funcionando corretamente.
+     */
     @Test
     public void registraNoBD() {
     	Grade grade = new Grade();
@@ -338,6 +364,10 @@ public class GradeTest {
 		assertEquals(d.getId(), d2.getId());
     }
     
+    /**
+     * Teste com a intenção de verificar se as disciplinas
+     * são salvas corretamente após resetar.
+     */
     @Test
     public void persistenciaAoResetar() {
     	Grade grade = new Grade();
