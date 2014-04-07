@@ -4,23 +4,24 @@
 
 # Home page
 GET     /                           					controllers.Application.index()
+GET		/login											controllers.Application.indexLogin()
 
-# Disciplinas
-
-GET 	/obterPreRequisitosNaoAlocados/:id/:periodo		controllers.Application.obterPreRequisitosNaoAlocados(id: Long, periodo: Long)
-POST	/alocarDisciplina/:id/:periodo					controllers.Application.alocarDisciplina(id: Long, periodo: Long)
+# Grade
+GET 	/obterPreRequisitosNaoAlocados/:id/:periodo		controllers.Application.obterPreRequisitosNaoAlocados(id: Long, periodo: Int)
 GET 	/obterPosRequisitosAlocados/:id					controllers.Application.obterPosRequisitosAlocados(id: Long)
+POST	/alocarDisciplina/:id/:periodo					controllers.Application.alocarDisciplina(id: Long, periodo: Int)
 POST	/desalocarDisciplina/:id						controllers.Application.desalocarDisciplina(id: Long)
-POST	/moverDisciplina/:id/:periodo					controllers.Application.moverDisciplina(id: Long, periodo: Long)
-POST	/alterarPeriodoCursando/:periodo				controllers.Application.alterarPeriodoCursando(periodo: Long)
-GET		/resetar										controllers.Application.resetar()
+POST	/moverDisciplina/:id/:periodo					controllers.Application.moverDisciplina(id: Long, periodo: Int)
+POST	/alterarPeriodoCursando/:periodo				controllers.Application.alterarPeriodoCursando(periodo: Int)
+GET		/resetar/:tipoDeGrade							controllers.Application.resetar(tipoDeGrade: Int)
 
-# Login
-
+# Usuario
 GET		/deslogar										controllers.Application.deslogar()
 POST	/logar											controllers.Application.logar()
 POST	/registrar										controllers.Application.registrar()
 GET		/inicializarUsuarios							controllers.Application.inicializarUsuarios()
+GET		/perfil/:id										controllers.Application.perfil(id: Long)
+GET		/pesquisar/:query								controllers.Application.pesquisar(query: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               					controllers.Assets.at(path="/public", file)

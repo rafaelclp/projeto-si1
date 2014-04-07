@@ -1,4 +1,4 @@
-@(message: String, usuario: Usuario)
+@(usuario: Usuario)
 
 @main("Plano de curso") {
 	@navbar(usuario)
@@ -9,7 +9,7 @@
 	</div> <!-- /container -->
 
 	<script type="text/javascript">
-		var lista_de_disciplinas = @Html(message);
+		var lista_de_disciplinas = @Html(usuario.getGrade().toString());
 		Controlador.setarDisciplinas(lista_de_disciplinas);
 		Controlador.setarPeriodoCursando(@usuario.getGrade().getPeriodoCursando());
 		Controlador.inicializar();

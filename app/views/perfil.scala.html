@@ -1,0 +1,13 @@
+@(usuario: Usuario, usuarioLogado: Usuario)
+
+@if(flash.containsKey("erro")) {
+@flash.get("erro")
+}
+
+@if(usuario!=null) {
+@usuario.getNome()
+}
+ - 
+@if(usuarioLogado!=null) {
+@usuarioLogado.getNome()
+}

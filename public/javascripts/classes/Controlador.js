@@ -128,14 +128,14 @@ var Controlador = {
 			var parts = data.trim().split(":", 2);
 			if (parts[0] == "ids") {
 				var ids = parts[1].split(",");
-				if (ids.length < 2) { // só tem ele mesmo
+				if (ids.length == 1 && ids[0].trim() == "") {
 					Controlador.__requisitarPagina("alocarDisciplina/" + id + "/" + periodo);
 					return true;
 				}
 				var nomes = [];
 				for (var i = 0; i < ids.length; i++) {
 					var disciplina = Grade.procurarDisciplina(parseInt(ids[i]));
-					if (disciplina != null && ids[i] != id)
+					if (disciplina != null)
 						nomes.push(disciplina.nome);
 				}
 				var erro = "Pré-requisitos não cumpridos:<br />" + GeradorHTML.gerarLista(nomes);
@@ -157,14 +157,14 @@ var Controlador = {
 			var parts = data.trim().split(":", 2);
 			if (parts[0] == "ids") {
 				var ids = parts[1].split(",");
-				if (ids.length < 2) { // só tem ele mesmo
+				if (ids.length == 1 && ids[0].trim() == "") {
 					Controlador.__requisitarPagina("desalocarDisciplina/" + id);
 					return true;
 				}
 				var nomes = [];
 				for (var i = 0; i < ids.length; i++) {
 					var disciplina = Grade.procurarDisciplina(parseInt(ids[i]));
-					if (disciplina != null && ids[i] != id)
+					if (disciplina != null)
 						nomes.push(disciplina.nome);
 				}
 				var mensagemConfirmacao = "Ao desalocar esta disciplina, serão desalocadas também estas outras:<br />";
@@ -203,6 +203,8 @@ var Controlador = {
 	**/
 	__tratarRequisicao: function(data, textStatus, jqxhr) {
 		Dialogos.loading.esconder();
+
+		console.log(data.trim());
 
 		if (jqxhr && jqxhr.aoTratarRequisicao)
 			if (jqxhr.aoTratarRequisicao(data, textStatus))

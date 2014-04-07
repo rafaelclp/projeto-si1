@@ -1,0 +1,12 @@
+@()
+
+@if(flash.containsKey("erro")) {
+	erro:@flash.get("erro")
+}
+@if(!flash.containsKey("erro")) {
+	@for((key, value) <- flash.take(10)) {
+		@key:@value
+	}
+}
+
+@flash.clear()
