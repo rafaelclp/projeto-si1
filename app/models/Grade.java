@@ -27,7 +27,7 @@ public class Grade extends Model {
 	
 	private int periodoCursando;
 	
-	private TipoDeGrade tipoDeGrade = null;
+	private TipoDeGrade tipoDeGrade = TipoDeGrade.FLUXOGRAMA_OFICIAL;
 
 	@Transient
 	private List<Disciplina> disciplinas;
