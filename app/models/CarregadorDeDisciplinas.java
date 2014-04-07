@@ -47,20 +47,6 @@ public class CarregadorDeDisciplinas {
     }
 
 	/**
-	 * Atualiza as disciplinas no banco de dados.
-     * 
-	 * @param tipoDeGrade
-	 * 			Tipo de grade para o qual se quer atualizar a grade.
-	 */
-    public static void atualizarDisciplinas(TipoDeGrade tipoDeGrade) {
-    	String arquivo = obterArquivoCorrespondente(tipoDeGrade);
-
-    	cache.remove(arquivo);
-    	cache.put(arquivo, carregaDisciplinasDoArquivo(arquivo));
-    	carregaNoBancoDeDados(cache.get(arquivo), true);
-    }
-
-	/**
 	 * Carrega disciplinas e retorna lista com todas as
      * disciplinas contidas no arquivo XML. Se já tiverem sido
      * carregadas anteriormente, apenas as retorna da memória.
@@ -77,7 +63,7 @@ public class CarregadorDeDisciplinas {
     			d.setId(d.getId() + idBase);
     		}
     		cache.put(arquivo, disciplinas);
-    		carregaNoBancoDeDados(disciplinas, false);
+    		carregaNoBancoDeDados(disciplinas, true);
     	}
     	return cache.get(arquivo);
     }
