@@ -9,6 +9,11 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 
+/**
+ * Controlador geral da aplicação. Responsável por receber as requisições,
+ * requisitar a execução das operações aos outros controladores, e devolver
+ * a resposta da requisição.
+ */
 public class Application extends Controller {
 	public static ControladorDeCadastro controladorDeCadastro = new ControladorDeCadastro();
 	public static ControladorDeGrade controladorDeGrade;

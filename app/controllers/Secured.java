@@ -5,6 +5,9 @@ import play.mvc.Http.Context;
 import play.mvc.Result;
 import play.mvc.Security;
 
+/**
+ * Classe de "autenticação".
+ */
 public class Secured extends Security.Authenticator {
 
     @Override

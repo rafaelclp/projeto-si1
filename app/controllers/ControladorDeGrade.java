@@ -9,6 +9,10 @@ import models.TipoDeGrade;
 import play.db.ebean.Model;
 import play.mvc.Controller;
 
+/**
+ * Responsável por controlar as operações realizadas pelo usuário sobre
+ * sua grade, e enviar as respostas AJAX via flash.
+ */
 public class ControladorDeGrade extends Controller {
 	private Grade grade;
 	private Model saveEntity;

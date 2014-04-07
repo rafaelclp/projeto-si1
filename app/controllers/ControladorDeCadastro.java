@@ -11,6 +11,10 @@ import models.Usuario;
 import play.db.ebean.Model.Finder;
 import play.mvc.Controller;
 
+/**
+ * Responsável por controlar o cadastro de usuários, através de operações de
+ * logar, registrar, obter/pesquisar etc.
+ */
 public class ControladorDeCadastro extends Controller {
 	private final static CadastroDeUsuario cadastroDeUsuario = new CadastroDeUsuario();
 	private Usuario usuarioLogado;
