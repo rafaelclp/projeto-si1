@@ -34,6 +34,7 @@ public class InicializadorDeUsuarios extends Controller {
 			Grade g = u.getGrade();
 			g.setTipoDeGrade(tipoDeGrade);
 			g.gerarPlanoAleatorio();
+			u.save();
 		} catch (InvalidOperationException e) {
 			e.printStackTrace();
 		}
